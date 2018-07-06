@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{65410671-C9EA-44EE-9803-D75235D6BCFE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DormManage.BLL</RootNamespace>
+    <AssemblyName>BLL</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\Lib\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Allowance\TB_AllowanceApplyCancelBLL.cs" />
+    <Compile Include="Allowance\TB_AllowanceApplyBLL.cs" />
+    <Compile Include="AssignRoom\AssignRoomBLL.cs" />
+    <Compile Include="AssignRoom\IDcardInfo.cs" />
+    <Compile Include="AssignRoom\IDcardReader.cs" />
+    <Compile Include="AssignRoom\StaffingBLL.cs" />
+    <Compile Include="CommonBLL.cs" />
+    <Compile Include="DormManage\BedBLL.cs" />
+    <Compile Include="DormManage\DormAreaBLL.cs" />
+    <Compile Include="DormManage\BuildingBLL.cs" />
+    <Compile Include="DormManage\FloorBLL.cs" />
+    <Compile Include="FlexPlus\FlexPlusBLL.cs" />
+    <Compile Include="UserManage\BUBLL.cs" />
+    <Compile Include="DormPersonManage\ChangeRoomRecordBLL.cs" />
+    <Compile Include="DormPersonManage\ChargingBLL.cs" />
+    <Compile Include="DormPersonManage\EmployeeCheckInBLL.cs" />
+    <Compile Include="DormPersonManage\EmployeeCheckOutBLL.cs" />
+    <Compile Include="UserManage\ExtendOpeTree.cs" />
+    <Compile Include="UserManage\ExtendTreeBase.cs" />
+    <Compile Include="UserManage\ModuleBLL.cs" />
+    <Compile Include="UserManage\RoleBLL.cs" />
+    <Compile Include="UserManage\UserBLL.cs" />
+    <Compile Include="DormManage\RoomBLL.cs" />
+    <Compile Include="DormManage\RoomTypeBLL.cs" />
+    <Compile Include="DormManage\UnitBLL.cs" />
+    <Compile Include="Properties\Resources1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DormManage.Common\DormManage.Common.csproj">
+      <Project>{35dd1160-7e81-4975-adca-b3322f4c163d}</Project>
+      <Name>DormManage.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DormManage.Data\DormManage.Data.csproj">
+      <Project>{2f6202cb-ce33-4639-be20-7717fdfce944}</Project>
+      <Name>DormManage.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DormManage.Framework\DormManage.Framework.csproj">
+      <Project>{c4e83482-40c3-4940-aba6-fb62d6598d8b}</Project>
+      <Name>DormManage.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DormManage.Models\DormManage.Models.csproj">
+      <Project>{1e77e2e7-74b5-403f-9d82-4ed3cc5aee00}</Project>
+      <Name>DormManage.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

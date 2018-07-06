@@ -1,0 +1,93 @@
+* html { filter:expression(document.execCommand("BackgroundImageCache", false, true)); }/*fix background cache bug with IE6 */
+html, body, div, span, applet, object, iframe, table, caption, tbody, thead, tr, th, td,
+del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code,
+dl, dt, dd, ol, ul, li, fieldset, form, label, legend 
+{
+ padding: 0;
+ margin: 0;
+ border: 0;
+ }
+
+/* tables still need cellspacing="0" in the markup */
+table {
+ border-collapse: separate;
+ border-spacing:0;
+ }
+caption, th, td {
+ font-weight: normal;
+ text-align: left;
+ }
+
+/*公用部分*/ 
+h1,h2,h3,h4,h5,h6 {font-size:12px; font-weight:normal;}   
+q:before,q:after {content:'';}   
+abbr,acronym {border:0;}
+address,caption,cite,code,dfn,em,th,var {font-weight:normal; font-style:normal;}   
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,blockquote,p{padding:0; margin:0;}   
+table,td,tr,th{font-size:12px;}
+li{list-style-type:none; list-style:none;}
+img{vertical-align:top;border:0;}
+ol,ul {list-style:none;}
+h1,h2,h3,h4,h5,h6 {font-size:12px; font-weight:normal;}
+address,cite,code,em,th {font-weight:normal; font-style:normal;}
+.ntes-passport a {color:#727171;}
+.ntes-passport a:hover {color:#ba2636;}
+.fB{font-weight:bold;}
+.f12px{font-size:12px;}
+.f14px{font-size:14px;}
+.left{float:left;}
+.right{float:right;}
+.af12{ font:bold 12px Arial, Helvetica, sans-serif; color:#F00;}
+.hidden{display:none;}
+.clear {clear:both; height:0; overflow:hidden; display:block;}
+.clearfix:after {clear:both; height:0; overflow:hidden; display:block; visibility:hidden; content:"."; }
+.blankW {background:#fff;}
+.blank1 {clear:both; height:1px; overflow:hidden; display:block;}
+.blank3 {clear:both; height:3px; overflow:hidden; display:block;}
+.blank5 {clear:both; height:5px; overflow:hidden; display:block;}
+.blank10 {clear:both; height:10px; overflow:hidden; display:block;}
+.blank18 {clear:both; height:18px; overflow:hidden; display:block;}
+.blank17 {clear:both; height:17px; overflow:hidden; display:block;}
+.blank12 {clear:both; height:11px;overflow:hidden; display:block;}
+.blank22 {clear:both; height:4px; overflow:hidden; display:block;}
+.blank20 {clear:both; height:20px; overflow:hidden; display:block;}
+.blank42 {clear:both; height:50px; overflow:hidden; display:block;}
+.blank36 {clear:both; height:36px; overflow:hidden; display:block;}
+
+/*公用链接*/
+a {color:#2b2b2b;text-decoration:none;}
+a:visited {color:#ffffff;text-decoration:none;}
+a:hover {color:#ba2636;text-decoration:underline;}
+a:active {color:#ba2636;}
+.cWhite,.cWhite:visited,.cWhite a{color:#fff;}
+
+.white{ font:bolder 12px/24px "宋体"; color:#fff;}
+.white:link {color:#fff;text-decoration:none;}
+.white:visited {color:#fff;text-decoration:none;}
+.white:hover {color:#123e56;text-decoration:underline;}
+.white:active {color:#123e56;}
+
+
+.yel{ display:block;font:12px/24px "宋体"; color:#ff6600; _padding:6px 0 0 0; float:left;}
+.yel:link { font:12px/24px "宋体";color:#ff6600;text-decoration:underline;}
+.yel:visited { font:12px/24px "宋体";color:#ff6600;text-decoration:none;text-decoration:underline;}
+.yel:hover { font:12px/24px "宋体";color:#123e56;text-decoration:underline;}
+.yel:active { font:12px/24px "宋体";color:#123e56;}
+
+
+
+.blue{ font:bolder 12px/24px "宋体"; color:#0070b2;}
+.blue:link {color:#0070b2;text-decoration:none;}
+.blue:visited {color:#0070b2;text-decoration:none;}
+.blue:hover {color:#333;text-decoration:underline;}
+.blue:active {color:#333;}
+
+
+
+
+.dln{ background: url(../images/icon01.gif) no-repeat; width:66px; height:25px; font:12px/24px "宋体"; color:#fff; border:0; cursor:pointer;}
+.dlnover{ background: url(../images/icon02.gif) no-repeat; width:66px; height:25px; font:12px/24px "宋体"; color:#002d7e; border:0; cursor:pointer;}
+
+.sqn{ background: url(../images/iconb01.gif) no-repeat; width:106px; height:25px; font:12px/24px "宋体"; color:#fff; border:0; cursor:pointer;}
+.sqnover{ background: url(../images/iconb02.gif) no-repeat; width:106px; height:25px; font:12px/24px "宋体"; color:#002d7e; border:0; cursor:pointer;}

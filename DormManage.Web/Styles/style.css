@@ -1,0 +1,113 @@
+﻿/****************************************/
+/********** XHTMLOA style V1.0 **********/
+/****************************************/
+
+
+/********** common style **********/
+/*通用按钮样式*/
+.buttons
+{
+    border-style: none;
+    border-color: inherit;
+    border-width: medium;
+    line-height: 21px;
+    cursor: pointer;
+    margin: 0 5px;
+    color: #20436a;
+    background: url(../images/bg_button.gif) no-repeat;
+}
+/*新增 分页控件为空时的样式*/
+.ungoindex
+{
+    width: 55px;
+    height: 20px;
+    border: none;
+    cursor: pointer;
+    background: url(../images/btn_sy_ex.gif) no-repeat;
+}
+.unprev
+{
+    width: 55px;
+    height: 20px;
+    border: none;
+    cursor: pointer;
+    background: url(../images/btn_syy_ex.gif) no-repeat;
+}
+
+.unnext
+{
+    width: 55px;
+    height: 20px;
+    border: none;
+    cursor: pointer;
+    background: url(../images/btn_xyy_ex.gif) no-repeat;
+}
+.ungolast
+{
+    width: 55px;
+    height: 20px;
+    border: none;
+    cursor: pointer;
+    background: url(../images/btn_wy_ex.gif) no-repeat;
+}
+/*通用表格导航*/
+.tablefoot
+{
+    width: 98%;
+    height: 20px;
+    margin: 5px auto;
+    text-align: right;
+    color: #1a5384;
+}
+.tablefoot span
+{
+    margin-left: 5px;
+}
+.pagenum
+{
+    width: 26px;
+    height: 18px;
+    line-height: 18px;
+    border: 1px solid #CCC;
+}
+.go
+{
+    width: 20px;
+    height: 20px;
+    border: none;
+    cursor: pointer;
+    background: url(../images/btn_go.gif) no-repeat;
+}
+.goindex
+{
+    width: 55px;
+    height: 20px;
+    border: none;
+    cursor: pointer;
+    background: url(../images/btn_sy.gif) no-repeat;
+}
+.prev
+{
+    width: 55px;
+    height: 20px;
+    border: none;
+    cursor: pointer;
+    background: url(../images/btn_syy.gif) no-repeat;
+}
+.next
+{
+    width: 55px;
+    height: 20px;
+    border: none;
+    cursor: pointer;
+    background: url(../images/btn_xyy.gif) no-repeat;
+}
+.golast
+{
+    width: 55px;
+    height: 20px;
+    border: none;
+    cursor: pointer;
+    background: url(../images/btn_wy.gif) no-repeat;
+}
+.tabbox .preview .pagerbar #div_right{width: 170px;z-index: 9999;position: absolute;margin: 0 66% 0 83%;background: none repeat scroll 0% 0% rgb(238, 238, 238);}
