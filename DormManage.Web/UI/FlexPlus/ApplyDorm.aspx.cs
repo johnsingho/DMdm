@@ -1,8 +1,12 @@
 ﻿using DormManage.BLL.FlexPlus;
+using DormManage.Common;
 using DormManage.Framework;
+using DormManage.Framework.LogManager;
 using DormManage.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Web.UI.WebControls;
 
 namespace DormManage.Web.UI.FlexPlus
 {
@@ -25,7 +29,16 @@ namespace DormManage.Web.UI.FlexPlus
             pager.srcOrder = "  ID desc";
 
             var mTB_DormAreaApply = new TB_DormAreaApply();
-            //
+            mTB_DormAreaApply.EmployeeNo = txtWorkDayNo.Text.Trim();
+            mTB_DormAreaApply.CName = txtName.Text.Trim();
+            mTB_DormAreaApply.CardNo = txtScanCardNO.Text.Trim();
+            int nVal = 0;
+            int.TryParse(ddlRequiredType.SelectedValue, out nVal);
+            mTB_DormAreaApply.RequireType = nVal;
+            nVal = -1;
+            int.TryParse(ddlStatus.SelectedValue, out nVal);
+            mTB_DormAreaApply.Status = nVal;
+
             var dt = bll.GetApplyDorms(mTB_DormAreaApply, ref pager);
             GridView1.DataSource = dt;
             GridView1.DataBind();
@@ -36,16 +49,7 @@ namespace DormManage.Web.UI.FlexPlus
             this.Pager1.PageSize = pager.PageSize;
         }
 
-        private class TNameVal
-        {
-            public TNameVal(string n, string v)
-            {
-                Name = n;
-                Value = v;
-            }
-            public string Name { get; set; }
-            public string Value { get; set; }
-        }
+
         private void BindSelect()
         {
             var lst = new List<TNameVal>();
@@ -76,5 +80,74 @@ namespace DormManage.Web.UI.FlexPlus
             int dormAreaID = Convert.ToInt32(ViewState["dormAreaID"]);
             this.BindApplys(Convert.ToInt32(e.CommandArgument));
         }
+
+
+        protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    var dv = e.Row.DataItem as DataRowView;
+                    Literal ltlSex = e.Row.Cells[3].FindControl("ltlSex") as Literal;
+                    if (Convert.ToInt32(dv["Sex"]) == (int)TypeManager.Sex.Male)
+                    {
+                        ltlSex.Text = RemarkAttribute.GetEnumRemark(TypeManager.Sex.Male);
+                    }
+                    else
+                    {
+                        ltlSex.Text = RemarkAttribute.GetEnumRemark(TypeManager.Sex.Female);
+                    }
+
+                    int nVal = 0;
+                    Literal ltlRequireType = e.Row.Cells[8].FindControl("ltlRequireType") as Literal;
+                    int.TryParse(dv["RequireType"].ToString(), out nVal);
+                    switch (nVal)
+                    {
+                        case 1:
+                            ltlRequireType.Text = "新入住";
+                            break;
+                        case 2:
+                            ltlRequireType.Text = "复入住";
+                            break;
+                        case 3:
+                            ltlRequireType.Text = "调房";
+                            break;
+                    }
+
+                    nVal = -1;
+                    Literal ltlHasHousingAllowance = e.Row.Cells[8].FindControl("ltlHasHousingAllowance") as Literal;
+                    int.TryParse(dv["HasHousingAllowance"].ToString(), out nVal);
+                    ltlHasHousingAllowance.Text = (nVal > 0) ? "是" : "否";
+
+                    nVal = -1;
+                    Literal ltStatus = e.Row.Cells[12].FindControl("ltlStatus") as Literal;
+                    int.TryParse(dv["Status"].ToString(), out nVal);
+                    switch (nVal)
+                    {
+                        case 0:
+                            ltStatus.Text = "等待处理";
+                            break;
+                        case 1:
+                            ltStatus.Text = "批准";
+                            break;
+                        default:
+                            ltStatus.Text = "拒绝";
+                            break;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetInstance().ErrorLog("ApplyDorm::GridView1_RowDataBound", ex);
+            }
+        }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            BindApplys(1);
+        }
+
     }
 }

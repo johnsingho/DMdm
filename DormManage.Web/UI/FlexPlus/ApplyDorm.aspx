@@ -20,6 +20,11 @@
     <script src="../../Scripts/ligerUI1.1.9/js/ligerui.all.js"></script>
     <link href="../../Scripts/ligerUI1.1.9/skins/Aqua/css/ligerui-all.css" rel="stylesheet" />
     
+    <style>
+        .leftOff{
+            margin-left: 8px;
+        }
+    </style>
     <script type="text/javascript">
         function GetSelItem() {
             var recordId = "";
@@ -27,15 +32,39 @@
             if ($chkSelect.length == 0) {
                 return null;
             }
-            return $chkSelect.val();
+            return $chkSelect.toArray();
         }
 
+        function DoApply() {
+            var arrSel = GetSelItem();
+            if (!arrSel || !arrSel.length) {
+                alert("请选择要处理的记录.");
+                return;
+            }
+            var keys = "";
+            for (var i = 0; i < arrSel.length; i++) {
+                keys += arrSel[i] + ",";
+            }
+            keys=keys.slice(0, -1);
+            var sUrl = 'ApplyDormHandle.aspx?keys==' + escape(keys);
+            $.ligerDialog.open({
+                title: "审核住宿申请",
+                width: 800,
+                height: 550,
+                isResize: true,
+                url: sUrl
+            });
+            return false;
+        }
+        function cancel() {
+            $.ligerDialog.close();
+        }
     </script>
 </head>
 <body>
     <form id="form1" runat="server">
         <div class="navigation_wrap">
-            <h3 class="nav_left">我的位置： <span id="navigation">Flex+后台->住宿申请</span>
+            <h3 class="nav_left">我的位置： <span id="navigation">Flex+后台-->住宿申请</span>
             </h3>
         </div>
         <div class="wrapper">
@@ -53,13 +82,15 @@
                                 <asp:Label ID="lblName" runat="server" Text="姓名："></asp:Label>
                             </th>
                             <td>
-                                <asp:TextBox ID="txtName" runat="server" MaxLength="50" TabIndex="2"></asp:TextBox>
+                                <asp:TextBox ID="txtName" runat="server" MaxLength="50" TabIndex="2" autocomplete="off" ></asp:TextBox>
                             </td>
                             <th>
                                 <asp:Label ID="lblCardNo" runat="server" Text="身份证号码："></asp:Label>
                             </th>
                             <td>
-                                <asp:TextBox ID="txtScanCardNO" runat="server" MaxLength="18" TabIndex="3" Width="160px"></asp:TextBox>
+                                <asp:TextBox ID="txtScanCardNO" runat="server" MaxLength="18" TabIndex="3" Width="160px" autocomplete="off"></asp:TextBox>
+                            </td>
+                            <td>
                             </td>
                         </tr>
                         <tr>
@@ -74,13 +105,16 @@
                             </td>
                             <th>
                             </th>
-                            <td>
-                                <asp:Button ID="btnSearch" Text="查 询" runat="server" class="findBtn" TabIndex="4"></asp:Button>
-                                <%--<asp:Button ID="btnExport" Text="导 出" runat="server" class="exportBtn" TabIndex="5"></asp:Button>--%>
+                            <td style="width:400px">
+                                <asp:Button ID="btnSearch" Text="查 询" runat="server" class="publicBtn leftOff" TabIndex="4" OnClick="btnSearch_Click"></asp:Button>
+                                <asp:Button ID="btnHandle" Text="审 批" runat="server" class="publicBtn leftOff" TabIndex="5" OnClientClick="return DoApply();"></asp:Button>              
+                            </td>
+                            <td>                                
                             </td>
                         </tr>
                     </table>
                 </div>
+
                 <asp:ScriptManager ID="ScriptManager1" runat="server" AsyncPostBackTimeout="0">
                 </asp:ScriptManager>
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
@@ -89,35 +123,52 @@
                             <div id="searchResult">
                                 <div class="viewlist">
                                     <cc1:GridView ID="GridView1" runat="server" CssClass="form" EmptyDataText="<无结果显示>"
-                                        AutoGenerateColumns="False" EnableEmptyContentRender="True" DataKeyNames="ID" >
+                                        AutoGenerateColumns="False" EnableEmptyContentRender="True" DataKeyNames="ID" OnRowDataBound="GridView1_RowDataBound">
                                         <Columns>
                                             <asp:TemplateField>
                                                 <HeaderStyle Width="20px" />
-                                                <%-- <HeaderTemplate>
+                                                <HeaderTemplate>
                                                     <input type="checkbox" id="chkLeftAll" onclick="CheckAll(this)" />
-                                                </HeaderTemplate>--%>
+                                                </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <input type="radio" id="chkLeftSingle" value="<%#Eval("ID") %>" name="chkSelect" />
+                                                    <input type="checkbox" id="chkSelect" name="chkSelect" value="<%#Eval("ID")%>" />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:BoundField DataField="EmployeeNo" HeaderText="工号" />
                                             <asp:BoundField DataField="CName" HeaderText="姓名" />
-                                            <asp:BoundField DataField="Sex" HeaderText="性别" HeaderStyle-Width="25px"/>
+                                            <asp:TemplateField HeaderText="性别" HeaderStyle-Width="25px">
+                                                <ItemTemplate>
+                                                    <asp:Literal ID="ltlSex" runat="server"></asp:Literal>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
                                             <asp:BoundField DataField="CardNo" HeaderText="身份证号码" HeaderStyle-Width="80px"/>
                                             <asp:BoundField DataField="MobileNo" HeaderText="手机号码" HeaderStyle-Width="100px" />
                                             <asp:BoundField DataField="Grade" HeaderText="级别" HeaderStyle-Width="25px">
                                                 <ItemStyle HorizontalAlign="Center" />
                                             </asp:BoundField>
                                             <asp:BoundField DataField="DormArea" HeaderText="宿舍区" />
-                                            <asp:BoundField DataField="RequireType" HeaderText="申请类型" />
+                                            <asp:TemplateField HeaderText="申请类型">
+                                                <ItemTemplate>
+                                                    <asp:Literal ID="ltlRequireType" runat="server"></asp:Literal>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
                                             <asp:BoundField DataField="RequireReason" HeaderText="申请原因" />
-                                            <asp:BoundField DataField="HasHousingAllowance" HeaderText="住房补贴" ItemStyle-HorizontalAlign="Center"/>
+                                            <asp:TemplateField HeaderText="住房补贴">
+                                                <ItemStyle HorizontalAlign="Center" />
+                                                <ItemTemplate>
+                                                    <asp:Literal ID="ltlHasHousingAllowance" runat="server"></asp:Literal>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
                                             <asp:BoundField DataField="memo" HeaderText="备注" />
-                                            <asp:BoundField DataField="Status" HeaderText="状态" />
+                                            <asp:TemplateField HeaderText="状态">
+                                                <ItemTemplate>
+                                                    <asp:Literal ID="ltlStatus" runat="server"></asp:Literal>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
                                             <asp:BoundField DataField="CreateDate" HeaderText="申请时间" DataFormatString="{0:yyyy-MM-dd}"/>
                                             <asp:BoundField DataField="Response" HeaderText="回复" />
                                             <asp:BoundField DataField="UpdateDate" HeaderText="更新时间" DataFormatString="{0:yyyy-MM-dd}"/>
-        <%--                                    <asp:TemplateField>
+                                           <%--<asp:TemplateField>
                                                 <ItemTemplate>
                                                     <input id="btnModify" name="<%#Eval("ID") %>" type="button" value="修改" class="publicBtn"
                                                         onclick="ModifyRow(this, '<%#Eval("Reason")%>', '<%#Eval("CanLeave")%>')" />

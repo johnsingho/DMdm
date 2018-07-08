@@ -73,6 +73,7 @@
     <Compile Include="DormManage\BuildingBLL.cs" />
     <Compile Include="DormManage\FloorBLL.cs" />
     <Compile Include="FlexPlus\FlexPlusBLL.cs" />
+    <Compile Include="FlexPlus\MessageBLL.cs" />
     <Compile Include="UserManage\BUBLL.cs" />
     <Compile Include="DormPersonManage\ChangeRoomRecordBLL.cs" />
     <Compile Include="DormPersonManage\ChargingBLL.cs" />

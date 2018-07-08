@@ -383,7 +383,12 @@ public class BasePage : Page
     public void RunScript(Control control, string sKey, string sScript)
     {
         ScriptManager.RegisterClientScriptBlock(control, this.GetType(), sKey, sScript, true);
-    }    
+    }
+    public void RunScript(Page page, string sKey, string sScript)
+    {
+        page.ClientScript.RegisterClientScriptBlock(page.ClientScript.GetType(), sKey, sScript, true);
+    }
+
 
     ///描述：将纯文本的SQL脚本导出为文件
     ///作者：
