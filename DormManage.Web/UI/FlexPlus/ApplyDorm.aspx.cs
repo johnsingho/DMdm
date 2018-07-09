@@ -126,13 +126,13 @@ namespace DormManage.Web.UI.FlexPlus
                     switch (nVal)
                     {
                         case 0:
-                            ltStatus.Text = "等待处理";
+                            ltStatus.Text = "<span style='color:#FF9900'>等待处理</span>";
                             break;
                         case 1:
-                            ltStatus.Text = "批准";
+                            ltStatus.Text = "<span style='color:Blue'>批准</span>";
                             break;
                         default:
-                            ltStatus.Text = "拒绝";
+                            ltStatus.Text = "<span style='color:Red'>拒绝</span>";
                             break;
                     }
 

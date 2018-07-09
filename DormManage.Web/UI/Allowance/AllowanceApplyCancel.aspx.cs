@@ -86,12 +86,10 @@ namespace DormManage.Web.UI.Allowance
             this.ddlEmpType.Items.Insert(0, new ListItem() { Value = "0", Text = "--请选择--" });
         }
 
-        private bool GetIdCardNumber(out string sIdCardNumber)
+        private bool GetIdCardNumber(string sidcard, string sWorkDayNO, out string sIdCardNumber)
         {
-            var sidcard = this.txtScanCardNO.Text.Trim();
             if (string.IsNullOrEmpty(sidcard))
             {
-                var sWorkDayNO = this.txtWorkDayNo.Text.Trim();
                 if (string.IsNullOrEmpty(sWorkDayNO))
                 {
                     sIdCardNumber = string.Empty;
@@ -126,15 +124,17 @@ namespace DormManage.Web.UI.Allowance
         {
             try
             {
+                var sidcard = this.txtScanCardNO.Text.Trim();
+                var sWorkDayNO = this.txtWorkDayNo.Text.Trim();
                 string sIdCard = string.Empty;
-                if (!GetIdCardNumber(out sIdCard))
+                if (!GetIdCardNumber(sidcard, sWorkDayNO, out sIdCard))
                 {
                     ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('招聘系统找不到此用户！')", true);
                     return;
                 }
 
                 //查询人员信息
-                DataTable dtEmployeeInfo = new StaffingBLL().GetData(sIdCard);
+                DataTable dtEmployeeInfo = new StaffingBLL().GetTableWithIDL(sWorkDayNO, sIdCard);
 
                 TB_AllowanceApplyCancelBLL bll = new TB_AllowanceApplyCancelBLL();
                 if (null != dtEmployeeInfo && dtEmployeeInfo.Rows.Count > 0)

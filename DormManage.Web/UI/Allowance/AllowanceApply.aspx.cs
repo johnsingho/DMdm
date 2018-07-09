@@ -86,12 +86,10 @@ namespace DormManage.Web.UI.Allowance
             #endregion
         }
 
-        private bool GetIdCardNumber(out string sIdCardNumber)
+        private bool GetIdCardNumber(string sidcard, string sWorkDayNO, out string sIdCardNumber)
         {
-            var sidcard = this.txtScanCardNO.Text.Trim();
             if (string.IsNullOrEmpty(sidcard))
             {
-                var sWorkDayNO = this.txtWorkDayNo.Text.Trim();
                 if (string.IsNullOrEmpty(sWorkDayNO))
                 {
                     sIdCardNumber = string.Empty;
@@ -125,15 +123,18 @@ namespace DormManage.Web.UI.Allowance
         {
             try
             {
+                var sidcard = this.txtScanCardNO.Text.Trim();
+                var sWorkDayNO = this.txtWorkDayNo.Text.Trim();
                 string sIdCard = string.Empty;
-                if (!GetIdCardNumber(out sIdCard)){
+                if (!GetIdCardNumber(sidcard, sWorkDayNO, out sIdCard))
+                {
                     ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('招聘系统找不到此用户！')", true);
                     return;
                 }
 
                 TB_AllowanceApplyBLL bll = new TB_AllowanceApplyBLL();
                 //查询人员信息
-                DataTable dtEmployeeInfo = new StaffingBLL().GetData(sIdCard);
+                DataTable dtEmployeeInfo = new StaffingBLL().GetTableWithIDL(sWorkDayNO, sIdCard);
 
                 if (null != dtEmployeeInfo && dtEmployeeInfo.Rows.Count > 0)
                 {

@@ -34,7 +34,7 @@
     <style type="text/css">
         .auto-style1 {
             height: 166px;
-            width: 473px;
+            width: 450px;
         }
     </style>
 </head>

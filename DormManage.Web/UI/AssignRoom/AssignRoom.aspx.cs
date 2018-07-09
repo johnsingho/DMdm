@@ -118,7 +118,20 @@ namespace DormManage.Web.UI.AssignRoom
                 this.GridView1.Columns[4].Visible = false;
                 txtWorkDayNo.Focus();
                 //txtScanCardNO.Focus();
-               
+
+                var sWordDayNo = string.Empty;
+                var sIDNo = string.Empty;
+                var obj = Request.Params["WordDayNo"];
+                if (null != obj)
+                {
+                    txtWorkDayNo.Text = obj.ToString();
+                }
+                obj = Request.Params["IDNo"];
+                if (null != obj)
+                {
+                    txtScanCardNO.Text = obj.ToString();
+                }
+
             }
         }
 
@@ -132,13 +145,10 @@ namespace DormManage.Web.UI.AssignRoom
             txtScanCardNO.Text = "";
         }
 
-
-        private bool GetIdCardNumber(out string sIdCardNumber)
+        private bool GetIdCardNumber(string sidcard, string sWorkDayNO, out string sIdCardNumber)
         {
-            var sidcard = this.txtScanCardNO.Text.Trim();
             if (string.IsNullOrEmpty(sidcard))
             {
-                var sWorkDayNO = this.txtWorkDayNo.Text.Trim();
                 if (string.IsNullOrEmpty(sWorkDayNO))
                 {
                     sIdCardNumber = string.Empty;
@@ -169,53 +179,6 @@ namespace DormManage.Web.UI.AssignRoom
             this.txtScanCardNO.Text = "";
         }
 
-        protected void btnSearch_Click(object sender, EventArgs e)
-        {
-            string sIdCard = string.Empty;
-            if (!GetIdCardNumber(out sIdCard))
-            {
-                ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('招聘系统找不到此用户！')", true);
-                return;
-            }
-
-            //查询人员信息
-            DataTable dtEmployeeInfo = new StaffingBLL().GetData(sIdCard);
-            if (null != dtEmployeeInfo && dtEmployeeInfo.Rows.Count > 0)
-            {
-                //检查是否申请住房津贴
-                bool isHaveApplyAllowance = new AssignRoomBLL().CheckAllowanceApply(dtEmployeeInfo.Rows[0]["EmployeeID"].ToString());
-
-                if(isHaveApplyAllowance)
-                {
-                    ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('此用户申请了住房津贴！如需入住，请申请取消津贴')", true);
-                    return;
-                }
-
-                //检查是否有分配记录
-                DataTable dtAssignArea = new AssignRoomBLL().GetAssignDormArea(dtEmployeeInfo.Rows[0]["IDCardNumber"].ToString());
-                if (dtAssignArea.Rows.Count > 0)
-                {
-                    int dormAreaID = Convert.ToInt32(dtAssignArea.Rows[0]["DormAreaID"].ToString());
-                    ViewState["dormAreaID"] = dormAreaID;
-                    DormManageAjaxServices ser = new DormManageAjaxServices();
-                    DataTable dtBuild= ser.GetBuildingByDormAreaID(dormAreaID);
-                    ddlBind(dtBuild);
-                    Bind(1,dormAreaID);
-                }
-                else
-                {
-                    ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('此用户还没分配宿舍！')", true);
-                    return;
-                }
-
-            }
-            else
-            {
-                ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('招聘系统找不到此用户！')", true);
-            }
-           
-        }
-
         protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
@@ -243,6 +206,57 @@ namespace DormManage.Web.UI.AssignRoom
             this.Bind(Convert.ToInt32(e.CommandArgument), dormAreaID);
         }
 
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            var sidcard = this.txtScanCardNO.Text.Trim();
+            var sWorkDayNO = this.txtWorkDayNo.Text.Trim();
+            string sIdCard = string.Empty;
+            if (!GetIdCardNumber(sidcard, sWorkDayNO, out sIdCard))
+            {
+                ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('招聘系统找不到此用户！')", true);
+                return;
+            }
+
+            //查询人员信息
+            DataTable dtEmployeeInfo = new StaffingBLL().GetTableWithIDL(sWorkDayNO, sIdCard);
+            if (null != dtEmployeeInfo && dtEmployeeInfo.Rows.Count > 0)
+            {
+                ddlRoomSexType.SelectedValue = dtEmployeeInfo.Rows[0]["Sex"].ToString();
+
+                //检查是否申请住房津贴
+                bool isHaveApplyAllowance = new AssignRoomBLL().CheckAllowanceApply(dtEmployeeInfo.Rows[0]["EmployeeID"].ToString());
+
+                if (isHaveApplyAllowance)
+                {
+                    ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('此用户申请了住房津贴！如需入住，请申请取消津贴')", true);
+                    return;
+                }
+
+                //检查是否有分配记录
+                DataTable dtAssignArea = new AssignRoomBLL().GetAssignDormArea(dtEmployeeInfo.Rows[0]["IDCardNumber"].ToString());
+                if (dtAssignArea.Rows.Count > 0)
+                {
+                    int dormAreaID = Convert.ToInt32(dtAssignArea.Rows[0]["DormAreaID"].ToString());
+                    ViewState["dormAreaID"] = dormAreaID;
+                    DormManageAjaxServices ser = new DormManageAjaxServices();
+                    DataTable dtBuild = ser.GetBuildingByDormAreaID(dormAreaID);
+                    ddlBind(dtBuild);
+                    Bind(1, dormAreaID);
+                }
+                else
+                {
+                    ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('此用户还没分配宿舍！')", true);
+                    return;
+                }
+
+            }
+            else
+            {
+                ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('招聘系统找不到此用户！')", true);
+            }
+        }
+
         protected void btnAssign_Click(object sender, EventArgs e)
         {
             try
@@ -253,15 +267,17 @@ namespace DormManage.Web.UI.AssignRoom
                 DataTable dt = ViewState["dtFreeRoom"] as DataTable;
                 DataRow[] drAssignRoomArr = dt.Select("ID=" + bagID + "");
 
+                var sidcard = this.txtScanCardNO.Text.Trim();
+                var sWorkDayNO = this.txtWorkDayNo.Text.Trim();
                 string sIdCard = string.Empty;
-                if (!GetIdCardNumber(out sIdCard))
+                if (!GetIdCardNumber(sidcard, sWorkDayNO, out sIdCard))
                 {
                     ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('招聘系统找不到此用户！')", true);
                     return;
                 }
 
                 //查询人员信息
-                DataTable dtEmployeeInfo = new StaffingBLL().GetData(sIdCard);
+                DataTable dtEmployeeInfo = new StaffingBLL().GetTableWithIDL(sWorkDayNO, sIdCard);
                 if (null != dtEmployeeInfo && dtEmployeeInfo.Rows.Count > 0)
                 {
                     if (dtEmployeeInfo.Rows[0]["Sex"].ToString() != drAssignRoomArr[0]["RoomSexType"].ToString())

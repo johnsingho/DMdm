@@ -26,7 +26,6 @@ namespace DormManage.BLL.FlexPlus
         public void ApplyDorm(List<string> mKeys, string sHandlerWorkdayNo, string sDormAreaID, string sHandle, string sMsg)
         {
             var assignArea = new AssignRoomBLL();
-            //!todo test
             foreach (var k in mKeys)
             {
                 var dtAppInfo = _mDAL.GetApplyDormByID(k);
@@ -51,7 +50,7 @@ namespace DormManage.BLL.FlexPlus
                 {
                     _mDAL.HandleApplyDorm(k, sHandle, sMsg);
                 }
-                MessageBLL.SendJpush(sHandlerWorkdayNo, "宿舍申请", "宿舍申请", sMsg, "");
+                MessageBLL.SendJpush(sWorkdayNo, "宿舍申请", "宿舍申请", sMsg, "msg");
             }
 
         }

@@ -74,7 +74,7 @@ namespace DormManage.Data.DAL
 
             var db = DBO.GetInstance();
             DbCommand dbCommandWrapper = null;
-            dbCommandWrapper = db.DbProviderFactory.CreateCommand();
+            dbCommandWrapper = db.GetSqlStringCommand(sb.ToString());
             dbCommandWrapper.CommandType = CommandType.Text;
             return db.ExecuteDataSet(dbCommandWrapper).Tables[0];
         }

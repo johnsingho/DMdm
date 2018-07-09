@@ -43,14 +43,14 @@
             }
             var keys = "";
             for (var i = 0; i < arrSel.length; i++) {
-                keys += arrSel[i] + ",";
+                keys += $(arrSel[i]).val() + ",";
             }
             keys=keys.slice(0, -1);
-            var sUrl = 'ApplyDormHandle.aspx?keys==' + escape(keys);
+            var sUrl = 'ApplyDormHandle.aspx?keys=' + escape(keys);
             $.ligerDialog.open({
                 title: "审核住宿申请",
-                width: 800,
-                height: 550,
+                width: 620,
+                height: 400,
                 isResize: true,
                 url: sUrl
             });
@@ -58,6 +58,22 @@
         }
         function cancel() {
             $.ligerDialog.close();
+        }
+        function ViewRow(obj, id) {
+            //var id = $(obj).attr("name");
+            $.ligerDialog.open({
+                title: "查看入住申请",
+                width: 400,
+                height: 550,
+                isResize: true,
+                url: 'ApplyDormView.aspx?id=' + id                   
+            });
+        }
+        function AssignRoomRow(obj, workdayNo, idNo) {
+            //var id = $(obj).attr("name");
+            var sUrl = "/Index.aspx?page=/UI/AssignRoom/AssignRoom.aspx";
+            var para = "?WordDayNo="+workdayNo+"&IDNo="+idNo;
+            top.location.href = sUrl + escape(para);
         }
     </script>
 </head>
@@ -168,12 +184,18 @@
                                             <asp:BoundField DataField="CreateDate" HeaderText="申请时间" DataFormatString="{0:yyyy-MM-dd}"/>
                                             <asp:BoundField DataField="Response" HeaderText="回复" />
                                             <asp:BoundField DataField="UpdateDate" HeaderText="更新时间" DataFormatString="{0:yyyy-MM-dd}"/>
-                                           <%--<asp:TemplateField>
+                                           <asp:TemplateField>
+                                               <ItemTemplate>
+                                                   <input id="btnView" name="<%#Eval("ID") %>" type="button" value="查看" class="publicBtn"
+                                                       onclick="ViewRow(this, '<%#Eval("ID")%>')" />
+                                               </ItemTemplate>
+                                           </asp:TemplateField>
+                                            <asp:TemplateField>
                                                 <ItemTemplate>
-                                                    <input id="btnModify" name="<%#Eval("ID") %>" type="button" value="修改" class="publicBtn"
-                                                        onclick="ModifyRow(this, '<%#Eval("Reason")%>', '<%#Eval("CanLeave")%>')" />
+                                                    <input id = "btnAssignRoom" name = "<%#Eval("ID") %>" type="button" value="分配房间" class="publicBtn"
+                                                                onclick="AssignRoomRow(this, '<%#Eval("EmployeeNo")%>', '<%#Eval("CardNo")%>')" />
                                                 </ItemTemplate>
-                                            </asp:TemplateField>--%>
+                                            </asp:TemplateField>
                                         </Columns>
                                     </cc1:GridView>
                                 </div>

@@ -113,7 +113,11 @@ namespace DormManage.Data.DAL
                 strSQL = @"
                         select top 1 
                                 IDCardNumber, Employee_ID as EmployeeID, null as Phone, Segment as SegmentName, 
-		                        0 as SegmentID, null as Sex, Chinese_Name as ChineseName,
+		                        0 as SegmentID, 
+                                CASE when [IDCardNumber] IS NULL THEN NULL ELSE 
+                                    CASE when (cast(SUBSTRING([IDCardNumber], 17,1) as int) % 2)>0 then '男' else '女' END
+                                END as Sex, 
+                                Chinese_Name as ChineseName,
 		                        EmployeeTypeName, Hire_Date
                         from TB_LongEmployee t
                         where 1=1
