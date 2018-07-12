@@ -54,5 +54,33 @@ namespace DormManage.BLL.FlexPlus
             }
 
         }
+        public DataTable GetDormNoticeByID(string key)
+        {
+            return _mDAL.GetDormNoticeByID(key);
+        }
+
+        public DataTable GetDormNotice(ref Pager pager)
+        {
+            return _mDAL.GetDormNotice(pager);
+        }
+        public bool EditDormNotice(string key, string sTitle, string sContext, string sCreator)
+        {
+            return _mDAL.EditDormNotice(key, sTitle, sContext, sCreator);
+        }
+
+        public bool AddDormNotice(string sTitle, string sContext, string sCreator)
+        {
+            return _mDAL.AddDormNotice(sTitle, sContext, sCreator);
+        }
+
+        public void DelDormNotice(string key)
+        {
+            _mDAL.DelDormNotice(key);
+        }
+
+        public void SetDormNoticeEnable(string key, bool bEnable)
+        {
+            _mDAL.SetDormNoticeEnable(key, bEnable);
+        }
     }
 }

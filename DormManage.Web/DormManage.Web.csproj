@@ -754,6 +754,8 @@
     <Content Include="UI\FlexPlus\ApplyDorm.aspx" />
     <Content Include="UI\FlexPlus\ApplyDormHandle.aspx" />
     <Content Include="UI\FlexPlus\ApplyDormView.aspx" />
+    <Content Include="UI\FlexPlus\DormNoticeAdd.aspx" />
+    <Content Include="UI\FlexPlus\DormNoticeList.aspx" />
     <Content Include="UI\Report\MonthDormInfo.aspx" />
     <Content Include="UI\Report\DayDormInfo.aspx" />
     <Content Include="UI\Report\DormInfo.aspx" />
@@ -889,6 +891,20 @@
     </Compile>
     <Compile Include="UI\FlexPlus\ApplyDormView.aspx.designer.cs">
       <DependentUpon>ApplyDormView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FlexPlus\DormNoticeAdd.aspx.cs">
+      <DependentUpon>DormNoticeAdd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\FlexPlus\DormNoticeAdd.aspx.designer.cs">
+      <DependentUpon>DormNoticeAdd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FlexPlus\DormNoticeList.aspx.cs">
+      <DependentUpon>DormNoticeList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\FlexPlus\DormNoticeList.aspx.designer.cs">
+      <DependentUpon>DormNoticeList.aspx</DependentUpon>
     </Compile>
     <Compile Include="UI\Report\MonthDormInfo.aspx.cs">
       <DependentUpon>MonthDormInfo.aspx</DependentUpon>

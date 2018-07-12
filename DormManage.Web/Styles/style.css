@@ -111,3 +111,7 @@
     background: url(../images/btn_wy.gif) no-repeat;
 }
 .tabbox .preview .pagerbar #div_right{width: 170px;z-index: 9999;position: absolute;margin: 0 66% 0 83%;background: none repeat scroll 0% 0% rgb(238, 238, 238);}
+
+.leftOff{
+    margin-left: 8px;
+}

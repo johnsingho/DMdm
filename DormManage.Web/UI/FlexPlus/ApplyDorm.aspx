@@ -20,11 +20,6 @@
     <script src="../../Scripts/ligerUI1.1.9/js/ligerui.all.js"></script>
     <link href="../../Scripts/ligerUI1.1.9/skins/Aqua/css/ligerui-all.css" rel="stylesheet" />
     
-    <style>
-        .leftOff{
-            margin-left: 8px;
-        }
-    </style>
     <script type="text/javascript">
         function GetSelItem() {
             var recordId = "";

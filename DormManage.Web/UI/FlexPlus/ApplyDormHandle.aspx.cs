@@ -120,7 +120,6 @@ namespace DormManage.Web.UI.FlexPlus
             bll.ApplyDorm(lst, sHandlerWorkdayNo, sDormAreaID, sHandle, sMsg);
 
             RunScript(this, "myscript", "<script>saveComplete();</script>");
-            ClientScript.RegisterStartupScript(ClientScript.GetType(), "myscript", "<script>saveComplete();</script>");
 
         }
 

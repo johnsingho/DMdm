@@ -1,7 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ApplyDormHandle.aspx.cs" Inherits="DormManage.Web.UI.FlexPlus.ApplyDormHandle" %>
 
-<%@ Register Assembly="Ctl" Namespace="AutoTextbox" TagPrefix="cc1" %>
-
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Web;
 using AjaxPro;
 using DormManage.BLL.AssignRoom;
 using DormManage.BLL.DormManage;
-using DormManage.Framework;
 using DormManage.Models;
 using DormManage.BLL;
+using DormManage.BLL.FlexPlus;
 
 public class DormManageAjaxServices
 {
@@ -169,4 +166,18 @@ public class DormManageAjaxServices
         return CommonBLL.GetEmployeeInfo(snr.Trim());
     }
 
+    [AjaxMethod]
+    public void DelDormNotice(string key)
+    {
+        var bll = new FlexPlusBLL();
+        bll.DelDormNotice(key);
+    }
+
+    [AjaxMethod]
+    public void SetDormNoticeEnable(string key, bool bEnable)
+    {
+        var bll = new FlexPlusBLL();
+        bll.SetDormNoticeEnable(key, bEnable);
+    }
+    
 }
