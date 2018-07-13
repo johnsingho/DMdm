@@ -756,6 +756,10 @@
     <Content Include="UI\FlexPlus\ApplyDormView.aspx" />
     <Content Include="UI\FlexPlus\DormNoticeAdd.aspx" />
     <Content Include="UI\FlexPlus\DormNoticeList.aspx" />
+    <Content Include="UI\FlexPlus\ReissueKeyList.aspx" />
+    <Content Include="UI\FlexPlus\RepairDormList.aspx" />
+    <Content Include="UI\FlexPlus\RepairDormView.aspx" />
+    <Content Include="UI\FlexPlus\RequiredHandle.aspx" />
     <Content Include="UI\Report\MonthDormInfo.aspx" />
     <Content Include="UI\Report\DayDormInfo.aspx" />
     <Content Include="UI\Report\DormInfo.aspx" />
@@ -905,6 +909,34 @@
     </Compile>
     <Compile Include="UI\FlexPlus\DormNoticeList.aspx.designer.cs">
       <DependentUpon>DormNoticeList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FlexPlus\ReissueKeyList.aspx.cs">
+      <DependentUpon>ReissueKeyList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\FlexPlus\ReissueKeyList.aspx.designer.cs">
+      <DependentUpon>ReissueKeyList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FlexPlus\RepairDormList.aspx.cs">
+      <DependentUpon>RepairDormList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\FlexPlus\RepairDormList.aspx.designer.cs">
+      <DependentUpon>RepairDormList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FlexPlus\RepairDormView.aspx.cs">
+      <DependentUpon>RepairDormView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\FlexPlus\RepairDormView.aspx.designer.cs">
+      <DependentUpon>RepairDormView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FlexPlus\RequiredHandle.aspx.cs">
+      <DependentUpon>RequiredHandle.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\FlexPlus\RequiredHandle.aspx.designer.cs">
+      <DependentUpon>RequiredHandle.aspx</DependentUpon>
     </Compile>
     <Compile Include="UI\Report\MonthDormInfo.aspx.cs">
       <DependentUpon>MonthDormInfo.aspx</DependentUpon>

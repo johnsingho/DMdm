@@ -54,15 +54,31 @@ namespace DormManage.BLL.FlexPlus
             }
 
         }
-        public DataTable GetDormNoticeByID(string key)
+
+        public bool HandleRequired(string mKind, string mKey, string sHandlerWorkdayNo, string sHandle, string sMsg)
         {
-            return _mDAL.GetDormNoticeByID(key);
+            var bRet = false;
+            if (0==string.Compare("RepairDorm", mKind, true))
+            {
+                var dt = _mDAL.GetRepairDormByID(mKey);
+                var dr = dt.Rows[0];
+                var sWorkdayNo = dr["EmployeeNo"] as string;
+
+                bRet = _mDAL.HandleRepairDorm(mKey, sHandlerWorkdayNo, sHandle, sMsg);
+                MessageBLL.SendJpush(sWorkdayNo, "宿舍报修", "宿舍报修", sMsg, "msg");
+            }
+            else if (0 == string.Compare("ReissueKey", mKind, true))
+            {
+                var dt = _mDAL.GetReissueKeyByID(mKey);
+                var dr = dt.Rows[0];
+                var sWorkdayNo = dr["EmployeeNo"] as string;
+
+                bRet = _mDAL.HandleReissueKey(mKey, sHandlerWorkdayNo, sHandle, sMsg);
+                MessageBLL.SendJpush(sWorkdayNo, "补办钥匙", "补办钥匙", sMsg, "msg");
+            }
+            return bRet;
         }
 
-        public DataTable GetDormNotice(ref Pager pager)
-        {
-            return _mDAL.GetDormNotice(pager);
-        }
         public bool EditDormNotice(string key, string sTitle, string sContext, string sCreator)
         {
             return _mDAL.EditDormNotice(key, sTitle, sContext, sCreator);
@@ -82,5 +98,22 @@ namespace DormManage.BLL.FlexPlus
         {
             _mDAL.SetDormNoticeEnable(key, bEnable);
         }
+        
+        public DataTable GetRepairDormList(TB_DormRepair mItem, ref Pager pager)
+        {
+            return _mDAL.GetRepairDormList(mItem, pager);
+        }
+
+
+        public DataTable GetDormNoticeByID(string key)
+        {
+            return _mDAL.GetDormNoticeByID(key);
+        }
+
+        public DataTable GetDormNotice(ref Pager pager)
+        {
+            return _mDAL.GetDormNotice(pager);
+        }
+
     }
 }
