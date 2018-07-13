@@ -757,6 +757,7 @@
     <Content Include="UI\FlexPlus\DormNoticeAdd.aspx" />
     <Content Include="UI\FlexPlus\DormNoticeList.aspx" />
     <Content Include="UI\FlexPlus\ReissueKeyList.aspx" />
+    <Content Include="UI\FlexPlus\ReissueKeyView.aspx" />
     <Content Include="UI\FlexPlus\RepairDormList.aspx" />
     <Content Include="UI\FlexPlus\RepairDormView.aspx" />
     <Content Include="UI\FlexPlus\RequiredHandle.aspx" />
@@ -916,6 +917,13 @@
     </Compile>
     <Compile Include="UI\FlexPlus\ReissueKeyList.aspx.designer.cs">
       <DependentUpon>ReissueKeyList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FlexPlus\ReissueKeyView.aspx.cs">
+      <DependentUpon>ReissueKeyView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\FlexPlus\ReissueKeyView.aspx.designer.cs">
+      <DependentUpon>ReissueKeyView.aspx</DependentUpon>
     </Compile>
     <Compile Include="UI\FlexPlus\RepairDormList.aspx.cs">
       <DependentUpon>RepairDormList.aspx</DependentUpon>

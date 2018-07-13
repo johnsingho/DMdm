@@ -7,6 +7,11 @@ namespace DormManage.Models
 {
     public class TB_DormRepair
     {
+        public TB_DormRepair()
+        {
+            Status = -1;
+        }
+
         public int ID { get; set; }
         public string CName { get; set; }
         public string EmployeeNo { get; set; }

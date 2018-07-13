@@ -51,7 +51,7 @@ where 1=1";
             DbCommand dbCommandWrapper = null;
             try
             {
-                string strSQL = @"SELECT A.* FROM [TB_Module] AS A
+                string strSQL = @"SELECT A.* FROM [TB_Module_FlexPlus] AS A
                                 where 1=1";
                 StringBuilder strBuilder = new StringBuilder(strSQL);
                 Database db = DBO.GetInstance();

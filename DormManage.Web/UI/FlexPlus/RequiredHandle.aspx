@@ -16,7 +16,8 @@
         function cancel() {
             window.parent.cancel();
         }
-        function saveComplete() {
+        function saveComplete(kind) {
+            var sUrl = kind == 0 ? "RepairDormList.aspx" : "ReissueKeyList.aspx";
             window.parent.location = "RepairDormList.aspx";
         }
 

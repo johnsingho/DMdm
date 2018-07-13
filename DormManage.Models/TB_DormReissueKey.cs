@@ -7,6 +7,10 @@ namespace DormManage.Models
 {
     public class TB_DormReissueKey
     {
+        public TB_DormReissueKey()
+        {
+            Status = -1;
+        }
         public int ID { get; set; }
         public string CName { get; set; }
         public string EmployeeNo { get; set; }

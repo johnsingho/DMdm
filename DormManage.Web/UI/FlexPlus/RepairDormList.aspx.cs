@@ -25,6 +25,17 @@ namespace DormManage.Web.UI.FlexPlus
 
         private void BindSelect()
         {
+            var bll = new FlexPlusBLL();
+            var dt = bll.GetRepairDormTypeList();
+            ddlDeviceType.DataSource = dt;
+            ddlDeviceType.DataValueField = "Name";
+            ddlDeviceType.DataTextField = "Name";
+            var row = dt.NewRow();
+            row["Name"] = "All";
+            dt.Rows.InsertAt(row, 0);
+            ddlDeviceType.DataBind();
+            ddlDeviceType.SelectedIndex = 0;
+
             var lst = new List<TNameVal>();
             lst.Add(new TNameVal("All", "-1"));
             lst.Add(new TNameVal("等待处理", "0"));
@@ -44,7 +55,11 @@ namespace DormManage.Web.UI.FlexPlus
             pager.CurrentPageIndex = iPage;
             pager.srcOrder = " CreateDate desc";
             var mItem = new TB_DormRepair();
-            mItem.DeviceType = ddlDeviceType.SelectedValue;
+            var sSelDeviceType = ddlDeviceType.SelectedValue;
+            if (0!=string.Compare("all", sSelDeviceType, true))
+            {
+                mItem.DeviceType = sSelDeviceType;
+            }            
             mItem.Status = Convert.ToInt32(ddlStatus.SelectedValue);
             var dt = bll.GetRepairDormList(mItem, ref pager);
             GridView1.DataSource = dt;

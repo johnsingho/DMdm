@@ -20,51 +20,57 @@
     <script src="../../Scripts/ligerUI1.1.9/js/ligerui.all.js"></script>
     <link href="../../Scripts/ligerUI1.1.9/skins/Aqua/css/ligerui-all.css" rel="stylesheet" />
     
+    <style>
+        .txtCenter{
+            text-align:center;
+        }
+    </style>
+
     <script type="text/javascript">
-        function CheckboxValue() {
+        function GetSelItem() {
+            var recordId = "";
             var $chkSelect = $("input[name='chkSelect']:checked");
-            return $chkSelect.val();
+            if ($chkSelect.length == 0) {
+                return null;
+            }
+            return $chkSelect.toArray();
         }
 
-        //新增
-        function add() {
-            var sTitle = "宿舍公告 - 添加";
-            var url = "/UI/FlexPlus/DormNoticeAdd.aspx";
-            $.ligerDialog.open({
-                title: sTitle,
-                width: 600,
-                height: 400,
-                isResize: true,
-                url: url
-            });
-        }
-        //编辑
-        function edit() {
-            var key = CheckboxValue();
-            if (key != null) {
-                var sTitle = "宿舍公告 - 编辑";
-                var url = "/UI/FlexPlus/DormNoticeAdd.aspx?key=" + key;
-                $.ligerDialog.open({
-                    title: sTitle,
-                    width: 600,
-                    height: 400,
-                    isResize: true,
-                    url: url
-                });
+        function DoApply() {
+            var arrSel = GetSelItem();
+            if (!arrSel || !arrSel.length) {
+                alert("请选择要处理的记录.");
+                return;
             }
+            var keys = "";
+            for (var i = 0; i < arrSel.length; i++) {
+                keys += $(arrSel[i]).val() + ",";
+            }
+            keys=keys.slice(0, -1);
+            var sUrl = 'RequiredHandle.aspx?kind=ReissueKey&key=' + escape(keys);
+            $.ligerDialog.open({
+                title: "审核补办钥匙",
+                width: 580,
+                height: 440,
+                isResize: true,
+                url: sUrl
+            });
+            return false;
         }
         function cancel() {
             $.ligerDialog.close();
         }
-
-        //删除
-        function Delete() {
-            var key = CheckboxValue();
-            if (key!=null) {
-                DormManageAjaxServices.DelDormNotice(key);
-                reload();
-            }
+        function ViewRow(obj, id) {
+            //var id = $(obj).attr("name");
+            $.ligerDialog.open({
+                title: "查看补办钥匙",
+                width: 400,
+                height: 480,
+                isResize: true,
+                url: 'ReissueKeyView.aspx?id=' + id                   
+            });
         }
+
     </script>
 </head>
 <body>
@@ -80,7 +86,7 @@
                         <tr>
                             <th>钥匙类型：</th>
                             <td>
-                                <asp:DropDownList ID="ddlKeyTypes" runat="server"></asp:DropDownList>
+                                <asp:DropDownList ID="ddlKeyType" runat="server"></asp:DropDownList>
                             </td>
                             <th>状态：
                             </th>
@@ -105,7 +111,7 @@
                             <div id="searchResult">
                                 <div class="viewlist">
                                     <cc1:GridView ID="GridView1" runat="server" CssClass="form" EmptyDataText="<无结果显示>"
-                                        AutoGenerateColumns="False" EnableEmptyContentRender="True" DataKeyNames="ID" OnRowDataBound="GridView1_RowDataBound" >
+                                        AutoGenerateColumns="False" EnableEmptyContentRender="True" DataKeyNames="ID" OnRowDataBound="GridView1_RowDataBound">
                                         <Columns>
                                             <asp:TemplateField>
                                                 <HeaderStyle Width="20px" />
@@ -113,15 +119,31 @@
                                                     <input type="radio" id="chkLeftSingle" value="<%#Eval("ID") %>" name="chkSelect" />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:BoundField DataField="NoticeTitle" HeaderText="标题" />
-                                            <asp:BoundField DataField="cnt" HeaderText="访问人数" />
-                                            <asp:BoundField DataField="CreateDate" HeaderText="创建时间" />
+                                            <asp:BoundField DataField="CName" HeaderText="姓名" />
+                                            <asp:BoundField DataField="EmployeeNo" HeaderText="工号" />
+                                            <asp:BoundField DataField="MobileNo" HeaderText="手机号" />
+                                            <asp:BoundField DataField="DormAddress" HeaderText="宿舍地址" />                                            
+                                            <asp:BoundField DataField="KeyTypes" HeaderText="钥匙类型" />
+                                            <asp:TemplateField HeaderText="总费用" ItemStyle-HorizontalAlign="Center">
+                                                <ItemTemplate>
+                                                    <asp:Literal ID="ltlMoney" runat="server"></asp:Literal>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:BoundField DataField="Reason" HeaderText="原因" />
+                                            <asp:BoundField DataField="Memo" HeaderText="备注" />
+                                            <asp:BoundField DataField="CreateDate" HeaderText="提交时间" DataFormatString="{0:yyyy-MM-dd HH:mm}"/>
                                             <asp:TemplateField HeaderText="状态">
                                                 <ItemTemplate>
                                                     <asp:Literal ID="ltlStatus" runat="server"></asp:Literal>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                        </Columns>
+                                            <asp:TemplateField>
+                                               <ItemTemplate>
+                                                   <input id="btnView" name="<%#Eval("ID") %>" type="button" value="查看" class="publicBtn"
+                                                       onclick="ViewRow(this, '<%#Eval("ID")%>')" />
+                                               </ItemTemplate>
+                                           </asp:TemplateField>
+                                        </Columns>                                        
                                     </cc1:GridView>
                                 </div>
                                 <div class="pagerbar">

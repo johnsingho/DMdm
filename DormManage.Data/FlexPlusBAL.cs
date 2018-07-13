@@ -13,6 +13,18 @@ namespace DormManage.Data.DAL
 {
     public class FlexPlusBAL
     {
+        public DataTable GetRepairDormTypeList()
+        {
+            var sb = new StringBuilder("select Name from TB_DormRepair_Type ");
+            sb.AppendFormat(" where 1=1");
+
+            var db = DBO.GetInstance();
+            DbCommand dbCommandWrapper = null;
+            dbCommandWrapper = db.GetSqlStringCommand(sb.ToString());
+            dbCommandWrapper.CommandType = CommandType.Text;
+            return db.ExecuteDataSet(dbCommandWrapper).Tables[0];
+        }
+
         public DataTable GetApplyDorms(TB_DormAreaApply mVal, Pager pager)
         {
             var sb = new StringBuilder("select * from V_TB_DormAreaApply ");
@@ -245,7 +257,45 @@ namespace DormManage.Data.DAL
             dt = db.ExecuteDataSet(dbCommandWrapper).Tables[0];
             return dt;
         }
-        
+
+        public DataTable GetReissueKeyList(TB_DormReissueKey mItem, Pager pager)
+        {
+            var sb = new StringBuilder("select * from TB_DormReissueKey ");
+            var db = DBO.GetInstance();
+            DataTable dt = null;
+            DbCommand dbCommandWrapper = null;
+            dbCommandWrapper = db.DbProviderFactory.CreateCommand();
+            dbCommandWrapper.CommandType = CommandType.Text;
+            sb.Append("where 1=1 ");
+
+            if (mItem.ID > 0)
+            {
+                sb.AppendFormat("and id={0} ", mItem.ID);
+            }
+            if (!string.IsNullOrEmpty(mItem.KeyTypes))
+            {
+                sb.AppendFormat("and KeyTypes like N'%{0}%' ", mItem.KeyTypes);
+            }
+            if (mItem.Status > -1)
+            {
+                sb.AppendFormat("and Status='{0}' ", mItem.Status);
+            }
+
+            if (pager != null && !pager.IsNull)
+            {
+                dbCommandWrapper.CommandText = pager.GetPagerSql4Count(sb.ToString());
+                dt = db.ExecuteDataSet(dbCommandWrapper).Tables[0];
+                pager.TotalRecord = Convert.ToInt32(dt.Rows[0][0]);
+                dbCommandWrapper.CommandText = pager.GetPagerSql4Data(sb.ToString(), DataBaseTypeEnum.sqlserver);
+            }
+            else
+            {
+                dbCommandWrapper.CommandText = sb.ToString();
+            }
+            dt = db.ExecuteDataSet(dbCommandWrapper).Tables[0];
+            return dt;
+        }
+
         public bool HandleReissueKey(string mKey, string sHandlerWorkdayNo, string sHandle, string sMsg)
         {
             var db = DBO.GetInstance();

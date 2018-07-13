@@ -1,10 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="RepairDormView.aspx.cs" Inherits="DormManage.Web.UI.FlexPlus.RepairDormView" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ReissueKeyView.aspx.cs" Inherits="DormManage.Web.UI.FlexPlus.ReissueKeyView" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>查看宿舍报修</title>
+    <title>查看补办钥匙</title>
     <link rel="stylesheet" href="../../Styles/reset.css" />
     <link rel="stylesheet" href="../../Styles/main.css" />
     <link rel="stylesheet" href="../../Styles/style.css" />
@@ -14,8 +14,8 @@
         .list table th {
             width: 10%;
         }
-        input[type='text'] {
-            width: 90%;
+        input[type='text']{
+            width:90%;
         }
     </style>
 
@@ -65,26 +65,34 @@
                     </tr>
                     <tr>
                         <th>
-                            <label>预约时间</label>
+                            <label>钥匙类型</label>
                         </th>
                         <td>
-                            <asp:TextBox ID="txtRepairTime" runat="server" ReadOnly="True"></asp:TextBox>
+                            <asp:TextBox ID="txtKeyTypes" runat="server" ReadOnly="True"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            <label>待修设备类型</label>
+                            <label>总费用</label>
                         </th>
                         <td>
-                            <asp:TextBox ID="txtDeviceType" runat="server" ReadOnly="True"></asp:TextBox>
+                            <asp:TextBox ID="txtMoney" runat="server" ReadOnly="True"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            <label>描述</label>
+                            <label>原因</label>
                         </th>
                         <td>
-                            <textarea id="txtRequireDesc" runat="server" readonly="readonly" rows="4"></textarea>
+                            <textarea id="txtReason" runat="server" readonly="readonly" rows="4"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label>备注</label>
+                        </th>
+                        <td>
+                            <textarea id="txtMemo" runat="server" readonly="readonly" rows="4"></textarea>
                         </td>
                     </tr>
                     <tr>

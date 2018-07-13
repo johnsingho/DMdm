@@ -10,7 +10,7 @@
 namespace DormManage.Web.UI.FlexPlus {
     
     
-    public partial class ReissueKeyList {
+    public partial class ReissueKeyView {
         
         /// <summary>
         /// form1 control.
@@ -22,75 +22,84 @@ namespace DormManage.Web.UI.FlexPlus {
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// ddlKeyType control.
+        /// txtEmployeeNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlKeyType;
+        protected global::System.Web.UI.WebControls.TextBox txtEmployeeNo;
         
         /// <summary>
-        /// ddlStatus control.
+        /// txtCName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlStatus;
+        protected global::System.Web.UI.WebControls.TextBox txtCName;
         
         /// <summary>
-        /// btnSearch control.
+        /// txtMobileNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSearch;
+        protected global::System.Web.UI.WebControls.TextBox txtMobileNo;
         
         /// <summary>
-        /// btnHandle control.
+        /// txtDormAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnHandle;
+        protected global::System.Web.UI.WebControls.TextBox txtDormAddress;
         
         /// <summary>
-        /// ScriptManager1 control.
+        /// txtKeyTypes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.ScriptManager ScriptManager1;
+        protected global::System.Web.UI.WebControls.TextBox txtKeyTypes;
         
         /// <summary>
-        /// UpdatePanel1 control.
+        /// txtMoney control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        protected global::System.Web.UI.WebControls.TextBox txtMoney;
         
         /// <summary>
-        /// GridView1 control.
+        /// txtReason control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::ExtendGridView.GridView GridView1;
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea txtReason;
         
         /// <summary>
-        /// Pager1 control.
+        /// txtMemo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::ExtendGridView.Pager Pager1;
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea txtMemo;
+        
+        /// <summary>
+        /// txtCreateDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCreateDate;
     }
 }

@@ -55,10 +55,10 @@ namespace DormManage.BLL.FlexPlus
 
         }
 
-        public bool HandleRequired(string mKind, string mKey, string sHandlerWorkdayNo, string sHandle, string sMsg)
+        public bool HandleRequired(int kind, string mKey, string sHandlerWorkdayNo, string sHandle, string sMsg)
         {
             var bRet = false;
-            if (0==string.Compare("RepairDorm", mKind, true))
+            if (0==kind)
             {
                 var dt = _mDAL.GetRepairDormByID(mKey);
                 var dr = dt.Rows[0];
@@ -67,7 +67,7 @@ namespace DormManage.BLL.FlexPlus
                 bRet = _mDAL.HandleRepairDorm(mKey, sHandlerWorkdayNo, sHandle, sMsg);
                 MessageBLL.SendJpush(sWorkdayNo, "宿舍报修", "宿舍报修", sMsg, "msg");
             }
-            else if (0 == string.Compare("ReissueKey", mKind, true))
+            else if (1==kind)
             {
                 var dt = _mDAL.GetReissueKeyByID(mKey);
                 var dr = dt.Rows[0];
@@ -98,12 +98,20 @@ namespace DormManage.BLL.FlexPlus
         {
             _mDAL.SetDormNoticeEnable(key, bEnable);
         }
-        
+
+        public DataTable GetRepairDormTypeList()
+        {
+            return _mDAL.GetRepairDormTypeList();
+        }
         public DataTable GetRepairDormList(TB_DormRepair mItem, ref Pager pager)
         {
             return _mDAL.GetRepairDormList(mItem, pager);
         }
 
+        public DataTable GetReissueKeyList(TB_DormReissueKey mItem, ref Pager pager)
+        {
+            return _mDAL.GetReissueKeyList(mItem, pager);
+        }
 
         public DataTable GetDormNoticeByID(string key)
         {
