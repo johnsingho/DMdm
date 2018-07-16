@@ -78,6 +78,17 @@ namespace DormManage.BLL.FlexPlus
             }
             return bRet;
         }
+        public bool HandleSuggest(string key, string sHandlerWorkdayNo, string sMsg)
+        {
+            var bRet = false;
+            bRet = _mDAL.HandleSuggest(key, sHandlerWorkdayNo, sMsg);
+
+            var dt = _mDAL.GetDormSuggestByID(key);
+            var dr = dt.Rows[0];
+            var sWorkdayNo = dr["EmployeeNo"] as string;
+            MessageBLL.SendJpush(sWorkdayNo, "宿舍建议箱", "宿舍建议箱", sMsg, "msg");
+            return bRet;
+        }
 
         public bool EditDormNotice(string key, string sTitle, string sContext, string sCreator)
         {
@@ -123,5 +134,13 @@ namespace DormManage.BLL.FlexPlus
             return _mDAL.GetDormNotice(pager);
         }
 
+        public DataTable GetDormSuggestList(TB_DormSuggest mItem, ref Pager pager)
+        {
+            return _mDAL.GetDormSuggestList(mItem, pager);
+        }
+        public DataTable GetDormSuggestByID(string key)
+        {
+            return _mDAL.GetDormSuggestByID(key);
+        }
     }
 }

@@ -119,7 +119,7 @@ namespace DormManage.Web.UI.FlexPlus
             var sHandlerWorkdayNo = (base.UserInfo == null ? base.SystemAdminInfo.Account : base.UserInfo.EmployeeNo);
             bll.ApplyDorm(lst, sHandlerWorkdayNo, sDormAreaID, sHandle, sMsg);
 
-            RunScript(this, "myscript", "<script>saveComplete();</script>");
+            RunScript(this, "myscript", "saveComplete();");
 
         }
 

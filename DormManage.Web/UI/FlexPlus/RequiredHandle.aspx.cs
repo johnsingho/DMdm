@@ -65,7 +65,7 @@ namespace DormManage.Web.UI.FlexPlus
             bll.HandleRequired(kind, mKey, sHandlerWorkdayNo, sHandle, sMsg);
 
             var sCmd = string.Format("saveComplete({0});", kind);
-            RunScript(this, "myscript", "");
+            RunScript(this, "myscript", sCmd);
         }
     }
 }

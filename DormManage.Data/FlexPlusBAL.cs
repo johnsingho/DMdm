@@ -96,7 +96,7 @@ namespace DormManage.Data.DAL
             #endregion
             return db.ExecuteNonQuery(dbCommandWrapper) > 0;            
         }
-        
+
         public bool EditDormNotice(string key, string sTitle, string sContext, string sCreator)
         {
             var db = DBO.GetInstance();
@@ -364,5 +364,74 @@ namespace DormManage.Data.DAL
             #endregion
             return db.ExecuteDataSet(dbCommandWrapper).Tables[0];
         }
+
+        public DataTable GetDormSuggestList(TB_DormSuggest mItem, Pager pager)
+        {
+            var sb = new StringBuilder("select * from TB_DormSuggest ");
+            var db = DBO.GetInstance();
+            DataTable dt = null;
+            DbCommand dbCommandWrapper = null;
+            dbCommandWrapper = db.DbProviderFactory.CreateCommand();
+            dbCommandWrapper.CommandType = CommandType.Text;
+            sb.Append("where 1=1 ");
+
+            if (mItem.ID > 0)
+            {
+                sb.AppendFormat("and id={0} ", mItem.ID);
+            }
+            if (mItem.Status > -1)
+            {
+                sb.AppendFormat("and Status='{0}' ", mItem.Status);
+            }
+
+            if (pager != null && !pager.IsNull)
+            {
+                dbCommandWrapper.CommandText = pager.GetPagerSql4Count(sb.ToString());
+                dt = db.ExecuteDataSet(dbCommandWrapper).Tables[0];
+                pager.TotalRecord = Convert.ToInt32(dt.Rows[0][0]);
+                dbCommandWrapper.CommandText = pager.GetPagerSql4Data(sb.ToString(), DataBaseTypeEnum.sqlserver);
+            }
+            else
+            {
+                dbCommandWrapper.CommandText = sb.ToString();
+            }
+            dt = db.ExecuteDataSet(dbCommandWrapper).Tables[0];
+            return dt;
+        }
+        public DataTable GetDormSuggestByID(string key)
+        {
+            var db = DBO.GetInstance();
+            DbCommand dbCommandWrapper = null;
+            string sSql = @"select * from TB_DormSuggest
+                            where id=@id
+                            ";
+
+            dbCommandWrapper = db.GetSqlStringCommand(sSql);
+            #region Add parameters
+            db.AddInParameter(dbCommandWrapper, "@id", DbType.String, key);
+            #endregion
+            return db.ExecuteDataSet(dbCommandWrapper).Tables[0];
+        }
+
+        public bool HandleSuggest(string key, string sHandlerWorkdayNo, string sMsg)
+        {
+            var db = DBO.GetInstance();
+            DbCommand dbCommandWrapper = null;
+            string sSql = @"
+                            update TB_DormSuggest
+                            set Response=@Msg, ModifyUserID=@ModifyUserID, ModifyDate=GetDate(),
+                                Status=1
+                            where id=@id
+                            ";
+
+            dbCommandWrapper = db.GetSqlStringCommand(sSql);
+            #region Add parameters
+            db.AddInParameter(dbCommandWrapper, "@Msg", DbType.String, sMsg);
+            db.AddInParameter(dbCommandWrapper, "@ModifyUserID", DbType.String, sHandlerWorkdayNo);
+            db.AddInParameter(dbCommandWrapper, "@id", DbType.String, key);
+            #endregion
+            return db.ExecuteNonQuery(dbCommandWrapper) > 0;
+        }
+
     }
 }
