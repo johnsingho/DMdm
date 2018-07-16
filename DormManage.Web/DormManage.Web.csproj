@@ -751,7 +751,7 @@
     <Content Include="UI\DormPersonManage\ChooseBed.aspx" />
     <Content Include="UI\DormPersonManage\EditCheckIn.aspx" />
     <Content Include="UI\DormPersonManage\NewCharging.aspx" />
-    <Content Include="UI\FlexPlus\ApplyDorm.aspx" />
+    <Content Include="UI\FlexPlus\ApplyDormList.aspx" />
     <Content Include="UI\FlexPlus\ApplyDormHandle.aspx" />
     <Content Include="UI\FlexPlus\ApplyDormView.aspx" />
     <Content Include="UI\FlexPlus\DormNoticeAdd.aspx" />
@@ -878,12 +878,12 @@
     <Compile Include="UI\DormPersonManage\EditCheckIn.aspx.designer.cs">
       <DependentUpon>EditCheckIn.aspx</DependentUpon>
     </Compile>
-    <Compile Include="UI\FlexPlus\ApplyDorm.aspx.cs">
-      <DependentUpon>ApplyDorm.aspx</DependentUpon>
+    <Compile Include="UI\FlexPlus\ApplyDormList.aspx.cs">
+      <DependentUpon>ApplyDormList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UI\FlexPlus\ApplyDorm.aspx.designer.cs">
-      <DependentUpon>ApplyDorm.aspx</DependentUpon>
+    <Compile Include="UI\FlexPlus\ApplyDormList.aspx.designer.cs">
+      <DependentUpon>ApplyDormList.aspx</DependentUpon>
     </Compile>
     <Compile Include="UI\FlexPlus\ApplyDormHandle.aspx.cs">
       <DependentUpon>ApplyDormHandle.aspx</DependentUpon>

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ApplyDorm.aspx.cs" Inherits="DormManage.Web.UI.FlexPlus.ApplyDorm" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ApplyDormList.aspx.cs" Inherits="DormManage.Web.UI.FlexPlus.ApplyDormList" %>
 
 <%@ Register Assembly="Ctl" Namespace="ExtendGridView" TagPrefix="cc1" %>
 

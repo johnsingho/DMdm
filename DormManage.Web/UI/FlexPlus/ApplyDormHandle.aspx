@@ -17,7 +17,7 @@
             window.parent.cancel();
         }
         function saveComplete() {
-            window.parent.location = "ApplyDorm.aspx";
+            window.parent.location = "ApplyDormList.aspx";
         }
 
         function save() {
@@ -54,7 +54,7 @@
                     </tr>
                     <tr>
                         <th>
-                            <asp:Label ID="lblDormArea" runat="server" Text="宿舍区："></asp:Label>
+                            <asp:Label ID="lblDormArea" runat="server" Text="分配宿舍区："></asp:Label>
                         </th>
                         <td>
                             <asp:DropDownList ID="ddlDormArea" runat="server"></asp:DropDownList>
@@ -71,7 +71,7 @@
                 </table>
             </div>
             <div class="pagerbar">
-                <asp:Button ID="btnSave" runat="server" Text="保存" OnClientClick="return save()" OnClick="btnSave_Click" />
+                <asp:Button ID="btnSave" runat="server" Text="确定" OnClientClick="return save()" OnClick="btnSave_Click" />
                 <input id="btnCancel" type="button" value="取 消" onclick="cancel()" />
             </div>
         </div>

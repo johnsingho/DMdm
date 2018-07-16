@@ -10,7 +10,7 @@ using System.Web.UI.WebControls;
 
 namespace DormManage.Web.UI.FlexPlus
 {
-    public partial class ApplyDorm : BasePage
+    public partial class ApplyDormList : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {

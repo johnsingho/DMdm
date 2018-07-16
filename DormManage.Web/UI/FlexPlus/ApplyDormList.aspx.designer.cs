@@ -10,7 +10,7 @@
 namespace DormManage.Web.UI.FlexPlus {
     
     
-    public partial class ApplyDorm {
+    public partial class ApplyDormList {
         
         /// <summary>
         /// form1 control.
