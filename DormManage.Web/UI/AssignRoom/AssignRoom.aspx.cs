@@ -308,7 +308,7 @@ namespace DormManage.Web.UI.AssignRoom
                         TB_EmployeeCheckIn mTB_EmployeeCheckIn = new TB_EmployeeCheckIn();
                         mTB_EmployeeCheckIn.RoomID = Convert.ToInt32(drAssignRoomArr[0]["RoomID"]);
                         mTB_EmployeeCheckIn.BedID = int.Parse(drAssignRoomArr[0]["ID"].ToString());
-                        mTB_EmployeeCheckIn.BU = dtEmployeeInfo.Rows[0]["SegmentName"].ToString();
+                        mTB_EmployeeCheckIn.BU = Util.NormalBU(dtEmployeeInfo.Rows[0]["SegmentName"].ToString());
                         //TODO 2018-02-07 
                         //由于 EHR.[Segment] 的ID 与 DormManage.[TB_BU]根本不对应
                         //因此，换房记录无法导出事业部

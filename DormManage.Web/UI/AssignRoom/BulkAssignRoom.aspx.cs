@@ -687,7 +687,7 @@ namespace DormManage.Web.UI.AssignRoom
                         TB_EmployeeCheckIn mTB_EmployeeCheckIn = new TB_EmployeeCheckIn();
                         mTB_EmployeeCheckIn.RoomID = Convert.ToInt32(drAssignRoomArr[0]["RoomID"]);
                         mTB_EmployeeCheckIn.BedID = int.Parse(drAssignRoomArr[0]["BedID"].ToString());
-                        mTB_EmployeeCheckIn.BU = dtEmployeeInfo.Rows[0]["SegmentName"].ToString();
+                        mTB_EmployeeCheckIn.BU = Util.NormalBU(dtEmployeeInfo.Rows[0]["SegmentName"].ToString());
                         mTB_EmployeeCheckIn.CardNo = this.txtScanCardNO.Text;
                         mTB_EmployeeCheckIn.CheckInDate = DateTime.Now;
                         mTB_EmployeeCheckIn.Company = string.Empty;
