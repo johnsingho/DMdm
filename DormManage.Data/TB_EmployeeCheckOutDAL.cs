@@ -336,9 +336,10 @@ where 1=1");
             }
         }
 
-        public int ChangeCheckOutReason(int id, string sReason, int nCanLeave, DbTransaction tran, Database db)
+        public int ChangeCheckOutReason(int id, string sReason, bool bCanLeave, DbTransaction tran, Database db)
         {
             DbCommand dbCommandWrapper = null;
+            int nCanLeave = bCanLeave ? 1 : 0;
             string strUpdateSql = @"UPDATE TB_EmployeeCheckOut SET Reason=@Reason, "
                                   + "CanLeave=@CanLeave, UpdateDate=@UpdateDate"
                                   + " WHERE ID=@ID";

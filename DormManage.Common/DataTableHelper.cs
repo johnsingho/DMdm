@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace DormManage.Common
@@ -33,7 +34,19 @@ namespace DormManage.Common
         {
             return (null == dt || 0 == dt.Rows.Count);
         }
-
+        public static bool IsEmptyDataSet(DataSet ds)
+        {
+            if(null==ds || 0 == ds.Tables.Count)
+            {
+                return true;
+            }
+            return IsEmptyDataTable(ds.Tables[0]);
+        }
+        public static DataRow GetDataSet_Row0(DataSet ds)
+        {
+            var dt = ds.Tables[0];
+            return dt.Rows[0];
+        }
 
         public static string BulkToDB(string constring, DataTable dt, string tarTble)
         {
@@ -67,5 +80,6 @@ namespace DormManage.Common
                 return sErr;
             }
         }
+        
     }
 }

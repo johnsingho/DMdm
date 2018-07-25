@@ -38,12 +38,12 @@ namespace DormManage.Common
             mBuTable = new Hashtable(new CaseIComparer());
             mBuTable.Add("B13", "PCBA-South Campus");
             mBuTable.Add("B6", "PCBA-South Campus");
-            mBuTable.Add("PCBA Flex-CS", "PCBA-South Campus");
-            mBuTable.Add("PCBA Flex-CS-HW", "PCBA-South Campus");
+            //mBuTable.Add("PCBA Flex-CS", "PCBA-South Campus");
+            //mBuTable.Add("PCBA Flex-CS-HW", "PCBA-South Campus");
             mBuTable.Add("PCBA HW", "PCBA-South Campus");
             mBuTable.Add("PCBA South Campus", "PCBA-South Campus");
             mBuTable.Add("PCBA-B13", "PCBA-South Campus");
-            mBuTable.Add("PCBA-Flex-CS", "PCBA-South Campus");
+            //mBuTable.Add("PCBA-Flex-CS", "PCBA-South Campus");
             mBuTable.Add("PCBA-HW", "PCBA-South Campus");
             mBuTable.Add("PCBA-South Campus", "PCBA-South Campus");
 

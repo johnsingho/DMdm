@@ -143,10 +143,16 @@ namespace DormManage.BLL.DormPersonManage
                 mTB_EmployeeCheckOut.Telephone = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Telephone] is DBNull ? string.Empty : dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Telephone].ToString();
                 mTB_EmployeeCheckOut.Reason = sReason == "" ? string.Empty : sReason;
                 mTB_EmployeeCheckOut.Remark= sRemark == "" ? string.Empty : sRemark;
-                mTB_EmployeeCheckOut.CanLeave = Convert.ToInt32(sCanLeave) > 0 ? 1 : 0;
+                bool bCanLeave = (Convert.ToInt32(sCanLeave) > 0);
+                mTB_EmployeeCheckOut.CanLeave = bCanLeave ? 1 : 0;
                 mTB_EmployeeCheckOut.EmployeeTypeName = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_EmployeeTypeName].ToString();
 
                 _mTB_EmployeeCheckOutDAL.Create(mTB_EmployeeCheckOut, _tran, _db);
+                if (bCanLeave)
+                {
+                    SigningExitForEM(-1, mTB_EmployeeCheckOut.EmployeeNo);
+                }
+
                 //更新床位状态
                 _mTB_BedDAL.Update(mTB_EmployeeCheckOut.BedID, _tran, _db, TypeManager.BedStatus.Free);
                 //删除入住信息
@@ -301,7 +307,8 @@ namespace DormManage.BLL.DormPersonManage
                     mTB_EmployeeCheckOut.Telephone = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Telephone] is DBNull ? string.Empty : dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Telephone].ToString();
                     mTB_EmployeeCheckOut.Reason = sReason == "" ? string.Empty : sReason;
                     mTB_EmployeeCheckOut.Remark = sRemark == "" ? string.Empty : sRemark;
-                    mTB_EmployeeCheckOut.CanLeave = (0==string.Compare(sCanLeave, "是", true)) ? 1 : 0;
+                    bool bCanLeave = (0 == string.Compare(sCanLeave, "是", true));
+                    mTB_EmployeeCheckOut.CanLeave = bCanLeave ? 1 : 0;
                     mTB_EmployeeCheckOut.EmployeeTypeName = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_EmployeeTypeName].ToString();
 
                     //调房--分配到未入住区域
@@ -318,6 +325,12 @@ namespace DormManage.BLL.DormPersonManage
                     //}
 
                     _mTB_EmployeeCheckOutDAL.Create(mTB_EmployeeCheckOut, _tran, _db);
+                    
+                    if(bCanLeave)
+                    {
+                        SigningExitForEM(-1, mTB_EmployeeCheckOut.EmployeeNo);
+                    }
+
                     //更新床位状态
                     _mTB_BedDAL.Update(mTB_EmployeeCheckOut.BedID, _tran, _db, TypeManager.BedStatus.Free);
                     //删除入住信息
@@ -378,23 +391,24 @@ namespace DormManage.BLL.DormPersonManage
         }
 
         //更改退宿原因
-        public void ChangeCheckOutReason(int id, string sTotal)
+        public bool ChangeCheckOutReason(int id, string sTotal)
         {
             string[] sData = sTotal.Split('@');
             var sReason = sData[0];
-            var nCanLeave = Convert.ToInt32(sData[1]) > 0 ? 1 : 0;
+            var bCanLeave = Convert.ToInt32(sData[1]) > 0;
 
             //启用事务
             _db = DBO.CreateDatabase();
             _connection = _db.CreateConnection();
             _connection.Open();
             _tran = _connection.BeginTransaction();
+            var bOk = false;
             try
-            {               
-                _mTB_EmployeeCheckOutDAL.ChangeCheckOutReason(id, sReason, nCanLeave, _tran, _db);
-
+            {
+                _mTB_EmployeeCheckOutDAL.ChangeCheckOutReason(id, sReason, bCanLeave, _tran, _db);
                 //提交事务
                 _tran.Commit();
+                bOk = true;
             }
             catch (Exception ex)
             {
@@ -407,6 +421,112 @@ namespace DormManage.BLL.DormPersonManage
                 //关闭连接
                 _connection.Close();
             }
+
+            if(bOk && bCanLeave)
+            {
+                SigningExitForEM(id);
+            }
+
+            return bOk;
+        }
+
+        //访问离职系统，进行签退
+        private int SigningExitForEM(int id, string workID="")
+        {
+            var sWorkID = workID;
+            DbConnection dbConn = null;
+            if (string.IsNullOrEmpty(sWorkID))
+            {
+                try
+                {// get checkout Employee No
+                    var dbDorm = DBO.CreateDatabase();
+                    dbConn = dbDorm.CreateConnection();
+                    dbConn.Open();
+
+                    string strSQL = @"select RoomID,BedID,EmployeeNo,Name,CardNo from TB_EmployeeCheckOut
+                                      where id=@ID";
+                    var dbCommandWrapper = dbDorm.DbProviderFactory.CreateCommand();
+                    dbCommandWrapper.CommandType = CommandType.Text;
+                    dbCommandWrapper.CommandText = strSQL;
+                    dbDorm.AddInParameter(dbCommandWrapper, "@ID", DbType.Int32, id);
+                    var ds = dbDorm.ExecuteDataSet(dbCommandWrapper);
+                    if (DataTableHelper.IsEmptyDataSet(ds))
+                    {
+                        return -1;
+                    }
+                    var dr = DataTableHelper.GetDataSet_Row0(ds);
+                    sWorkID = dr["EmployeeNo"] as string;
+                }
+                catch (Exception ex)
+                {
+                }
+                finally
+                {
+                    dbConn.Close();
+                }
+            }
+
+            if (string.IsNullOrEmpty(sWorkID))
+            {
+                return -1;
+            }
+
+            //update
+            DbTransaction dbTran = null;
+            try
+            {
+                string sAppGroupID = "097F36B9-B8A2-478B-97DA-79E76E384571";
+                var dbEM = DBO.CreateDatabaseEM();
+                dbConn = dbEM.CreateConnection();
+                dbConn.Open();
+                dbTran = dbConn.BeginTransaction();
+
+                var strSQL = string.Empty;
+                int nRet = 0;
+                var sCreateUser = System.Web.HttpContext.Current.Session[TypeManager.User] == null ? ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).Account : ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ADAccount;
+
+                //create EM_Approved
+                strSQL = @"insert into EM_Approved([Approved_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
+                                [DeleteMark],[Remark],[CreateDate],[CreateUserId],[CreateUserName])
+                            select [Approving_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
+                                [DeleteMark],'宿舍系统自动签退',GetDate(),NULL,@CreateUserName
+                            from EM_Approving
+                            where Approving_ID=@AppGroupID
+                            and EmpID=@EmpID
+                            ";
+                var dbCommandWrapper = dbEM.DbProviderFactory.CreateCommand();
+                dbCommandWrapper.CommandType = CommandType.Text;
+                dbCommandWrapper.CommandText = strSQL;
+                dbEM.AddInParameter(dbCommandWrapper, "@CreateUserName", DbType.String, sCreateUser);
+                dbEM.AddInParameter(dbCommandWrapper, "@AppGroupID", DbType.String, sAppGroupID);
+                dbEM.AddInParameter(dbCommandWrapper, "@EmpID", DbType.String, sWorkID);
+                nRet = dbEM.ExecuteNonQuery(dbCommandWrapper, dbTran);
+
+                //delete EM_Approving
+                strSQL = @"delete from EM_Approving
+                            where 1 = 1
+                            and ApprovalGroupID = @AppGroupID
+                            and EmpID = @EmpID";
+                dbCommandWrapper = dbEM.DbProviderFactory.CreateCommand();
+                dbCommandWrapper.CommandType = CommandType.Text;
+                dbCommandWrapper.CommandText = strSQL;
+                dbEM.AddInParameter(dbCommandWrapper, "@AppGroupID", DbType.String, sAppGroupID);
+                dbEM.AddInParameter(dbCommandWrapper, "@EmpID", DbType.String, sWorkID);
+                nRet = dbEM.ExecuteNonQuery(dbCommandWrapper, dbTran);
+
+                dbTran.Commit();
+            }
+            catch(Exception ex)
+            {
+                dbTran.Rollback();
+                throw ex;
+            }
+            finally
+            {
+                dbConn.Close();
+            }
+
+            return 0;
         }
 
         /// <summary>

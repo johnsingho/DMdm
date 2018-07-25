@@ -156,5 +156,28 @@ namespace DormManage.Data.DAL
             }
             return db;
         }
+        
+        public static Database CreateDatabaseEM()
+        {
+            ConnectionStringSettings _connectSettingStaffing;
+            string strConnectString = string.Empty;
+            string strProviderName = string.Empty;
+            Database db = null;
+            try
+            {
+                _connectSettingStaffing = ConfigurationManager.ConnectionStrings[ConnectionControl.EMConnection];
+                strConnectString = _connectSettingStaffing.ConnectionString;
+                strProviderName = _connectSettingStaffing.ProviderName;
+
+                // 构造连接对象
+                GenericDatabase dbSqlServer = new GenericDatabase(strConnectString, DbProviderFactories.GetFactory(strProviderName));
+                db = dbSqlServer;
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetInstance().ErrorLog(ex.Message, ex);
+            }
+            return db;
+        }
     }
 }
