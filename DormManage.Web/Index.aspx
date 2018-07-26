@@ -45,17 +45,85 @@
             background: none !important;            
             text-decoration: none;
         }
+        .headerTab {
+            position: relative;
+            background: url(../images/head_bg.jpg) repeat-x;
+            height: 49px;
+        }
+        .tabRight {
+            position: absolute;
+            right: 18px;
+            top: 14px;
+            float: right;
+        }
+            .tabRight .textSty {
+                color: #d2deec;
+                font-weight: bold;
+                font-size: 14px;
+                display: block;
+                height: 30px;
+                background: none !important;
+                text-decoration: none;
+            }
+            .tabRight .line {
+                width: 1px;
+                height: 14px;
+                background: url(../images/sline.jpg) no-repeat;
+                margin-right: 0;
+                display: block;
+            }
+            .tabRight .Modify {
+                background: url(../images/head_logo.png) no-repeat;
+                border: none;
+                width: 16px;
+                height: 26px;
+                margin-right: 10px;
+            }
+            .tabRight .exit {
+                color: #d2deec;
+                display: block;
+                background: url(../images/head_logo2.png) no-repeat;
+                background-position: -186px 0;
+                text-indent: -9999px;
+                overflow: hidden;
+                width: 57px;
+                height: 30px;
+                margin-top: -7px;
+            }
     </style>
 </head>
 <body>
     <form id="frmIndex" runat="server">
+        <div class="headerTab">
+            <table class="tabRight">
+                <tr>
+                    <td>
+                        <a class="textSty" style="margin-right: 20px;" href="/FlexPlusIndex.aspx">Flex+宿舍系统后台
+                        </a>
+                    </td>
+                    <td>
+                        <asp:Label ID="lblUserNameWelcome" runat="server" CssClass="textSty" Text=""></asp:Label>
+                    </td>
+                    <td>
+                        <asp:Button ID="btnModifyInfo" runat="server" CssClass="Modify"
+                            Text="" OnClientClick="return modifyPassword()" />
+                    </td>
+                    <td>
+                        <span class="line"></span>
+                    </td>
+                    <td>
+                        <asp:LinkButton ID="lnkExit" CssClass="exit" runat="server" OnClick="lnkExit_Click">
+                            <asp:Label ID="lblExit" runat="server" Text="退出"></asp:Label>
+                        </asp:LinkButton>
+                    </td>
+                </tr>
+            </table>
+        </div>
         <!--header-->
-        <div class="header">
-            <div>
-            </div>
+        <%--<div class="header">
             <ul>
                 <li>
-                    <a class="flexP" style="margin-right:18px;" href="/FlexPlusIndex.aspx"> 
+                    <a class="flexP" style="margin-right:20px;vertical-align:middle;" href="/FlexPlusIndex.aspx"> 
                         Flex+宿舍系统后台
                     </a>
                 </li>
@@ -70,7 +138,7 @@
                     </asp:LinkButton>
                 </li>
             </ul>
-        </div>
+        </div> --%>
         <div>
             <table class="frame">
                 <tr>
