@@ -50,6 +50,13 @@
             background: url(../images/head_bg.jpg) repeat-x;
             height: 49px;
         }
+        .headerTitle {
+            color: #d2deec;
+            font-size: 24px;
+            font-family: '微软雅黑','Segoe UI', Tahoma, sans-serif;
+            margin-left: 18px;
+            padding-top: 5px;
+        }
         .tabRight {
             position: absolute;
             right: 18px;
@@ -95,18 +102,24 @@
 <body>
     <form id="frmIndex" runat="server">
         <div class="headerTab">
+            <div class="headerTitle">
+                Flex 宿舍管理系统
+            </div>
             <table class="tabRight">
-                <tr>
-                    <td>
-                        <a class="textSty" style="margin-right: 20px;" href="/FlexPlusIndex.aspx">Flex+宿舍系统后台
-                        </a>
-                    </td>
+                <tr>                    
                     <td>
                         <asp:Label ID="lblUserNameWelcome" runat="server" CssClass="textSty" Text=""></asp:Label>
                     </td>
                     <td>
                         <asp:Button ID="btnModifyInfo" runat="server" CssClass="Modify"
                             Text="" OnClientClick="return modifyPassword()" />
+                    </td>
+                    <td>
+                        <span class="line"></span>
+                    </td>
+                    <td style="width:100px;text-align:center">
+                        <a class="textSty" href="/FlexPlusIndex.aspx">Flex+ 后台
+                        </a>
                     </td>
                     <td>
                         <span class="line"></span>

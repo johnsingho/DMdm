@@ -10,6 +10,17 @@
     <link rel="shortcut icon" href="images/c_favicon.ico" />
     <script src="Scripts/jquery-1.8.2.min.js" type="text/javascript"></script>
     <script src="Scripts/common.js" type="text/javascript"></script>
+
+    <style>
+        .headerTitle {
+            color: #d2deec;
+            font-size: 24px;
+            font-family: '微软雅黑','Segoe UI', Tahoma, sans-serif;
+            margin-left: 18px;
+            padding-top: 5px;
+        }
+    </style>
+
     <script type="text/javascript">
         $(function () {
             initIframe();
@@ -39,7 +50,8 @@
 <form id="frmIndex" runat="server">
         <!--header-->
         <div class="header" style="background-color:darkslategray !important;background:none;">
-            <div>
+            <div class="headerTitle">
+                Flex+ 宿舍系统后台
             </div>
             <ul>
                 <li>

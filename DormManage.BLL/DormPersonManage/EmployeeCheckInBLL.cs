@@ -84,6 +84,10 @@ namespace DormManage.BLL.DormPersonManage
         {            
             DataTable dtCheckIn = null;//入住信息
             TB_EmployeeCheckOut mTB_EmployeeCheckOut = null;//退房记录
+            bool bCanLeave = false;
+            bool bSuccess = false;
+            decimal? dSum = null;
+
             //启用事务
             _db = DBO.CreateDatabase();
             _connection = _db.CreateConnection();
@@ -122,7 +126,6 @@ namespace DormManage.BLL.DormPersonManage
                     sReason = sReason.Split('#')[0];
                 }
                 
-
                 //添加退房记录
                 mTB_EmployeeCheckOut = new TB_EmployeeCheckOut();
                 mTB_EmployeeCheckOut.BedID = Convert.ToInt32(dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_BedID]);
@@ -143,15 +146,11 @@ namespace DormManage.BLL.DormPersonManage
                 mTB_EmployeeCheckOut.Telephone = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Telephone] is DBNull ? string.Empty : dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Telephone].ToString();
                 mTB_EmployeeCheckOut.Reason = sReason == "" ? string.Empty : sReason;
                 mTB_EmployeeCheckOut.Remark= sRemark == "" ? string.Empty : sRemark;
-                bool bCanLeave = (Convert.ToInt32(sCanLeave) > 0);
+                bCanLeave = (Convert.ToInt32(sCanLeave) > 0);
                 mTB_EmployeeCheckOut.CanLeave = bCanLeave ? 1 : 0;
                 mTB_EmployeeCheckOut.EmployeeTypeName = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_EmployeeTypeName].ToString();
 
                 _mTB_EmployeeCheckOutDAL.Create(mTB_EmployeeCheckOut, _tran, _db);
-                if (bCanLeave)
-                {
-                    SigningExitForEM(-1, mTB_EmployeeCheckOut.EmployeeNo);
-                }
 
                 //更新床位状态
                 _mTB_BedDAL.Update(mTB_EmployeeCheckOut.BedID, _tran, _db, TypeManager.BedStatus.Free);
@@ -159,26 +158,32 @@ namespace DormManage.BLL.DormPersonManage
                 _mTB_EmployeeCheckInDAL.Delete(intID, _tran, _db);
 
                 //添加扣费记录
+                var dMoney = sMoney.Length > 0 ? Convert.ToDecimal(sMoney) : 0;
+                var dAirConditionFeeMoney = sAirConditionFeeMoney.Length > 0 ? Convert.ToDecimal(sAirConditionFeeMoney) : 0;
+                var dRoomKeyFeeMoney = sRoomKeyFeeMoney.Length > 0 ? Convert.ToDecimal(sRoomKeyFeeMoney) : 0;
+                var dOtherFeeMoney = sOtherFeeMoney.Length > 0 ? Convert.ToDecimal(sOtherFeeMoney) : 0;
+                dSum = dMoney + dAirConditionFeeMoney + dRoomKeyFeeMoney + dOtherFeeMoney; //总扣费
+
                 ChargingBLL mChargingBLL = new ChargingBLL();
                 TB_Charging mTB_Charging = new TB_Charging();
                 mTB_Charging.Name = mTB_EmployeeCheckOut.Name;
                 mTB_Charging.EmployeeNo = mTB_EmployeeCheckOut.EmployeeNo;
                 mTB_Charging.ChargeContent = sChargeContent;
-                mTB_Charging.Money = sMoney.Length > 0 ? Convert.ToDecimal(sMoney) : 0;
+                mTB_Charging.Money = dMoney;
                 mTB_Charging.AirConditionFee = sAirConditionFee;
-                mTB_Charging.AirConditionFeeMoney = sAirConditionFeeMoney.Length > 0 ? Convert.ToDecimal(sAirConditionFeeMoney) : 0;
+                mTB_Charging.AirConditionFeeMoney = dAirConditionFeeMoney;
                 mTB_Charging.RoomKeyFee = sRoomKeyFee;
-                mTB_Charging.RoomKeyFeeMoney = sRoomKeyFeeMoney.Length > 0 ? Convert.ToDecimal(sRoomKeyFeeMoney) : 0;
+                mTB_Charging.RoomKeyFeeMoney = dRoomKeyFeeMoney;
                 mTB_Charging.OtherFee = sOtherFee;
-                mTB_Charging.OtherFeeMoney = sOtherFeeMoney.Length > 0 ? Convert.ToDecimal(sOtherFeeMoney) : 0;
+                mTB_Charging.OtherFeeMoney = dOtherFeeMoney;
                 mTB_Charging.SiteID = mTB_EmployeeCheckOut.SiteID;
                 mTB_Charging.Creator = mTB_EmployeeCheckOut.Creator;
                 mTB_Charging.BU = mTB_EmployeeCheckOut.BU;
                 mChargingBLL.Add(mTB_Charging, _tran);
 
-
                 //提交事务
                 _tran.Commit();
+                bSuccess = true;
             }
             catch (Exception ex)
             {
@@ -190,6 +195,11 @@ namespace DormManage.BLL.DormPersonManage
             {
                 //关闭连接
                 _connection.Close();
+            }
+
+            if (bSuccess && bCanLeave)
+            {
+                SigningExitForEM(-1, mTB_EmployeeCheckOut.EmployeeNo, dSum);
             }
         }
 
@@ -273,10 +283,14 @@ namespace DormManage.BLL.DormPersonManage
 
         private bool CheckOutBatch_part(DataRow rImp)
         {
-            var bok = true;
+            var bSuccess = false;
             var dtCheckIn = _mTB_EmployeeCheckInDAL.GetByWorkID(DataTableHelper.TryGet(rImp, "工号"), 
                                                                 DataTableHelper.TryGet(rImp, "身份证号码"));
             if (DataTableHelper.IsEmptyDataTable(dtCheckIn)) { return false; }
+
+            bool bCanLeave = false;
+            decimal? dSum = null;
+            var sWorkID = string.Empty;
 
             //启用事务
             using (_tran = _connection.BeginTransaction())
@@ -297,7 +311,8 @@ namespace DormManage.BLL.DormPersonManage
                     mTB_EmployeeCheckOut.CheckOutDate = DateTime.Now;
                     mTB_EmployeeCheckOut.Company = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Company] is DBNull ? string.Empty : dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Company].ToString();
                     mTB_EmployeeCheckOut.Creator = System.Web.HttpContext.Current.Session[TypeManager.User] == null ? ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).Account : ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ADAccount;
-                    mTB_EmployeeCheckOut.EmployeeNo = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_EmployeeNo] is DBNull ? string.Empty : dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_EmployeeNo].ToString();
+                    sWorkID = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_EmployeeNo] is DBNull ? string.Empty : dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_EmployeeNo].ToString();
+                    mTB_EmployeeCheckOut.EmployeeNo = sWorkID;
                     mTB_EmployeeCheckOut.IsSmoking = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_IsSmoking] is DBNull ? false : Convert.ToBoolean(dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_IsSmoking]);
                     mTB_EmployeeCheckOut.Name = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Name] is DBNull ? string.Empty : dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Name].ToString();
                     mTB_EmployeeCheckOut.Province = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Province] is DBNull ? string.Empty : dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Province].ToString();
@@ -307,7 +322,7 @@ namespace DormManage.BLL.DormPersonManage
                     mTB_EmployeeCheckOut.Telephone = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Telephone] is DBNull ? string.Empty : dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Telephone].ToString();
                     mTB_EmployeeCheckOut.Reason = sReason == "" ? string.Empty : sReason;
                     mTB_EmployeeCheckOut.Remark = sRemark == "" ? string.Empty : sRemark;
-                    bool bCanLeave = (0 == string.Compare(sCanLeave, "是", true));
+                    bCanLeave = (0 == string.Compare(sCanLeave, "是", true));
                     mTB_EmployeeCheckOut.CanLeave = bCanLeave ? 1 : 0;
                     mTB_EmployeeCheckOut.EmployeeTypeName = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_EmployeeTypeName].ToString();
 
@@ -325,12 +340,7 @@ namespace DormManage.BLL.DormPersonManage
                     //}
 
                     _mTB_EmployeeCheckOutDAL.Create(mTB_EmployeeCheckOut, _tran, _db);
-                    
-                    if(bCanLeave)
-                    {
-                        SigningExitForEM(-1, mTB_EmployeeCheckOut.EmployeeNo);
-                    }
-
+       
                     //更新床位状态
                     _mTB_BedDAL.Update(mTB_EmployeeCheckOut.BedID, _tran, _db, TypeManager.BedStatus.Free);
                     //删除入住信息
@@ -366,20 +376,27 @@ namespace DormManage.BLL.DormPersonManage
                     mTB_Charging.BU = mTB_EmployeeCheckOut.BU;
                     mChargingBLL.Add(mTB_Charging, _tran);
 
+                    dSum = mTB_Charging.Money + mTB_Charging.AirConditionFeeMoney 
+                         + mTB_Charging.RoomKeyFeeMoney + mTB_Charging.OtherFeeMoney; //总扣费
+
                     //提交事务
                     _tran.Commit();
+                    bSuccess = true;
                 }
                 catch (Exception ex)
                 {
                     //回滚事务
                     _tran.Rollback();
-                    bok = false;
                     //throw ex;
                     LogManager.GetInstance().ErrorLog("批量退房失败CheckOutBatch_part", ex);
                 }
-                return bok;
             }
-
+            
+            if (bSuccess && bCanLeave)
+            {
+                SigningExitForEM(-1, sWorkID, dSum);
+            }
+            return bSuccess;
         }
 
         //TODO 现在不支持批量调房
@@ -402,13 +419,13 @@ namespace DormManage.BLL.DormPersonManage
             _connection = _db.CreateConnection();
             _connection.Open();
             _tran = _connection.BeginTransaction();
-            var bOk = false;
+            var bSuccess = false;
             try
             {
                 _mTB_EmployeeCheckOutDAL.ChangeCheckOutReason(id, sReason, bCanLeave, _tran, _db);
                 //提交事务
                 _tran.Commit();
-                bOk = true;
+                bSuccess = true;
             }
             catch (Exception ex)
             {
@@ -422,16 +439,16 @@ namespace DormManage.BLL.DormPersonManage
                 _connection.Close();
             }
 
-            if(bOk && bCanLeave)
+            if(bSuccess && bCanLeave)
             {
                 SigningExitForEM(id);
             }
 
-            return bOk;
+            return bSuccess;
         }
 
         //访问离职系统，进行签退
-        private int SigningExitForEM(int id, string workID="")
+        private int SigningExitForEM(int id, string workID="", decimal? cost=null)
         {
             var sWorkID = workID;
             DbConnection dbConn = null;
@@ -486,7 +503,9 @@ namespace DormManage.BLL.DormPersonManage
                 var sCreateUser = System.Web.HttpContext.Current.Session[TypeManager.User] == null ? ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).Account : ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ADAccount;
 
                 //create EM_Approved
-                strSQL = @"insert into EM_Approved([Approved_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
+                if (null==cost || !cost.HasValue)
+                {
+                    strSQL = @"insert into EM_Approved([Approved_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
                                 [DeleteMark],[Remark],[CreateDate],[CreateUserId],[CreateUserName])
                             select [Approving_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
                                 [DeleteMark],'宿舍系统自动签退',GetDate(),NULL,@CreateUserName
@@ -494,12 +513,29 @@ namespace DormManage.BLL.DormPersonManage
                             where Approving_ID=@AppGroupID
                             and EmpID=@EmpID
                             ";
+                }
+                else
+                {
+                    strSQL = @"insert into EM_Approved([Approved_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
+                                [DeleteMark],[Remark],[CreateDate],[CreateUserId],[CreateUserName])
+                            select [Approving_ID],[FormID],[ApprovalGroupID],[EmpID],@Cost,[Balance],
+                                [DeleteMark],'宿舍系统自动签退',GetDate(),NULL,@CreateUserName
+                            from EM_Approving
+                            where Approving_ID=@AppGroupID
+                            and EmpID=@EmpID
+                            ";
+                }
+ 
                 var dbCommandWrapper = dbEM.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;
                 dbCommandWrapper.CommandText = strSQL;
                 dbEM.AddInParameter(dbCommandWrapper, "@CreateUserName", DbType.String, sCreateUser);
                 dbEM.AddInParameter(dbCommandWrapper, "@AppGroupID", DbType.String, sAppGroupID);
                 dbEM.AddInParameter(dbCommandWrapper, "@EmpID", DbType.String, sWorkID);
+                if (null != cost)
+                {
+                    dbEM.AddInParameter(dbCommandWrapper, "@Cost", DbType.Decimal, cost.Value);
+                }
                 nRet = dbEM.ExecuteNonQuery(dbCommandWrapper, dbTran);
 
                 //delete EM_Approving
