@@ -114,13 +114,13 @@
                         <asp:Button ID="btnModifyInfo" runat="server" CssClass="Modify"
                             Text="" OnClientClick="return modifyPassword()" />
                     </td>
-                    <td>
+          <%--          <td>
                         <span class="line"></span>
                     </td>
                     <td style="width:100px;text-align:center">
                         <a class="textSty" href="/FlexPlusIndex.aspx">Flex+ 后台
                         </a>
-                    </td>
+                    </td>--%>
                     <td>
                         <span class="line"></span>
                     </td>
