@@ -57,7 +57,9 @@
                             <asp:Label ID="lblDormArea" runat="server" Text="分配宿舍区："></asp:Label>
                         </th>
                         <td>
-                            <asp:DropDownList ID="ddlDormArea" runat="server" OnSelectedIndexChanged="ddlDormArea_SelectedIndexChanged"></asp:DropDownList>
+                            <asp:DropDownList ID="ddlDormArea" runat="server" 
+                                AutoPostBack="True" 
+                                OnSelectedIndexChanged="ddlDormArea_SelectedIndexChanged"></asp:DropDownList>
                         </td>
                     </tr>
                     <tr>

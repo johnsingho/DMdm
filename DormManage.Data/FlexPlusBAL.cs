@@ -39,6 +39,10 @@ namespace DormManage.Data.DAL
             {
                 sb.AppendFormat("and id={0} ", mVal.ID);
             }
+            if (mVal.DormAreaID > 0)
+            {
+                sb.AppendFormat("and DormAreaID={0} ", mVal.DormAreaID);
+            }
             if (!string.IsNullOrEmpty(mVal.CName))
             {
                 sb.AppendFormat("and CName='{0}' ", mVal.CName);

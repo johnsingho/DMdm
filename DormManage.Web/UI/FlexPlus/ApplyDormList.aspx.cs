@@ -1,4 +1,5 @@
-﻿using DormManage.BLL.FlexPlus;
+﻿using DormManage.BLL.DormManage;
+using DormManage.BLL.FlexPlus;
 using DormManage.Common;
 using DormManage.Framework;
 using DormManage.Framework.LogManager;
@@ -35,6 +36,9 @@ namespace DormManage.Web.UI.FlexPlus
             int nVal = 0;
             int.TryParse(ddlRequiredType.SelectedValue, out nVal);
             mTB_DormAreaApply.RequireType = nVal;
+            nVal = -1;
+            int.TryParse(ddlDormArea.SelectedValue, out nVal);
+            mTB_DormAreaApply.DormAreaID = nVal;
             nVal = -1;
             int.TryParse(ddlStatus.SelectedValue, out nVal);
             mTB_DormAreaApply.Status = nVal;
@@ -73,6 +77,17 @@ namespace DormManage.Web.UI.FlexPlus
             ddlStatus.DataTextField = "Name";
             ddlStatus.DataBind();
             ddlStatus.SelectedIndex = 0;
+
+            Pager mPager = null;
+            #region 宿舍区
+            DormAreaBLL mDormAreaBLL = new DormAreaBLL();
+            this.ddlDormArea.DataValueField = TB_DormArea.col_ID;
+            this.ddlDormArea.DataTextField = TB_DormArea.col_Name;
+
+            this.ddlDormArea.DataSource = mDormAreaBLL.GetTable(new TB_DormArea() { SiteID = (base.UserInfo == null ? base.SystemAdminInfo.SiteID : base.UserInfo.SiteID) }, ref mPager);
+            this.ddlDormArea.DataBind();
+            this.ddlDormArea.Items.Insert(0, new ListItem() { Value = "0", Text = "--请选择--" });
+            #endregion
         }
 
         protected void pagerList_Command(object sender, System.Web.UI.WebControls.CommandEventArgs e)

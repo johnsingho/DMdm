@@ -105,9 +105,14 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>入住类型：</th>
+                            <th>申请类型：</th>
                             <td>
                                 <asp:DropDownList ID="ddlRequiredType" runat="server"></asp:DropDownList>
+                            </td>                            
+                            <th>宿舍区：
+                            </th>
+                            <td>
+                                <asp:DropDownList ID="ddlDormArea" runat="server"></asp:DropDownList>
                             </td>
                             <th>状态：
                             </th>

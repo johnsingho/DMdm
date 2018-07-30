@@ -117,13 +117,13 @@
                     <td>
                         <span class="line"></span>
                     </td>
-                    <td style="width:100px;text-align:center">
+<%--                    <td style="width:100px;text-align:center">
                         <a class="textSty" href="/FlexPlusIndex.aspx">Flex+ 后台
                         </a>
                     </td>
                     <td>
                         <span class="line"></span>
-                    </td>
+                    </td>--%>
                     <td>
                         <asp:LinkButton ID="lnkExit" CssClass="exit" runat="server" OnClick="lnkExit_Click">
                             <asp:Label ID="lblExit" runat="server" Text="退出"></asp:Label>

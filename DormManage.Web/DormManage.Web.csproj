@@ -99,8 +99,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\sdtapi.dll" />
-    <Content Include="FlexPlusIndex.aspx" />
-    <Content Include="FlexPlusStatic.html" />
     <Content Include="HomePage.aspx" />
     <Content Include="images\Flextronics_blue.png" />
     <Content Include="images\head_bg.jpg" />
@@ -808,13 +806,6 @@
     <Compile Include="App_Code\DormPersonManageAjaxServices.cs" />
     <Compile Include="App_Code\SessionHelper.cs" />
     <Compile Include="App_Code\UserAjaxServices.cs" />
-    <Compile Include="FlexPlusIndex.aspx.cs">
-      <DependentUpon>FlexPlusIndex.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="FlexPlusIndex.aspx.designer.cs">
-      <DependentUpon>FlexPlusIndex.aspx</DependentUpon>
-    </Compile>
     <Compile Include="UI\Allowance\AllowanceApplyCancel.aspx.cs">
       <DependentUpon>AllowanceApplyCancel.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
