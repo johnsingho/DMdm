@@ -15,7 +15,7 @@
         .headerTitle {
             color: #d2deec;
             font-size: 24px;
-            font-family: '微软雅黑','Segoe UI', Tahoma, sans-serif;
+            font-family: 'Microsoft YaHei','Segoe UI', Tahoma, sans-serif;
             margin-left: 18px;
             padding-top: 5px;
         }

@@ -100,7 +100,7 @@ namespace DormManage.Web.UI.FlexPlus {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtRequireReason;
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea txtRequireReason;
         
         /// <summary>
         /// txtHasHousingAllowance control.
@@ -118,7 +118,7 @@ namespace DormManage.Web.UI.FlexPlus {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtmemo;
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea txtmemo;
         
         /// <summary>
         /// txtCreateDate control.

@@ -50,9 +50,9 @@ namespace DormManage.Web.UI.FlexPlus
             int.TryParse(dr["HasHousingAllowance"].ToString(), out nTemp);
             txtHasHousingAllowance.Text = nTemp>0 ? "是" : "否";
 
-            txtmemo.Text = dr["memo"].ToString();
+            txtmemo.Value = dr["memo"].ToString();
             txtMobileNo.Text = dr["MobileNo"].ToString();
-            txtRequireReason.Text = dr["RequireReason"].ToString();
+            txtRequireReason.Value = dr["RequireReason"].ToString();
 
             nTemp = 0;
             int.TryParse(dr["RequireType"].ToString(), out nTemp);

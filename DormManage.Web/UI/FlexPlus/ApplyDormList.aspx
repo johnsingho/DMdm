@@ -59,7 +59,7 @@
             $.ligerDialog.open({
                 title: "查看入住申请",
                 width: 400,
-                height: 550,
+                height: 590,
                 isResize: true,
                 url: 'ApplyDormView.aspx?id=' + id                   
             });

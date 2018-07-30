@@ -91,7 +91,7 @@
                             <label>申请原因</label>
                         </th>
                         <td>
-                            <asp:TextBox ID="txtRequireReason" runat="server" ReadOnly="True"></asp:TextBox>
+                            <textarea id="txtRequireReason" runat="server" readonly="readonly" rows="2"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -107,7 +107,7 @@
                             <label>备注</label>
                         </th>
                         <td>
-                            <asp:TextBox ID="txtmemo" runat="server" ReadOnly="True"></asp:TextBox>
+                            <textarea id="txtmemo" runat="server" readonly="readonly" rows="2"></textarea>
                         </td>
                     </tr>
                     <tr>

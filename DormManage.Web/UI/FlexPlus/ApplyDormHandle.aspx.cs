@@ -4,6 +4,7 @@ using DormManage.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -123,5 +124,16 @@ namespace DormManage.Web.UI.FlexPlus
 
         }
 
+        protected void ddlDormArea_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var sReply = txtReply.Value;
+            var sDormAera = ddlDormArea.SelectedItem.Text;
+
+            var sPat = @"【(.+)】";
+            var reg = new Regex(sPat);
+            var sRepl = string.Format("【{0}】", sDormAera);
+            var sNew = reg.Replace(sReply, sRepl);
+            txtReply.Value = sNew;
+        }
     }
 }
