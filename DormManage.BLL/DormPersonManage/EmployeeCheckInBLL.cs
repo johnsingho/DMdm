@@ -606,10 +606,10 @@ namespace DormManage.BLL.DormPersonManage
                 mTB_EmployeeCheckOut.EmployeeTypeName = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_EmployeeTypeName].ToString();
 
                 _mTB_EmployeeCheckOutDAL.Create(mTB_EmployeeCheckOut);
-               
+
 
                 //提交事务
-               
+                _tran.Commit();
             }
             catch (Exception ex)
             {

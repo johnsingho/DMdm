@@ -1,5 +1,6 @@
 ﻿using DormManage.BLL.DormManage;
 using DormManage.BLL.FlexPlus;
+using DormManage.Common;
 using DormManage.Models;
 using System;
 using System.Collections.Generic;
@@ -37,13 +38,43 @@ namespace DormManage.Web.UI.FlexPlus
             {
                 ddlDormArea.Enabled = false;
                 //txtReply.Disabled = true;
+                ddlHandle_SelectedIndexChanged(null, null);
             }
             else
             {
-                ddlDormArea.SelectedValue = mKeys[0];
-            }
+                //加载旧数据，限制提交
+                var bll = new FlexPlusBLL();
+                var mTB_DormAreaApply = new TB_DormAreaApply();
+                int nID = 0;
+                int.TryParse(mKeys[0], out nID);
+                mTB_DormAreaApply.ID = nID;
+                Framework.Pager pager = null;
+                var dt = bll.GetApplyDorms(mTB_DormAreaApply, ref pager);
+                if(!DataTableHelper.IsEmptyDataTable(dt))
+                {
+                    var dr = dt.Rows[0];
+                    int nStatus = 0;
+                    nStatus = Convert.ToInt32(dr["Status"]);
+                    if(nStatus != 0)
+                    {
+                        var sLastResp = dr["Response"].ToString();
+                        txtReply.Value = sLastResp;
 
-            ddlHandle_SelectedIndexChanged(null, null);
+                        ddlDormArea.Enabled = false;
+                        ddlHandle.Enabled = false;
+                        txtReply.Disabled = true;
+                        btnSave.Visible = false;
+                        btnSave.Enabled = false;
+                    }
+                    else
+                    {
+                        ddlHandle_SelectedIndexChanged(null, null);
+                        txtReply.Disabled = false;
+                        txtReply.Focus();
+                    }
+                }
+            }
+            
         }
 
         private void BindSelect()

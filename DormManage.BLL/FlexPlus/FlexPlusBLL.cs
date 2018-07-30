@@ -55,6 +55,40 @@ namespace DormManage.BLL.FlexPlus
 
         }
 
+        public bool IsHandledRequire(int kind, string mKey, out string sAppr, out string sResp)
+        {
+            sAppr = "1";
+            sResp = string.Empty;
+            var bRet = false;
+            if (0 == kind)
+            {
+                var dt = _mDAL.GetRepairDormByID(mKey);
+                var dr = dt.Rows[0];
+                int nStatus = 0;
+                nStatus = Convert.ToInt32(dr["Status"]);
+                bRet = nStatus > 0;
+                if (bRet)
+                {
+                    sAppr = dr["Status"].ToString();
+                    sResp = dr["Response"].ToString();
+                }
+            }
+            else if (1 == kind)
+            {
+                var dt = _mDAL.GetReissueKeyByID(mKey);
+                var dr = dt.Rows[0];
+                int nStatus = 0;
+                nStatus = Convert.ToInt32(dr["Status"]);
+                bRet = nStatus > 0;
+                if (bRet)
+                {
+                    sAppr = dr["Status"].ToString();
+                    sResp = dr["Response"].ToString();
+                }
+            }
+            return bRet;
+        }
+
         public bool HandleRequired(int kind, string mKey, string sHandlerWorkdayNo, string sHandle, string sMsg)
         {
             var bRet = false;

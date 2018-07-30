@@ -30,6 +30,9 @@ namespace DormManage.Web.UI.FlexPlus
             var dt = bll.GetDormSuggestByID(key);
             if (DataTableHelper.IsEmptyDataTable(dt))
             {
+                txtResponse.Disabled = false;
+                btnSave.Visible = true;
+                btnSave.Enabled = true;
                 return;
             }
 
@@ -42,6 +45,15 @@ namespace DormManage.Web.UI.FlexPlus
             txtCreateDate.Text = sDate;
             txtSuggest.Value = dr["Suggest"].ToString();
             txtResponse.Value = dr["Response"].ToString();
+
+            int nStatus = 0;
+            nStatus = Convert.ToInt32(dr["Status"]);
+            if (nStatus != 0)
+            {
+                txtResponse.Disabled = true;
+                btnSave.Visible = false;
+                btnSave.Enabled = false;
+            }
         }
         
         protected void btnSave_Click(object sender, EventArgs e)

@@ -30,7 +30,26 @@ namespace DormManage.Web.UI.FlexPlus
 
         private void InitData(string mKey)
         {
-            //
+            //load old data
+            var bll = new FlexPlusBLL();
+            var kind = (0 == string.Compare("RepairDorm", mKind, true)) ? 0 : 1;
+            var sAppr = "1";
+            var sResp = string.Empty;
+            if(bll.IsHandledRequire(kind, mKey, out sAppr, out sResp))
+            {
+                ddlHandle.SelectedValue = sAppr;
+                txtReply.Value = sResp;
+
+                txtReply.Disabled = true;
+                ddlHandle.Enabled = false;
+                btnSave.Visible = false;
+                btnSave.Enabled = false;
+            }
+            else
+            {
+                txtReply.Disabled = false;
+                btnSave.Visible = true;
+            }
         }
 
         private void BindSelect()
