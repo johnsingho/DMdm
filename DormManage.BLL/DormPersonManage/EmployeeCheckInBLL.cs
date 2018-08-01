@@ -607,9 +607,7 @@ namespace DormManage.BLL.DormPersonManage
 
                 _mTB_EmployeeCheckOutDAL.Create(mTB_EmployeeCheckOut);
 
-
                 //提交事务
-                _tran.Commit();
             }
             catch (Exception ex)
             {
