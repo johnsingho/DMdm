@@ -124,14 +124,10 @@ namespace DormManage.Web.UI.Allowance
         {
             try
             {
-                var sidcard = this.txtScanCardNO.Text.Trim();
+                var sInputID = this.txtScanCardNO.Text.Trim();
                 var sWorkDayNO = this.txtWorkDayNo.Text.Trim();
                 string sIdCard = string.Empty;
-                if (!GetIdCardNumber(sidcard, sWorkDayNO, out sIdCard))
-                {
-                    ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('招聘系统找不到此用户！')", true);
-                    return;
-                }
+                GetIdCardNumber(sInputID, sWorkDayNO, out sIdCard);
 
                 //查询人员信息
                 DataTable dtEmployeeInfo = new StaffingBLL().GetTableWithIDL(sWorkDayNO, sIdCard);

@@ -609,14 +609,10 @@ namespace DormManage.Web.UI.AssignRoom
         {
             try
             {
-                var sidcard = this.txtScanCardNO.Text.Trim();
+                var sInputID = this.txtScanCardNO.Text.Trim();
                 var sWorkDayNO = this.txtWorkDayNo.Text.Trim();
                 string sIdCard = string.Empty;
-                if (!GetIdCardNumber(sidcard, sWorkDayNO, out sIdCard))
-                {
-                    ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('招聘系统找不到此用户！')", true);
-                    return;
-                }
+                GetIdCardNumber(sInputID, sWorkDayNO, out sIdCard);
 
                 DataTable dt = ViewState["dtSetupContent"] as DataTable;
                 DataRow[] drArr = null;
@@ -688,7 +684,7 @@ namespace DormManage.Web.UI.AssignRoom
                         mTB_EmployeeCheckIn.RoomID = Convert.ToInt32(drAssignRoomArr[0]["RoomID"]);
                         mTB_EmployeeCheckIn.BedID = int.Parse(drAssignRoomArr[0]["BedID"].ToString());
                         mTB_EmployeeCheckIn.BU = Util.NormalBU(dtEmployeeInfo.Rows[0]["SegmentName"].ToString());
-                        mTB_EmployeeCheckIn.CardNo = this.txtScanCardNO.Text;
+                        mTB_EmployeeCheckIn.CardNo = sIdCard; //this.txtScanCardNO.Text;
                         mTB_EmployeeCheckIn.CheckInDate = DateTime.Now;
                         mTB_EmployeeCheckIn.Company = string.Empty;
                         mTB_EmployeeCheckIn.EmployeeNo = dtEmployeeInfo.Rows[0]["EmployeeID"].ToString();

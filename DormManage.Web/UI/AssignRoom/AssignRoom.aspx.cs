@@ -209,14 +209,10 @@ namespace DormManage.Web.UI.AssignRoom
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            var sidcard = this.txtScanCardNO.Text.Trim();
+            var sInputID = this.txtScanCardNO.Text.Trim();
             var sWorkDayNO = this.txtWorkDayNo.Text.Trim();
             string sIdCard = string.Empty;
-            if (!GetIdCardNumber(sidcard, sWorkDayNO, out sIdCard))
-            {
-                ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('招聘系统找不到此用户！')", true);
-                return;
-            }
+            GetIdCardNumber(sInputID, sWorkDayNO, out sIdCard);
 
             //查询人员信息
             DataTable dtEmployeeInfo = new StaffingBLL().GetTableWithIDL(sWorkDayNO, sIdCard);
@@ -266,35 +262,33 @@ namespace DormManage.Web.UI.AssignRoom
                 //查询room信息
                 DataTable dt = ViewState["dtFreeRoom"] as DataTable;
                 DataRow[] drAssignRoomArr = dt.Select("ID=" + bagID + "");
+                var drAssign = drAssignRoomArr[0];
 
-                var sidcard = this.txtScanCardNO.Text.Trim();
+                var sInputID = this.txtScanCardNO.Text.Trim();
                 var sWorkDayNO = this.txtWorkDayNo.Text.Trim();
                 string sIdCard = string.Empty;
-                if (!GetIdCardNumber(sidcard, sWorkDayNO, out sIdCard))
-                {
-                    ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('招聘系统找不到此用户！')", true);
-                    return;
-                }
+                GetIdCardNumber(sInputID, sWorkDayNO, out sIdCard);
 
                 //查询人员信息
                 DataTable dtEmployeeInfo = new StaffingBLL().GetTableWithIDL(sWorkDayNO, sIdCard);
                 if (null != dtEmployeeInfo && dtEmployeeInfo.Rows.Count > 0)
                 {
-                    if (dtEmployeeInfo.Rows[0]["Sex"].ToString() != drAssignRoomArr[0]["RoomSexType"].ToString())
+                    var drEmp = dtEmployeeInfo.Rows[0];
+                    if (drEmp["Sex"].ToString() != drAssign["RoomSexType"].ToString())
                     {
                         ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('性别不符合宿舍定义，不能分配！')", true);
                         return;
                     }
 
-                    string sDormAreaName = drAssignRoomArr[0]["DormAreaName"].ToString();
-                    string sBuildingName = drAssignRoomArr[0]["BuildingName"].ToString();
-                    string sRoomName = drAssignRoomArr[0]["RoomName"].ToString();
-                    string sBedName = drAssignRoomArr[0]["Name"].ToString();
+                    string sDormAreaName = drAssign["DormAreaName"].ToString();
+                    string sBuildingName = drAssign["BuildingName"].ToString();
+                    string sRoomName = drAssign["RoomName"].ToString();
+                    string sBedName = drAssign["Name"].ToString();
                                       
 
                     //检查是否已经有CheckIn的记录
-                    DataTable DtCheckIDCard = new AssignRoomBLL().GetAssignedData(dtEmployeeInfo.Rows[0]["IDCardNumber"].ToString(), "");
-                    DataTable DtCheckEmployeeID = new AssignRoomBLL().GetAssignedData(dtEmployeeInfo.Rows[0]["EmployeeID"].ToString(), "");
+                    DataTable DtCheckIDCard = new AssignRoomBLL().GetAssignedData(drEmp["IDCardNumber"].ToString(), "");
+                    DataTable DtCheckEmployeeID = new AssignRoomBLL().GetAssignedData(drEmp["EmployeeID"].ToString(), "");
                     if (DtCheckIDCard != null && DtCheckIDCard.Rows.Count > 0)
                     {
                         ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('此用户已有分配记录！')", true);
@@ -304,28 +298,28 @@ namespace DormManage.Web.UI.AssignRoom
                         ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('此用户已有分配记录！')", true);
                     }
                     else
-                    {
+                    {                        
                         TB_EmployeeCheckIn mTB_EmployeeCheckIn = new TB_EmployeeCheckIn();
-                        mTB_EmployeeCheckIn.RoomID = Convert.ToInt32(drAssignRoomArr[0]["RoomID"]);
-                        mTB_EmployeeCheckIn.BedID = int.Parse(drAssignRoomArr[0]["ID"].ToString());
-                        mTB_EmployeeCheckIn.BU = Util.NormalBU(dtEmployeeInfo.Rows[0]["SegmentName"].ToString());
+                        mTB_EmployeeCheckIn.RoomID = Convert.ToInt32(drAssign["RoomID"]);
+                        mTB_EmployeeCheckIn.BedID = int.Parse(drAssign["ID"].ToString());
+                        mTB_EmployeeCheckIn.BU = Util.NormalBU(drEmp["SegmentName"].ToString());
                         //TODO 2018-02-07 
                         //由于 EHR.[Segment] 的ID 与 DormManage.[TB_BU]根本不对应
                         //因此，换房记录无法导出事业部
-                        mTB_EmployeeCheckIn.BUID = dtEmployeeInfo.Rows[0]["SegmentID"] != DBNull.Value 
-                                                    ? Convert.ToInt32(dtEmployeeInfo.Rows[0]["SegmentID"]) 
+                        mTB_EmployeeCheckIn.BUID = drEmp["SegmentID"] != DBNull.Value 
+                                                    ? Convert.ToInt32(drEmp["SegmentID"]) 
                                                     : 0;
-                        mTB_EmployeeCheckIn.CardNo = sIdCard;
+                        mTB_EmployeeCheckIn.CardNo = string.IsNullOrEmpty(sIdCard) ? drEmp["IDCardNumber"].ToString() : sIdCard;
                         mTB_EmployeeCheckIn.CheckInDate = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd 00:00:00"));
                         mTB_EmployeeCheckIn.Company = string.Empty;
-                        mTB_EmployeeCheckIn.EmployeeNo = dtEmployeeInfo.Rows[0]["EmployeeID"].ToString();
-                        mTB_EmployeeCheckIn.Name = dtEmployeeInfo.Rows[0]["ChineseName"].ToString();
-                        mTB_EmployeeCheckIn.Sex = drAssignRoomArr[0]["RoomSexType"].ToString() == "男" ? 1 : 2;
+                        mTB_EmployeeCheckIn.EmployeeNo = drEmp["EmployeeID"].ToString();
+                        mTB_EmployeeCheckIn.Name = drEmp["ChineseName"].ToString();
+                        mTB_EmployeeCheckIn.Sex = drAssign["RoomSexType"].ToString() == "男" ? 1 : 2;
                         mTB_EmployeeCheckIn.SiteID = (base.UserInfo == null ? base.SystemAdminInfo.SiteID : base.UserInfo.SiteID);
                         mTB_EmployeeCheckIn.Creator = (base.UserInfo == null ? base.SystemAdminInfo.Account : base.UserInfo.ADAccount);
                         mTB_EmployeeCheckIn.IsActive = (int)TypeManager.IsActive.Valid;
-                        mTB_EmployeeCheckIn.Telephone = dtEmployeeInfo.Rows[0]["Phone"].ToString();
-                        mTB_EmployeeCheckIn.EmployeeTypeName = dtEmployeeInfo.Rows[0]["EmployeeTypeName"].ToString();
+                        mTB_EmployeeCheckIn.Telephone = drEmp["Phone"].ToString();
+                        mTB_EmployeeCheckIn.EmployeeTypeName = drEmp["EmployeeTypeName"].ToString();
                         var bAssign = new AssignRoomBLL().AssignRoom(mTB_EmployeeCheckIn);
 
                         if (!bAssign)
@@ -336,12 +330,12 @@ namespace DormManage.Web.UI.AssignRoom
                         }
                         ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('分配成功！')", true);
                         ClearControl();
-                        if (dtEmployeeInfo.Rows[0]["Phone"].ToString() != "")
+                        if (drEmp["Phone"].ToString() != "")
                         {
-                            string sContent = dtEmployeeInfo.Rows[0]["EmployeeID"].ToString() + "亲，以下是你被分配的宿舍信息：" + sDormAreaName + "宿舍 " + sBuildingName + "栋 " + sRoomName + "房间 " + sBedName + "床.  该宿舍的服务热线18926980019,请于3天内前往宿舍区办理入住手续，谢谢！ ";
+                            string sContent = drEmp["EmployeeID"].ToString() + "亲，以下是你被分配的宿舍信息：" + sDormAreaName + "宿舍 " + sBuildingName + "栋 " + sRoomName + "房间 " + sBedName + "床.  该宿舍的服务热线18926980019,请于3天内前往宿舍区办理入住手续，谢谢！ ";
                             try
                             {
-                                //SendSMS(dtEmployeeInfo.Rows[0]["Phone"].ToString(), sContent);
+                                //SendSMS(drEmp["Phone"].ToString(), sContent);
                             }
                             catch
                             {

@@ -510,7 +510,7 @@ namespace DormManage.BLL.DormPersonManage
                             select [Approving_ID],[FormID],[ApprovalGroupID],[EmpID],@Cost,[Balance],
                                 [DeleteMark],'宿舍系统自动签退',GetDate(),NULL,@CreateUserName
                             from EM_Approving
-                            where Approving_ID=@AppGroupID
+                            where ApprovalGroupID=@AppGroupID
                             and EmpID=@EmpID
                             ";
                 }
@@ -521,7 +521,7 @@ namespace DormManage.BLL.DormPersonManage
                             select [Approving_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
                                 [DeleteMark],'宿舍系统自动签退',GetDate(),NULL,@CreateUserName
                             from EM_Approving
-                            where Approving_ID=@AppGroupID
+                            where ApprovalGroupID=@AppGroupID
                             and EmpID=@EmpID
                             ";
                 }

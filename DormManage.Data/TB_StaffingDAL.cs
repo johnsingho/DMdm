@@ -13,6 +13,17 @@ using Microsoft.Practices.EnterpriseLibrary.Data;
 
 namespace DormManage.Data.DAL
 {
+    public class TEmpInfo
+    {
+        public string Employee_ID { get; set; }
+        public string Chinese_Name { get; set; }
+        public string English_Name { get; set; }
+        public string IDCardNumber { get; set; }
+        public string Segment { get; set; }
+        public DateTime Hire_Date { get; set; }
+        public string EmployeeTypeName { get; set; }
+    }
+
     public class TB_StaffingDAL
     {
 
@@ -145,5 +156,46 @@ namespace DormManage.Data.DAL
                 }
             }
         }
+
+
+        public bool UploadEmpInfo(TEmpInfo empInfo, out string sErr)
+        {
+            sErr = string.Empty;
+            if (null == empInfo
+                || string.IsNullOrEmpty(empInfo.Chinese_Name)
+                || string.IsNullOrEmpty(empInfo.Employee_ID)
+                || string.IsNullOrEmpty(empInfo.IDCardNumber)
+                )
+            {
+                sErr = "工号、中文名、身份证证号不能为空!";
+                return false;
+            }
+
+            try
+            {
+                var db = DBO.GetInstance();
+                DbCommand dbCommandWrapper = null;
+                string sSql = @"INSERT INTO [TB_LongEmployee] ([Employee_ID],[English_Name],[Chinese_Name],[Segment],[Hire_Date],[EmployeeTypeName],[IDCardNumber])      
+                            VALUES  (@Employee_ID,@English_Name,@Chinese_Name,@Segment,@Hire_Date,@EmployeeTypeName,@IDCardNumber)
+                            ";
+
+                dbCommandWrapper = db.GetSqlStringCommand(sSql);
+                db.AddInParameter(dbCommandWrapper, "@Employee_ID", DbType.String, empInfo.Employee_ID);
+                db.AddInParameter(dbCommandWrapper, "@English_Name", DbType.String, empInfo.English_Name);
+                db.AddInParameter(dbCommandWrapper, "@Chinese_Name", DbType.String, empInfo.Chinese_Name);
+                db.AddInParameter(dbCommandWrapper, "@Segment", DbType.String, empInfo.Segment);
+                db.AddInParameter(dbCommandWrapper, "@Hire_Date", DbType.Date, empInfo.Hire_Date);
+                db.AddInParameter(dbCommandWrapper, "@EmployeeTypeName", DbType.String, empInfo.EmployeeTypeName);
+                db.AddInParameter(dbCommandWrapper, "@IDCardNumber", DbType.String, empInfo.IDCardNumber);
+                return db.ExecuteNonQuery(dbCommandWrapper) > 0;
+            }
+            catch (Exception ex)
+            {
+                sErr = ex.Message;
+                return false;
+            }
+        }
+        
+
     }
 }

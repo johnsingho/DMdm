@@ -696,6 +696,7 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </Content>
+    <Content Include="SrvUploadEmp.asmx" />
     <Content Include="Styles\base.css" />
     <Content Include="Styles\login.css" />
     <Content Include="Styles\main.css" />
@@ -806,6 +807,9 @@
     <Compile Include="App_Code\DormPersonManageAjaxServices.cs" />
     <Compile Include="App_Code\SessionHelper.cs" />
     <Compile Include="App_Code\UserAjaxServices.cs" />
+    <Compile Include="SrvUploadEmp.asmx.cs">
+      <DependentUpon>SrvUploadEmp.asmx</DependentUpon>
+    </Compile>
     <Compile Include="UI\Allowance\AllowanceApplyCancel.aspx.cs">
       <DependentUpon>AllowanceApplyCancel.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
