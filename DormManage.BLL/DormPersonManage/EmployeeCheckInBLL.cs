@@ -503,18 +503,7 @@ namespace DormManage.BLL.DormPersonManage
                 var sCreateUser = System.Web.HttpContext.Current.Session[TypeManager.User] == null ? ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).Account : ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ADAccount;
 
                 //create EM_Approved
-                if (null==cost || !cost.HasValue)
-                {
-                    strSQL = @"insert into EM_Approved([Approved_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
-                                [DeleteMark],[Remark],[CreateDate],[CreateUserId],[CreateUserName])
-                            select [Approving_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
-                                [DeleteMark],'宿舍系统自动签退',GetDate(),NULL,@CreateUserName
-                            from EM_Approving
-                            where Approving_ID=@AppGroupID
-                            and EmpID=@EmpID
-                            ";
-                }
-                else
+                if (null!=cost && cost.HasValue)
                 {
                     strSQL = @"insert into EM_Approved([Approved_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
                                 [DeleteMark],[Remark],[CreateDate],[CreateUserId],[CreateUserName])
@@ -525,14 +514,25 @@ namespace DormManage.BLL.DormPersonManage
                             and EmpID=@EmpID
                             ";
                 }
- 
+                else
+                {
+                    strSQL = @"insert into EM_Approved([Approved_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
+                                [DeleteMark],[Remark],[CreateDate],[CreateUserId],[CreateUserName])
+                            select [Approving_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
+                                [DeleteMark],'宿舍系统自动签退',GetDate(),NULL,@CreateUserName
+                            from EM_Approving
+                            where Approving_ID=@AppGroupID
+                            and EmpID=@EmpID
+                            ";
+                }
+
                 var dbCommandWrapper = dbEM.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;
                 dbCommandWrapper.CommandText = strSQL;
                 dbEM.AddInParameter(dbCommandWrapper, "@CreateUserName", DbType.String, sCreateUser);
                 dbEM.AddInParameter(dbCommandWrapper, "@AppGroupID", DbType.String, sAppGroupID);
                 dbEM.AddInParameter(dbCommandWrapper, "@EmpID", DbType.String, sWorkID);
-                if (null != cost)
+                if (null!=cost && cost.HasValue)
                 {
                     dbEM.AddInParameter(dbCommandWrapper, "@Cost", DbType.Decimal, cost.Value);
                 }
