@@ -175,7 +175,7 @@ namespace DormManage.Web.UI.AssignRoom
                 }
 
                 //查询人员信息
-                DataTable dtEmployeeInfo = new StaffingBLL().GetData(sIdCard);
+                DataTable dtEmployeeInfo = new StaffingBLL().GetTableWithIDL(sWorkDayNO, sIdCard);
                 if (null != dtEmployeeInfo && dtEmployeeInfo.Rows.Count > 0)
                 {
                     //检查是否有分配记录
