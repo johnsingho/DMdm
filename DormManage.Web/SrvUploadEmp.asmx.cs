@@ -75,7 +75,8 @@ namespace DormManage.Web
             };
 
             var sErr = string.Empty;
-            ret.bok = mStaffingDal.UploadEmpInfo(einf, out sErr);
+            int SrcImport = 1; //0-GBSHR import, 1--multek import
+            ret.bok = mStaffingDal.UploadEmpInfo(einf, SrcImport, out sErr);
             ret.msg = sErr;
             return ret;
         }

@@ -158,7 +158,7 @@ namespace DormManage.Data.DAL
         }
 
 
-        public bool UploadEmpInfo(TEmpInfo empInfo, out string sErr)
+        public bool UploadEmpInfo(TEmpInfo empInfo, int SrcImport, out string sErr)
         {
             sErr = string.Empty;
             if (null == empInfo
@@ -175,8 +175,8 @@ namespace DormManage.Data.DAL
             {
                 var db = DBO.GetInstance();
                 DbCommand dbCommandWrapper = null;
-                string sSql = @"INSERT INTO [TB_LongEmployee] ([Employee_ID],[English_Name],[Chinese_Name],[Segment],[Hire_Date],[EmployeeTypeName],[IDCardNumber])      
-                            VALUES  (@Employee_ID,@English_Name,@Chinese_Name,@Segment,@Hire_Date,@EmployeeTypeName,@IDCardNumber)
+                string sSql = @"INSERT INTO [TB_LongEmployee] ([Employee_ID],[English_Name],[Chinese_Name],[Segment],[Hire_Date],[EmployeeTypeName],[IDCardNumber],[SrcImport])      
+                            VALUES  (@Employee_ID,@English_Name,@Chinese_Name,@Segment,@Hire_Date,@EmployeeTypeName,@IDCardNumber,@SrcImport)
                             ";
 
                 dbCommandWrapper = db.GetSqlStringCommand(sSql);
@@ -187,6 +187,7 @@ namespace DormManage.Data.DAL
                 db.AddInParameter(dbCommandWrapper, "@Hire_Date", DbType.Date, empInfo.Hire_Date);
                 db.AddInParameter(dbCommandWrapper, "@EmployeeTypeName", DbType.String, empInfo.EmployeeTypeName);
                 db.AddInParameter(dbCommandWrapper, "@IDCardNumber", DbType.String, empInfo.IDCardNumber);
+                db.AddInParameter(dbCommandWrapper, "@SrcImport", DbType.Int32, SrcImport);
                 return db.ExecuteNonQuery(dbCommandWrapper) > 0;
             }
             catch (Exception ex)
