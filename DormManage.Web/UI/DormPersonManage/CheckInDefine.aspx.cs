@@ -229,7 +229,9 @@ namespace DormManage.Web.UI.DormPersonManage
             }
             catch(Exception ex)
             {
-                ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "Error", "alert('导入失败！"+ex.Message+"')", true);
+                var sErr = string.Format("alert(\"导入失败！{0}\")", ex.Message);
+                sErr = sErr.Replace("\r\n", "");
+                ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "Error", sErr, true);
             }
             finally
             {

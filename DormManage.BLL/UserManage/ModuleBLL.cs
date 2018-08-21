@@ -28,11 +28,6 @@ namespace DormManage.BLL.UserManage
             return _mTB_ModuleDAL.GetUserModule(intUserID);
         }
 
-        public DataTable GetUserModule_FlexPlus(int intUserID)
-        {
-            return _mTB_ModuleDAL.GetUserModule_FlexPlus(intUserID);
-        }
-
         /// <summary>
         /// 获取到所有模块
         /// </summary>
@@ -41,11 +36,6 @@ namespace DormManage.BLL.UserManage
         public DataTable GetAllModule(TB_Module tb_Module)
         {
             return _mTB_ModuleDAL.GetTable(tb_Module).Tables[0];
-        }
-
-        public DataTable GetAllModule_FlexPlus(TB_Module tb_Module)
-        {
-            return _mTB_ModuleDAL.GetTable_FlexPlus(tb_Module).Tables[0];
         }
 
         public void LoadTreeModule(TreeView tree, int intRoleID)

@@ -740,7 +740,6 @@
     <Content Include="UI\DormPersonManage\ChangeRoom.aspx" />
     <Content Include="UI\DormPersonManage\ChangeRoomRecord.aspx" />
     <Content Include="UI\DormPersonManage\ChargingDefine.aspx" />
-    <Content Include="UI\DormPersonManage\CheckIn.aspx" />
     <Content Include="UI\DormPersonManage\CheckInDefine.aspx" />
     <Content Include="UI\DormPersonManage\CheckOut.aspx" />
     <Content Include="UI\DormPersonManage\CheckOutDefine.aspx" />
@@ -837,13 +836,6 @@
     </Compile>
     <Compile Include="UI\AssignRoom\AssignDormArea.aspx.designer.cs">
       <DependentUpon>AssignDormArea.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UI\DormPersonManage\CheckIn.aspx.cs">
-      <DependentUpon>CheckIn.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\DormPersonManage\CheckIn.aspx.designer.cs">
-      <DependentUpon>CheckIn.aspx</DependentUpon>
     </Compile>
     <Compile Include="UI\DormPersonManage\CheckOutImport_form.aspx.cs">
       <DependentUpon>CheckOutImport_form.aspx</DependentUpon>

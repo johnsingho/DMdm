@@ -686,26 +686,26 @@ where 1=1");
             try
             {
                 StringBuilder strBuilder = new StringBuilder(@"select A.[ID]
-      ,A.[Name]
-      ,A.[Creator]
-      ,A.[SiteID]
-      ,A.[DormAreaID]
-      ,A.[BuildingID]
-,A.[RoomID]
-,A.[Status]
-,A.[KeyCount]
-,A.[IsEnable]
-      ,B.Name as DormAreaName 
-      ,C.name as BuildingName
-      ,D.Name As RoomName
-from [TB_Bed] as A
-left join TB_dormarea As B
-on A.DormAreaID=B.ID
-left join TB_building as C
-on a.buildingid=c.id 
-left join TB_Room AS D
-on a.RoomID=D.ID 
-where 1=1");
+                                                              ,A.[Name]
+                                                              ,A.[Creator]
+                                                              ,A.[SiteID]
+                                                              ,A.[DormAreaID]
+                                                              ,A.[BuildingID]
+                                                              ,A.[RoomID]
+                                                              ,A.[Status]
+                                                              ,A.[KeyCount]
+                                                              ,A.[IsEnable]
+                                                              ,B.Name as DormAreaName 
+                                                              ,C.name as BuildingName
+                                                              ,D.Name As RoomName
+                                                        from [TB_Bed] as A
+                                                        left join TB_dormarea As B
+                                                        on A.DormAreaID=B.ID
+                                                        left join TB_building as C
+                                                        on a.buildingid=c.id 
+                                                        left join TB_Room AS D
+                                                        on a.RoomID=D.ID 
+                                                        where 1=1");
                 Database db = DBO.GetInstance();
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;
