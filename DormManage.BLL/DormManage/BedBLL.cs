@@ -9,6 +9,7 @@ using DormManage.Data.DAL;
 using DormManage.Framework;
 using DormManage.Models;
 using Microsoft.Practices.EnterpriseLibrary.Data;
+using System.Web;
 
 namespace DormManage.BLL.DormManage
 {
@@ -106,12 +107,12 @@ namespace DormManage.BLL.DormManage
         /// <param name="dt"></param>
         public int Import(DataTable dt,ref string errorMsg)
         {
-            int site = System.Web.HttpContext.Current.Session[TypeManager.User] != null ?
-                ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).SiteID :
-                ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).SiteID;
-            string user = System.Web.HttpContext.Current.Session[TypeManager.User] != null ?
-                ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ADAccount :
-                ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).Account;
+            int site = SessionHelper.Get(HttpContext.Current, TypeManager.User) != null ?
+                ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).SiteID :
+                ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).SiteID;
+            string user = SessionHelper.Get(HttpContext.Current, TypeManager.User) != null ?
+                ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ADAccount :
+                ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).Account;
             CommonManager mCommonManager = new CommonManager();
 
             try

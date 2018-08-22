@@ -10,6 +10,7 @@ using DormManage.Framework;
 using DormManage.Models;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using DormManage.BLL.DormManage;
+using System.Web;
 
 namespace DormManage.BLL.AssignRoom
 {
@@ -37,12 +38,12 @@ namespace DormManage.BLL.AssignRoom
         public bool Add(List<int> lstRoomID)
         {
             TB_AssignRoom mTB_AssignRoom = null;
-            int siteID = System.Web.HttpContext.Current.Session[TypeManager.Admin] == null ?
-                ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).SiteID :
-                ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).SiteID;
-            string operatorUser = System.Web.HttpContext.Current.Session[TypeManager.Admin] == null ?
-                ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ADAccount :
-                ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).Account;
+            int siteID = SessionHelper.Get(HttpContext.Current, TypeManager.Admin) == null ?
+                ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).SiteID :
+                ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).SiteID;
+            string operatorUser = SessionHelper.Get(HttpContext.Current, TypeManager.Admin) == null ?
+                ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ADAccount :
+                ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).Account;
             DataTable dtBed = null;
             try
             {

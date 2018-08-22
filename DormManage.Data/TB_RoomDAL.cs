@@ -10,6 +10,7 @@ using DormManage.Framework.Enum;
 using DormManage.Models;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using System.Data.SqlClient;
+using System.Web;
 
 namespace DormManage.Data.DAL
 {
@@ -225,7 +226,8 @@ namespace DormManage.Data.DAL
             DbCommand dbCommandWrapper = null;
             try
             {
-                StringBuilder strBuilder = new StringBuilder(@"select A.[ID]
+                StringBuilder strBuilder = new StringBuilder(@"
+select A.[ID]
       ,A.[FloorID]
       ,A.[Name]
       ,A.[RoomSexType]
@@ -268,13 +270,13 @@ on a.FloorID=E.ID ");
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;
                 #region 拼接条件
-                if (null != System.Web.HttpContext.Current.Session[TypeManager.User])
+                if (null != SessionHelper.Get(HttpContext.Current, TypeManager.User))
                 {
                     strBuilder.AppendLine(@"inner join [TB_UserConnectDormArea] AS G
-on B.ID=G.[DormAreaID]
-where 1=1 ");
+                                            on B.ID=G.[DormAreaID]
+                                            where 1=1 ");
                     strBuilder.AppendLine(" AND G.[UserID] = @UserID");
-                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ID);
+                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ID);
                 }
                 else
                 {
@@ -430,7 +432,8 @@ where 1=1 ");
             DbCommand dbCommandWrapper = null;
             try
             {
-                StringBuilder strBuilder = new StringBuilder(@"select A.[ID]
+                StringBuilder strBuilder = new StringBuilder(@"
+select A.[ID]
       ,A.[FloorID]
       ,A.[Name]
       ,A.[RoomSexType]
@@ -471,13 +474,13 @@ on a.id=G.roomID and G.[Status]=1 and G.ID not in  (select BedID from [TB_Assign
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;
                 #region 拼接条件
-                if (null != System.Web.HttpContext.Current.Session[TypeManager.User])
+                if (null != SessionHelper.Get(HttpContext.Current, TypeManager.User))
                 {
                     strBuilder.AppendLine(@"inner join [TB_UserConnectDormArea] AS H
-on B.ID=H.[DormAreaID]
-where 1=1 ");
+                                            on B.ID=H.[DormAreaID]
+                                            where 1=1 ");
                     strBuilder.AppendLine(" AND H.[UserID] = @UserID");
-                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ID);
+                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ID);
                 }
                 else
                 {

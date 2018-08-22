@@ -65,8 +65,12 @@
             }
             return true;
           }
-         function importComplete() {
-            var ajax = DormPersonManageAjaxServices.ExportImportErrorData();
+        function importComplete() {
+            var url = "/UI/Common/ExcelDownHandler.aspx?action=ImpErrAllowanceApply";
+            window.open(url, "down");
+            return;
+
+            <%--var ajax = DormPersonManageAjaxServices.ExportImportErrorData();
             var xls, xlBook, xlSheet;
             var reportSource = ajax.value;
             if (ajax.error == null) {
@@ -93,7 +97,7 @@
             }
             else {
                 alert(ajax.error);
-            }
+            }--%>
          }
 
         $(function () {

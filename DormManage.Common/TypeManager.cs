@@ -20,6 +20,11 @@ namespace DormManage.Common
         public const string Unselect = "";                       //缺省下拉框的“请选择”值
         public const string User = "User";//系统用户
         public const string Admin = "Admin";//系统超级管理员
+        public const string SESSIONKEY_ImpErrCheckIn = "ImpErrCheckIn";//入住记录导入失败
+        public const string SESSIONKEY_ImpErrAllowanceApply = "ImpErrAllowanceApply";
+        public const string SESSIONKEY_ImpErrAllowanceAppCancel = "ImpErrAllowanceAppCancel";
+        public const string SESSIONKEY_ImpErrCharing = "ImpErrCharing";
+
         public const string ModuleID = "M_ID";                   //模块ID
         public const string OperationID = "O_ID";                //操作ID
 

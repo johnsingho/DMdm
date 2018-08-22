@@ -87,34 +87,9 @@
         }
 
         function importComplete() {
-            var ajax = DormPersonManageAjaxServices.ExportImportErrorData();
-            var xls, xlBook, xlSheet;
-            var reportSource = ajax.value;
-            if (ajax.error == null) {
-                if (parseInt(reportSource[1]) == 0) {
-                    $.ligerDialog.error("Sorry! there is no data to export.");
-                    return;
-                }
-                try {
-                    xls = new ActiveXObject("Excel.Application");
-                }
-                catch (exp) {
-                    $.ligerDialog.warn("Your browser does not support ActiveXObject.", "Warn");
-                    return;
-                }
-                var path = '<% =("http://" + Request.Url.Authority + Utility.ExcelTemplateRoot) %>员工登记信息导入信息模板.xlsx';
-                xlBook = xls.Workbooks.Open(path);
-                xlSheet = xlBook.Worksheets(1);
-                with (xlSheet) {
-                    window.clipboardData.setData("Text", reportSource[0]);
-                    Paste(Cells(2, 1));
-                    window.clipboardData.clearData("Text");
-                }
-                xls.Visible = true;
-            }
-            else {
-                alert(ajax.error);
-            }
+            var url = "/UI/Common/ExcelDownHandler.aspx?action=ImpErrCheckIn";
+            window.open(url, "down");
+            return;
         }
 
         function upload() {

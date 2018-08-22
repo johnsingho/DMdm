@@ -9,6 +9,7 @@ using DormManage.Framework;
 using DormManage.Framework.Enum;
 using DormManage.Models;
 using Microsoft.Practices.EnterpriseLibrary.Data;
+using System.Web;
 
 namespace DormManage.Data.DAL
 {
@@ -131,7 +132,8 @@ namespace DormManage.Data.DAL
             DbCommand dbCommandWrapper = null;
             try
             {
-                StringBuilder strBuilder = new StringBuilder(@"SELECT A.[ID]
+                StringBuilder strBuilder = new StringBuilder(@"
+SELECT A.[ID]
       ,A.[RoomID]
       ,A.[isActive]
       ,A.[BedID]
@@ -181,22 +183,22 @@ on A.[BedID]=I.[BedID] ");
                 Database db = DBO.GetInstance();
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;
-                if (null != System.Web.HttpContext.Current.Session[TypeManager.User])
+                if (null != SessionHelper.Get(HttpContext.Current, TypeManager.User))
                 {
                     strBuilder.AppendLine(@"inner join [TB_UserConnectDormArea] AS J
-on F.ID=J.[DormAreaID]
-where 1=1");
+                                            on F.ID=J.[DormAreaID]
+                                            where 1=1");
                     strBuilder.AppendLine(" AND J.[UserID] = @UserID");
-                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ID);
+                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ID);
                 }
                 else
                 {
                     strBuilder.AppendLine(" where 1=1");
                 }
                 strBuilder.AppendLine(" AND A.[SiteID] = @SiteID");
-                db.AddInParameter(dbCommandWrapper, "@SiteID", DbType.Int32, System.Web.HttpContext.Current.Session[TypeManager.Admin] == null ?
-                ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).SiteID :
-                ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).SiteID);
+                db.AddInParameter(dbCommandWrapper, "@SiteID", DbType.Int32, SessionHelper.Get(HttpContext.Current, TypeManager.Admin) == null ?
+                ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).SiteID :
+                ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).SiteID);
                 if (!string.IsNullOrEmpty(strCardNo))
                 {
                     strBuilder.AppendLine(" AND I.[CardNo] = @CardNo");

@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using DormManage.Common;
 using DormManage.Data.DAL;
 using DormManage.Models;
+using System.Web;
 
 namespace DormManage.BLL.UserManage
 {
@@ -45,8 +46,9 @@ namespace DormManage.BLL.UserManage
             TB_Module tb_Module = new TB_Module()
             {
                 IsActive=1,
-                SiteID=System.Web.HttpContext.Current.Session[TypeManager.User]==null?((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).SiteID:
-                ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).SiteID,
+                SiteID=SessionHelper.Get(HttpContext.Current, TypeManager.User) == null
+                        ? ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).SiteID
+                        : ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).SiteID,
             };
             ds = _mTB_ModuleDAL.GetTable(tb_Module);
             //设定关键字段值

@@ -10,6 +10,7 @@ using DormManage.Framework.Enum;
 using DormManage.Models;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using DormManage.Framework.LogManager;
+using System.Web;
 
 namespace DormManage.Data.DAL
 {
@@ -230,7 +231,8 @@ namespace DormManage.Data.DAL
             DbCommand dbCommandWrapper = null;
             try
             {
-                StringBuilder strBuilder = new StringBuilder(@"SELECT A.[ID]
+                StringBuilder strBuilder = new StringBuilder(@"
+SELECT A.[ID]
       ,A.[EmployeeNo]
       ,A.[Sex]
       ,I.Name  [RoomType]
@@ -270,13 +272,13 @@ ON C.RoomType=I.ID");
                 Database db = DBO.GetInstance();
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;
-                if (null != System.Web.HttpContext.Current.Session[TypeManager.User])
+                if (null != SessionHelper.Get(HttpContext.Current, TypeManager.User))
                 {
                     strBuilder.AppendLine(@" inner join [TB_UserConnectDormArea] AS H
 on G.ID=H.[DormAreaID]
 where 1=1");
                     strBuilder.AppendLine(" AND H.[UserID] = @UserID");
-                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ID);
+                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ID);
                 }
                 else
                 {
@@ -384,7 +386,8 @@ where 1=1");
             DbCommand dbCommandWrapper = null;
             try
             {
-                StringBuilder strBuilder = new StringBuilder(@"SELECT A.[ID]
+                StringBuilder strBuilder = new StringBuilder(@"
+SELECT A.[ID]
       ,A.[EmployeeNo]
       ,A.[Sex]
       ,I.Name  [RoomType]
@@ -425,13 +428,13 @@ ON C.RoomType=I.ID");
                 Database db = DBO.GetInstance();
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;
-                if (null != System.Web.HttpContext.Current.Session[TypeManager.User])
+                if (null != SessionHelper.Get(HttpContext.Current, TypeManager.User))
                 {
                     strBuilder.AppendLine(@" inner join [TB_UserConnectDormArea] AS H
 on G.ID=H.[DormAreaID]
 where 1=1");
                     strBuilder.AppendLine(" AND H.[UserID] = @UserID");
-                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ID);
+                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ID);
                 }
                 else
                 {
@@ -542,7 +545,8 @@ where 1=1");
             DbCommand dbCommandWrapper = null;
             try
             {
-                StringBuilder strBuilder = new StringBuilder(@"SELECT A.[EmployeeNo] '工号'
+                StringBuilder strBuilder = new StringBuilder(@"
+SELECT A.[EmployeeNo] '工号'
       ,A.[Name] '姓名'
       ,A.[BU] '事业部'
       ,A.[Company] '公司'
@@ -581,13 +585,13 @@ ON C.RoomType=J.ID
                 Database db = DBO.GetInstance();
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;
-                if (null != System.Web.HttpContext.Current.Session[TypeManager.User])
+                if (null != SessionHelper.Get(HttpContext.Current, TypeManager.User))
                 {
                     strBuilder.AppendLine(@" inner join [TB_UserConnectDormArea] AS H
-on G.ID=H.[DormAreaID]
-where 1=1");
+                                            on G.ID=H.[DormAreaID]
+                                            where 1=1");
                     strBuilder.AppendLine(" AND H.[UserID] = @UserID");
-                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ID);
+                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ID);
                 }
                 else
                 {

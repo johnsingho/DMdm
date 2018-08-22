@@ -9,6 +9,7 @@ using DormManage.Data.DAL;
 using DormManage.Framework;
 using DormManage.Models;
 using Microsoft.Practices.EnterpriseLibrary.Data;
+using System.Web;
 
 namespace DormManage.BLL.DormManage
 {
@@ -89,9 +90,9 @@ namespace DormManage.BLL.DormManage
         /// <param name="db"></param>
         internal void Remove(string strID, DbTransaction tran, Database db)
         {
-            int intSiteID = System.Web.HttpContext.Current.Session[TypeManager.User] != null ?
-                ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).SiteID :
-                ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).SiteID;
+            int intSiteID = SessionHelper.Get(HttpContext.Current, TypeManager.User) != null ?
+                ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).SiteID :
+                ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).SiteID;
 
             TB_RoomDAL mTB_RoomDAL = new TB_RoomDAL();
 

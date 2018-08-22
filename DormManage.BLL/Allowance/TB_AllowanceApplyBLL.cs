@@ -11,6 +11,7 @@ using Microsoft.Practices.EnterpriseLibrary.Data;
 using DormManage.Common;
 using DormManage.Model;
 using System.IO;
+using System.Web;
 
 namespace DormManage.BLL.DormManage
 {
@@ -108,13 +109,13 @@ namespace DormManage.BLL.DormManage
             dt.Columns.Add("BZ");
             DataTable dtBU = new DataTable();
             //SiteID
-            int intSiteID = System.Web.HttpContext.Current.Session[TypeManager.User] != null ?
-                ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).SiteID :
-                ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).SiteID;
+            int intSiteID = SessionHelper.Get(HttpContext.Current, TypeManager.User) != null ?
+                ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).SiteID :
+                ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).SiteID;
             //操作用户账号
-            string currentUser = System.Web.HttpContext.Current.Session[TypeManager.User] != null ?
-                ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ADAccount :
-                ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).Account;
+            string currentUser = SessionHelper.Get(HttpContext.Current, TypeManager.User) != null ?
+                ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ADAccount :
+                ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).Account;
           
             //获取到整个site的所有入住人员信息
             DataTable dtEmployeeCheckIn = new TB_EmployeeCheckInDAL().GetTableBySiteID(intSiteID);
