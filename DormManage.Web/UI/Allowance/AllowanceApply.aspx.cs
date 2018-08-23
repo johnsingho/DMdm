@@ -133,7 +133,7 @@ namespace DormManage.Web.UI.Allowance
                 //查询人员信息
                 DataTable dtEmployeeInfo = new StaffingBLL().GetTableWithIDL(sWorkDayNO, sIdCard);
 
-                if (null != dtEmployeeInfo && dtEmployeeInfo.Rows.Count > 0)
+                if (!DataTableHelper.IsEmptyDataTable(dtEmployeeInfo))
                 {
                     //检查用工类型
                     if(dtEmployeeInfo.Rows[0]["EmployeeTypeName"].ToString()!="普工")

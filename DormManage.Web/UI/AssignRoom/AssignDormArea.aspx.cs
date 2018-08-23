@@ -10,6 +10,7 @@ using DormManage.Framework;
 using DormManage.Models;
 using DormManage.BLL.AssignRoom;
 using DormManage.BLL.DormManage;
+using DormManage.Common;
 
 namespace DormManage.Web.UI.AssignRoom
 {
@@ -64,7 +65,7 @@ namespace DormManage.Web.UI.AssignRoom
                 //查询人员信息
                 DataTable dtEmployeeInfo = new StaffingBLL().GetTableWithIDL(sWorkDayNO, sIdCard);
 
-                if (null != dtEmployeeInfo && dtEmployeeInfo.Rows.Count > 0)
+                if (!DataTableHelper.IsEmptyDataTable(dtEmployeeInfo))
                 {
                     //检查是否有分配记录
                     DataTable  dtAssignArea = new AssignRoomBLL().GetAssignDormArea(dtEmployeeInfo.Rows[0]["IDCardNumber"].ToString());
@@ -169,7 +170,7 @@ namespace DormManage.Web.UI.AssignRoom
 
                 //查询人员信息
                 DataTable dtEmployeeInfo = new StaffingBLL().GetTableWithIDL(sWorkDayNO, sIdCard);
-                if (null != dtEmployeeInfo && dtEmployeeInfo.Rows.Count > 0)
+                if (!DataTableHelper.IsEmptyDataTable(dtEmployeeInfo))
                 {
                     //检查是否有分配记录
                     var dr = dtEmployeeInfo.Rows[0];

@@ -638,7 +638,7 @@ namespace DormManage.Web.UI.AssignRoom
                 //drNew["ChineseName"] = "Eric liu";
                 //drNew["Sex"] = "男";
                 //dtEmployeeInfo.Rows.Add(drNew);
-                if (null != dtEmployeeInfo && dtEmployeeInfo.Rows.Count > 0)
+                if (!DataTableHelper.IsEmptyDataTable(dtEmployeeInfo))
                 {
                     string condition = " BU='" + dtEmployeeInfo.Rows[0]["SegmentName"] + "' and Sex ='" + dt.Rows[0]["Sex"] + "' ";
                     drArr = dt.Select(condition);

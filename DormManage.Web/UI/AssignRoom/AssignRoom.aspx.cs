@@ -216,13 +216,12 @@ namespace DormManage.Web.UI.AssignRoom
 
             //查询人员信息
             DataTable dtEmployeeInfo = new StaffingBLL().GetTableWithIDL(sWorkDayNO, sIdCard);
-            if (null != dtEmployeeInfo && dtEmployeeInfo.Rows.Count > 0)
+            if (!DataTableHelper.IsEmptyDataTable(dtEmployeeInfo))
             {
                 ddlRoomSexType.SelectedValue = dtEmployeeInfo.Rows[0]["Sex"].ToString();
 
                 //检查是否申请住房津贴
                 bool isHaveApplyAllowance = new AssignRoomBLL().CheckAllowanceApply(dtEmployeeInfo.Rows[0]["EmployeeID"].ToString());
-
                 if (isHaveApplyAllowance)
                 {
                     ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('此用户申请了住房津贴！如需入住，请申请取消津贴')", true);
@@ -245,7 +244,6 @@ namespace DormManage.Web.UI.AssignRoom
                     ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('此用户还没分配宿舍！')", true);
                     return;
                 }
-
             }
             else
             {
@@ -271,7 +269,7 @@ namespace DormManage.Web.UI.AssignRoom
 
                 //查询人员信息
                 DataTable dtEmployeeInfo = new StaffingBLL().GetTableWithIDL(sWorkDayNO, sIdCard);
-                if (null != dtEmployeeInfo && dtEmployeeInfo.Rows.Count > 0)
+                if (!DataTableHelper.IsEmptyDataTable(dtEmployeeInfo))
                 {
                     var drEmp = dtEmployeeInfo.Rows[0];
                     if (drEmp["Sex"].ToString() != drAssign["RoomSexType"].ToString())

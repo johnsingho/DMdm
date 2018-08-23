@@ -134,7 +134,7 @@ namespace DormManage.Web.UI.Allowance
                 DataTable dtEmployeeInfo = new StaffingBLL().GetTableWithIDL(sWorkDayNO, sIdCard);
 
                 TB_AllowanceApplyCancelBLL bll = new TB_AllowanceApplyCancelBLL();
-                if (null != dtEmployeeInfo && dtEmployeeInfo.Rows.Count > 0)
+                if (!DataTableHelper.IsEmptyDataTable(dtEmployeeInfo))
                 {
                     //检查是否已经申请津贴
                     TB_AllowanceApply tb_AllowanceApply = new TB_AllowanceApply();
