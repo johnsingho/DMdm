@@ -144,7 +144,9 @@ namespace DormManage.BLL.DormManage
                         tB_AllowanceApply.Sex = dr["性别"].ToString();
                         tB_AllowanceApply.Company = dr["公司"].ToString(); 
                         tB_AllowanceApply.BU = dr["事业部"].ToString();
-                        tB_AllowanceApply.Grade = Convert.ToInt32(dr["级别"].ToString());
+                        int nGrade = 0;
+                        int.TryParse(dr["级别"].ToString(), out nGrade);
+                        tB_AllowanceApply.Grade = nGrade;
                         tB_AllowanceApply.CheckOutDate = dr["退宿日期"].ToString();
                         tB_AllowanceApply.EmployeeTypeName = dr["用工类型"].ToString();
                         tB_AllowanceApply.CreateUser = currentUser;
@@ -154,9 +156,9 @@ namespace DormManage.BLL.DormManage
                         ADDAllowanceApply(tB_AllowanceApply);
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
-                    dr["BZ"] = "已有申请记录";
+                    dr["BZ"] = "申请记录失败："+ex.Message;
                     dtError.ImportRow(dr);
                 }
             }

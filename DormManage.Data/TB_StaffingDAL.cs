@@ -200,8 +200,21 @@ namespace DormManage.Data.DAL
 
             var timEhr = default(DateTime);
             var timImp = default(DateTime);
-            timEhr = Convert.ToDateTime(drEhr["Hire_Date"]);
-            timImp = Convert.ToDateTime(drImp["Hire_Date"]);
+            try
+            {
+                timEhr = Convert.ToDateTime(drEhr["Hire_Date"]);
+            }
+            catch {
+                //EHR的招聘日期为空，那就取导入的吧
+                return dtImp;
+            };
+            try
+            {
+                timImp = Convert.ToDateTime(drImp["Hire_Date"]);
+            }
+            catch{
+                return dtEhr;
+            }            
 
             //取最近的时间
             return timEhr > timImp ? dtEhr : dtImp;
