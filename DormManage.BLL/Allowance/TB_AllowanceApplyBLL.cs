@@ -132,8 +132,7 @@ namespace DormManage.BLL.DormManage
                     if (drEmployeeCheckInArr.Length > 0)
                     {
                         dr["BZ"] = "已有入住记录";
-                        dtError.ImportRow(dr);
-                   
+                        dtError.ImportRow(dr);                   
                     }
                     else
                     {

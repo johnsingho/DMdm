@@ -150,10 +150,8 @@ namespace DormManage.Web.UI.Allowance
                         ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('此用户未申请过住房津贴，不能申请取消津贴')", true);
                         return;
                     }
-
-
-
-                    //检车是否已经申请津贴
+                    
+                    //检查是否已经申请津贴
                     TB_AllowanceApplyCancel tb_AllowanceApplyCancel = new TB_AllowanceApplyCancel();
                     tb_AllowanceApplyCancel.EmployeeNo = dtEmployeeInfo.Rows[0]["EmployeeID"].ToString();
                     tb_AllowanceApplyCancel.SiteID = (base.UserInfo == null ? base.SystemAdminInfo.SiteID : base.UserInfo.SiteID);
@@ -165,9 +163,7 @@ namespace DormManage.Web.UI.Allowance
                         ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('此用户已经申请过取消住房津贴，不能重复申请')", true);
                         return;
                     }
-
-
-
+                    
                     //检查是否已经有CheckIn的记录
                     TB_AllowanceApplyCancel tB_AllowanceApplyCancel = new TB_AllowanceApplyCancel();
                     tB_AllowanceApplyCancel.EmployeeNo = dtEmployeeInfo.Rows[0]["EmployeeID"].ToString();

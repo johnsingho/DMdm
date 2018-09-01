@@ -120,6 +120,12 @@ namespace DormManage.Web.UI.Allowance
             this.txtWorkDayNo.Focus();
             this.txtScanCardNO.Text = "";
         }
+        public static bool CanApplay(string sEmplType)
+        {
+            return "合同工".Equals(sEmplType)
+                   || "派遣工".Equals(sEmplType);
+        }
+
         protected void btnAssign_Click(object sender, EventArgs e)
         {
             try
@@ -136,9 +142,10 @@ namespace DormManage.Web.UI.Allowance
                 if (!DataTableHelper.IsEmptyDataTable(dtEmployeeInfo))
                 {
                     //检查用工类型
-                    if(dtEmployeeInfo.Rows[0]["EmployeeTypeName"].ToString()!="普工")
+                    var sEmpType = dtEmployeeInfo.Rows[0]["EmployeeTypeName"].ToString();
+                    if ( !CanApplay(sEmpType))
                     {
-                        ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('此用户用工类型为："+ dtEmployeeInfo.Rows[0]["EmployeeTypeName"].ToString() + "，不能申请住房津贴')", true);
+                        ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('此用户用工类型为："+ sEmpType + "，不能申请住房津贴')", true);
                         return;
                     }
 
@@ -188,9 +195,7 @@ namespace DormManage.Web.UI.Allowance
                         tB_AllowanceApply.SiteID= (base.UserInfo == null ? base.SystemAdminInfo.SiteID : base.UserInfo.SiteID);
                         tB_AllowanceApply.Hire_Date= Convert.ToDateTime(dtEmployeeInfo.Rows[0]["Hire_Date"]);
                         tB_AllowanceApply.Effective_Date = DateTime.Now.AddDays(1 - DateTime.Now.Day).AddMonths(1).AddHours(-DateTime.Now.Hour + 1).AddMinutes(-DateTime.Now.Minute).AddSeconds(-DateTime.Now.Second);
-                        bll.ADDAllowanceApply(tB_AllowanceApply);
-
-                       
+                        bll.ADDAllowanceApply(tB_AllowanceApply);                                              
 
                         ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('申请成功！')", true);
                         this.Bind(1);
