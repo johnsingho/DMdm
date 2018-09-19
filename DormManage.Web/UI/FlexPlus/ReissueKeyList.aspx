@@ -137,6 +137,7 @@
                                                     <asp:Literal ID="ltlStatus" runat="server"></asp:Literal>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
+                                            <asp:BoundField DataField="ModifyUserID" HeaderText="处理者" />
                                             <asp:TemplateField>
                                                <ItemTemplate>
                                                    <input id="btnView" name="<%#Eval("ID") %>" type="button" value="查看" class="publicBtn"

@@ -183,7 +183,8 @@
                                             </asp:TemplateField>
                                             <asp:BoundField DataField="CreateDate" HeaderText="申请时间" DataFormatString="{0:yyyy-MM-dd}"/>
                                             <asp:BoundField DataField="Response" HeaderText="回复" />
-                                            <asp:BoundField DataField="UpdateDate" HeaderText="更新时间" DataFormatString="{0:yyyy-MM-dd}"/>
+                                            <asp:BoundField DataField="ModifyUserID" HeaderText="处理者" />                                            
+                                            <asp:BoundField DataField="UpdateDate" HeaderText="处理时间" DataFormatString="{0:yyyy-MM-dd}"/>
                                            <asp:TemplateField>
                                                <ItemTemplate>
                                                    <input id="btnView" name="<%#Eval("ID") %>" type="button" value="查看" class="publicBtn"

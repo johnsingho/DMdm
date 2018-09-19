@@ -43,12 +43,12 @@ namespace DormManage.BLL.FlexPlus
 
                     if (assignArea.AssignArea(tB_AssignDormArea))
                     {
-                        _mDAL.HandleApplyDorm(k, sHandle, sMsg);
+                        _mDAL.HandleApplyDorm(k, sHandlerWorkdayNo, sHandle, sMsg);
                     }
                 }
                 else
                 {
-                    _mDAL.HandleApplyDorm(k, sHandle, sMsg);
+                    _mDAL.HandleApplyDorm(k, sHandlerWorkdayNo, sHandle, sMsg);
                 }
                 MessageBLL.SendJpush(sWorkdayNo, "宿舍申请", "宿舍申请", sMsg, "msg");
             }

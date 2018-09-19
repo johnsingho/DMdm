@@ -166,12 +166,13 @@ namespace DormManage.Data.DAL
             return db.ExecuteDataSet(dbCommandWrapper).Tables[0];
         }
 
-        public void HandleApplyDorm(string id, string sHandle, string sMsg)
+        public void HandleApplyDorm(string id, string sHandlerWorkdayNo, string sHandle, string sMsg)
         {
             var db = DBO.GetInstance();
             DbCommand dbCommandWrapper = null;
             string sSql = @"update [TB_DormAreaApply] 
-                            SET Status=@Handle, Response=@Msg, UpdateDate=GetDate() 
+                            SET Status=@Handle, Response=@Msg, 
+                            ModifyUserID=@sHandlerWorkdayNo, UpdateDate=GetDate() 
                             where id=@id
                             ";
 
@@ -179,6 +180,7 @@ namespace DormManage.Data.DAL
             #region Add parameters
             db.AddInParameter(dbCommandWrapper, "@Handle", DbType.String, sHandle);
             db.AddInParameter(dbCommandWrapper, "@Msg", DbType.String, sMsg);
+            db.AddInParameter(dbCommandWrapper, "@sHandlerWorkdayNo", DbType.String, sHandlerWorkdayNo);
             db.AddInParameter(dbCommandWrapper, "@id", DbType.String, id);
             #endregion
             db.ExecuteNonQuery(dbCommandWrapper);
