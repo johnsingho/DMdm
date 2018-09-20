@@ -45,8 +45,9 @@
             var sUrl = 'RequiredHandle.aspx?kind=RepairDorm&key=' + escape(keys);
             $.ligerDialog.open({
                 title: "审核宿舍报修",
+                top:30,
                 width: 580,
-                height: 440,
+                height: 380,
                 isResize: true,
                 url: sUrl
             });
@@ -59,8 +60,9 @@
             //var id = $(obj).attr("name");
             $.ligerDialog.open({
                 title: "查看宿舍报修",
+                top:30,
                 width: 400,
-                height: 480,
+                height: 500,
                 isResize: true,
                 url: 'RepairDormView.aspx?id=' + id                   
             });

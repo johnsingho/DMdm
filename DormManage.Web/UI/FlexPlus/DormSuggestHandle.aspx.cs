@@ -65,8 +65,9 @@ namespace DormManage.Web.UI.FlexPlus
 
             var bll = new FlexPlusBLL();
             var sMsg = txtResponse.Value.Trim();
-            var sHandlerWorkdayNo = (base.UserInfo == null ? base.SystemAdminInfo.Account : base.UserInfo.EmployeeNo);
-            bll.HandleSuggest(key, sHandlerWorkdayNo, sMsg);
+            //var sHandlerWorkdayNo = (base.UserInfo == null ? base.SystemAdminInfo.Account : base.UserInfo.EmployeeNo);
+            var sEnName = (base.UserInfo == null ? base.SystemAdminInfo.Account : base.UserInfo.EName);
+            bll.HandleSuggest(key, sEnName, sMsg);
 
             RunScript(this, "myscript", "saveComplete();");
 

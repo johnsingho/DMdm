@@ -32,8 +32,8 @@
     </script>
     <style type="text/css">
         .auto-style1 {
-            height: 166px;
-            width: 500px;
+            height: 230px;
+            width: 490px;
         }
     </style>
 </head>
@@ -55,7 +55,8 @@
                             <asp:Label ID="Label2" runat="server" Text="内容："></asp:Label>
                         </th>
                         <td>
-                            <textarea id="txtContext" runat="server" class="auto-style1"></textarea>
+                            <textarea id="txtContext" runat="server" placeholder="排版优美的内容，可以使用微信文章编辑器的代码。例如：http://bj.96weixin.com"
+                                class="auto-style1"></textarea>
                         </td>
                     </tr>
                 </table>

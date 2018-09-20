@@ -23,7 +23,7 @@ namespace DormManage.BLL.FlexPlus
             return _mDAL.GetApplyDorms(mTB_DormAreaApply, pager);
         }
 
-        public void ApplyDorm(List<string> mKeys, string sHandlerWorkdayNo, string sDormAreaID, string sHandle, string sMsg)
+        public void ApplyDorm(List<string> mKeys, string sHandlerWorkdayNo, string sEnName, string sDormAreaID, string sHandle, string sMsg)
         {
             var assignArea = new AssignRoomBLL();
             foreach (var k in mKeys)
@@ -43,12 +43,12 @@ namespace DormManage.BLL.FlexPlus
 
                     if (assignArea.AssignArea(tB_AssignDormArea))
                     {
-                        _mDAL.HandleApplyDorm(k, sHandlerWorkdayNo, sHandle, sMsg);
+                        _mDAL.HandleApplyDorm(k, sEnName, sHandle, sMsg);
                     }
                 }
                 else
                 {
-                    _mDAL.HandleApplyDorm(k, sHandlerWorkdayNo, sHandle, sMsg);
+                    _mDAL.HandleApplyDorm(k, sEnName, sHandle, sMsg);
                 }
                 MessageBLL.SendJpush(sWorkdayNo, "宿舍申请", "宿舍申请", sMsg, "msg");
             }

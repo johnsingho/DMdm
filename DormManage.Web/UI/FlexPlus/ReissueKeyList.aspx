@@ -50,6 +50,7 @@
             var sUrl = 'RequiredHandle.aspx?kind=ReissueKey&key=' + escape(keys);
             $.ligerDialog.open({
                 title: "审核补办钥匙",
+                top:30,
                 width: 580,
                 height: 440,
                 isResize: true,
@@ -64,6 +65,7 @@
             //var id = $(obj).attr("name");
             $.ligerDialog.open({
                 title: "查看补办钥匙",
+                top:30,
                 width: 400,
                 height: 480,
                 isResize: true,

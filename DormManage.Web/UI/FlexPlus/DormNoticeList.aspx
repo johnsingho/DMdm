@@ -33,6 +33,7 @@
             var url = "/UI/FlexPlus/DormNoticeAdd.aspx";
             $.ligerDialog.open({
                 title: sTitle,
+                top: 30,
                 width: 600,
                 height: 400,
                 isResize: true,
@@ -47,6 +48,7 @@
                 var url = "/UI/FlexPlus/DormNoticeAdd.aspx?key=" + key;
                 $.ligerDialog.open({
                     title: sTitle,
+                    top: 30,
                     width: 600,
                     height: 400,
                     isResize: true,

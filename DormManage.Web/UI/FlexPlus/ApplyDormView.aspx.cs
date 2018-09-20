@@ -44,6 +44,8 @@ namespace DormManage.Web.UI.FlexPlus
 
             txtCardNo.Text = dr["CardNo"].ToString();
             txtCreateDate.Text = dr["CreateDate"].ToString();
+            txtHandler.Text = dr["ModifyUserID"].ToString();
+            txtUpdateDate.Text = dr["UpdateDate"].ToString();
             txtDormArea.Text = dr["DormArea"].ToString();
             txtGrade.Text = dr["Grade"].ToString();
             nTemp = 0;

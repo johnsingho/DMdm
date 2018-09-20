@@ -149,7 +149,8 @@ namespace DormManage.Web.UI.FlexPlus
             var sMsg = txtReply.Value.Trim();
             var lst = new List<string>(mKeys);
             var sHandlerWorkdayNo = (base.UserInfo == null ? base.SystemAdminInfo.Account : base.UserInfo.EmployeeNo);
-            bll.ApplyDorm(lst, sHandlerWorkdayNo, sDormAreaID, sHandle, sMsg);
+            var sEnName = (base.UserInfo == null ? base.SystemAdminInfo.Account : base.UserInfo.EName);
+            bll.ApplyDorm(lst, sHandlerWorkdayNo, sEnName, sDormAreaID, sHandle, sMsg);
 
             RunScript(this, "myscript", "saveComplete();");
 

@@ -44,6 +44,7 @@
             var sUrl = 'ApplyDormHandle.aspx?keys=' + escape(keys);
             $.ligerDialog.open({
                 title: "审核住宿申请",
+                top:30,
                 width: 620,
                 height: 400,
                 isResize: true,
@@ -58,8 +59,9 @@
             //var id = $(obj).attr("name");
             $.ligerDialog.open({
                 title: "查看入住申请",
+                top:10,
                 width: 400,
-                height: 590,
+                height: 600,
                 isResize: true,
                 url: 'ApplyDormView.aspx?id=' + id                   
             });

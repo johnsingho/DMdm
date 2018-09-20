@@ -84,7 +84,8 @@
                             <label>描述</label>
                         </th>
                         <td>
-                            <textarea id="txtRequireDesc" runat="server" readonly="readonly" rows="4"></textarea>
+                            <textarea id="txtRequireDesc" runat="server" readonly="readonly" style="width:90%; height:100px;"
+                                rows="5"></textarea>
                         </td>
                     </tr>
                     <tr>

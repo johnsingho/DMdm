@@ -84,8 +84,8 @@
                             <label>建议</label>
                         </th>
                         <td>
-                            <textarea id="txtSuggest" runat="server" class="myTextArea"
-                                readonly="readonly" rows="5"></textarea>
+                            <textarea id="txtSuggest" runat="server" class="myTextArea" style="width:90%;height:120px;"
+                                readonly="readonly" rows="6"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -93,8 +93,8 @@
                             <label>回复</label>
                         </th>
                         <td>
-                            <textarea id="txtResponse" runat="server" class="myTextArea"
-                                rows="5"></textarea>
+                            <textarea id="txtResponse" runat="server" class="myTextArea" style="width:90%;height:110px;"
+                                rows="6"></textarea>
                         </td>
                     </tr>
                 </table>

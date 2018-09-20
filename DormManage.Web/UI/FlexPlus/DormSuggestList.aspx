@@ -42,8 +42,9 @@
         function ResponseRow(obj, id){
             $.ligerDialog.open({
                 title: "回复宿舍建议",
-                width: 400,
-                height: 480,
+                top:30,
+                width: 500,
+                height: 540,
                 isResize: true,
                 url: 'DormSuggestHandle.aspx?id=' + id                   
             });

@@ -118,6 +118,22 @@
                             <asp:TextBox ID="txtCreateDate" runat="server" ReadOnly="True"></asp:TextBox>
                         </td>
                     </tr>
+                    <tr>
+                        <th>
+                            <label>处理者</label>
+                        </th>
+                        <td>
+                            <asp:TextBox ID="txtHandler" runat="server" ReadOnly="True"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label>处理时间</label>
+                        </th>
+                        <td>
+                            <asp:TextBox ID="txtUpdateDate" runat="server" ReadOnly="True"></asp:TextBox>
+                        </td>
+                    </tr>
                 </table>
             </div>
             <div class="pagerbar">

@@ -79,9 +79,10 @@ namespace DormManage.Web.UI.FlexPlus
             var bll = new FlexPlusBLL();
             var sHandle = ddlHandle.SelectedValue;
             var sMsg = txtReply.Value.Trim();
-            var sHandlerWorkdayNo = (base.UserInfo == null ? base.SystemAdminInfo.Account : base.UserInfo.EmployeeNo);
+            //var sHandlerWorkdayNo = (base.UserInfo == null ? base.SystemAdminInfo.Account : base.UserInfo.EmployeeNo);
+            var sEnName = (base.UserInfo == null ? base.SystemAdminInfo.Account : base.UserInfo.EName);
             var kind = (0 == string.Compare("RepairDorm", mKind, true)) ? 0 : 1;
-            bll.HandleRequired(kind, mKey, sHandlerWorkdayNo, sHandle, sMsg);
+            bll.HandleRequired(kind, mKey, sEnName, sHandle, sMsg);
 
             var sCmd = string.Format("saveComplete({0});", kind);
             RunScript(this, "myscript", sCmd);
