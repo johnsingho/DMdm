@@ -49,6 +49,25 @@ namespace DormManage.Web.UI.FlexPlus
 
             txtDeviceType.Text = dr["DeviceType"].ToString();
             txtRequireDesc.Value = dr["RequireDesc"].ToString();
+
+            var oBatchNo = dr["RefImageBatchNo"];
+            int nBatchNo = 0;
+            if (null!=oBatchNo)
+            {                
+                int.TryParse(oBatchNo.ToString(), out nBatchNo);                                
+            }
+            if (nBatchNo > 0)
+            {
+                lnkView.Enabled = nBatchNo > 0;
+                lnkView.CssClass = "lnkHas";
+                RefImageBatchNo.Value = oBatchNo.ToString();
+            }else
+            {
+                lnkView.CssClass = "lnkNoHas";
+                RefImageBatchNo.Value = string.Empty;
+                lblNoHas.Visible = true;
+            }
+
         }
     }
 }

@@ -20,6 +20,11 @@
     <script src="../../Scripts/ligerUI1.1.9/js/ligerui.all.js"></script>
     <link href="../../Scripts/ligerUI1.1.9/skins/Aqua/css/ligerui-all.css" rel="stylesheet" />
     
+    <style>
+        .l-dialog-content {
+            overflow: initial;
+        }
+    </style>
     
     <script type="text/javascript">
         function GetSelItem() {
@@ -45,7 +50,7 @@
             var sUrl = 'RequiredHandle.aspx?kind=RepairDorm&key=' + escape(keys);
             $.ligerDialog.open({
                 title: "审核宿舍报修",
-                top:30,
+                top:30,                
                 width: 580,
                 height: 380,
                 isResize: true,
@@ -60,14 +65,33 @@
             //var id = $(obj).attr("name");
             $.ligerDialog.open({
                 title: "查看宿舍报修",
-                top:30,
+                top:15,
+                left:80,
                 width: 400,
-                height: 500,
+                height: 550,
                 isResize: true,
-                url: 'RepairDormView.aspx?id=' + id                   
+                url: 'RepairDormView.aspx?id=' + id
             });
         }
 
+
+        function ViewRepairPicture(batchID){            
+            if (!batchID || batchID <= 0) { return; }
+            $.ligerDialog.open({
+                title: "宿舍报修相关照片",
+                top: 15,
+                width: 800,
+                height: 560,
+                isResize: true,
+                url: '/UI/Common/OpenImage.aspx?batchNo=' + batchID,
+                buttons: [
+                    { text: '关闭', onclick: function (item, dialog) { 
+                        //dialog.hide(); 
+                        dialog.close(); 
+                    } }
+                ]
+            });
+        }
     </script>
 </head>
 <body>
@@ -116,7 +140,7 @@
                                                     <input type="radio" id="chkLeftSingle" value="<%#Eval("ID") %>" name="chkSelect" />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:BoundField DataField="CName" HeaderText="姓名" />
+                                            <asp:BoundField DataField="CName" HeaderText="姓名"/>
                                             <asp:BoundField DataField="EmployeeNo" HeaderText="工号" />
                                             <asp:BoundField DataField="MobileNo" HeaderText="手机号" />
                                             <asp:BoundField DataField="DormAddress" HeaderText="宿舍地址" />

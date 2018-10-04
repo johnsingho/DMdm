@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../Styles/style.css" />
     <script src="../../Scripts/jquery-1.8.2.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="../../Scripts/common.js"></script>
+
     <style>
         .list table th {
             width: 10%;
@@ -17,11 +18,24 @@
         input[type='text'] {
             width: 90%;
         }
+        .lnkHas{
+            color:blue;
+            text-decoration:underline;
+            cursor:pointer;
+        }
+        .lnkNoHas{
+            visibility:hidden;
+        }
     </style>
 
     <script>
         function cancel() {
             window.parent.cancel();
+        }
+        function ViewRepairPicture() {
+            var batchID = $("#<%=RefImageBatchNo.ClientID%>").val();
+            console.log("*batchID=" + batchID);
+            window.parent.ViewRepairPicture(batchID);
         }
     </script>
 </head>
@@ -77,6 +91,17 @@
                         </th>
                         <td>
                             <asp:TextBox ID="txtDeviceType" runat="server" ReadOnly="True"></asp:TextBox>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label>相关照片</label>
+                        </th>
+                        <td>
+                            <asp:HyperLink ID="lnkView" runat="server" CssClass="lnkNoHas"
+                                onclick="ViewRepairPicture()">查看</asp:HyperLink>
+                            <asp:HyperLink ID="lblNoHas" runat="server" Visible="false" style="font-style:italic">(无)</asp:HyperLink>
+                            <asp:HiddenField ID="RefImageBatchNo" runat="server" />
                         </td>
                     </tr>
                     <tr>

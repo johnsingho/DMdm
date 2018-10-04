@@ -76,6 +76,33 @@ namespace DormManage.Web.UI.FlexPlus {
         protected global::System.Web.UI.WebControls.TextBox txtDeviceType;
         
         /// <summary>
+        /// lnkView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkView;
+        
+        /// <summary>
+        /// lblNoHas control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lblNoHas;
+        
+        /// <summary>
+        /// RefImageBatchNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField RefImageBatchNo;
+        
+        /// <summary>
         /// txtRequireDesc control.
         /// </summary>
         /// <remarks>

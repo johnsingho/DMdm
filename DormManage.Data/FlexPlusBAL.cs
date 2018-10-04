@@ -154,6 +154,7 @@ namespace DormManage.Data.DAL
             #endregion
             return db.ExecuteNonQuery(dbCommandWrapper) > 0;
         }
+
         public DataTable GetApplyDormByID(string id)
         {
             var sb = new StringBuilder("select * from TB_DormAreaApply ");
@@ -262,6 +263,21 @@ namespace DormManage.Data.DAL
             }
             dt = db.ExecuteDataSet(dbCommandWrapper).Tables[0];
             return dt;
+        }
+
+        public DataTable GetRepairDormImage(string batchNo)
+        {
+            var db = DBO.GetInstance();
+            DbCommand dbCommandWrapper = null;
+            string sSql = @"select FileID,FileUrl from TB_DormRepairImage
+                            where ImageBatchNo=@batchNo
+                            ";
+
+            dbCommandWrapper = db.GetSqlStringCommand(sSql);
+            #region Add parameters
+            db.AddInParameter(dbCommandWrapper, "@batchNo", DbType.String, batchNo);
+            #endregion
+            return db.ExecuteDataSet(dbCommandWrapper).Tables[0];
         }
 
         public DataTable GetReissueKeyList(TB_DormReissueKey mItem, Pager pager)

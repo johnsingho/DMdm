@@ -22,7 +22,7 @@ namespace DormManage.BLL.FlexPlus
         {
             return _mDAL.GetApplyDorms(mTB_DormAreaApply, pager);
         }
-
+        
         public void ApplyDorm(List<string> mKeys, string sHandlerWorkdayNo, string sEnName, string sDormAreaID, string sHandle, string sMsg)
         {
             var assignArea = new AssignRoomBLL();
@@ -151,6 +151,10 @@ namespace DormManage.BLL.FlexPlus
         public DataTable GetRepairDormList(TB_DormRepair mItem, ref Pager pager)
         {
             return _mDAL.GetRepairDormList(mItem, pager);
+        }
+        public DataTable GetRepairDormImage(string batchNo)
+        {
+            return _mDAL.GetRepairDormImage(batchNo);
         }
 
         public DataTable GetReissueKeyList(TB_DormReissueKey mItem, ref Pager pager)

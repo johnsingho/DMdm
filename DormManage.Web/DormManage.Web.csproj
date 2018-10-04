@@ -723,6 +723,7 @@
     <Content Include="UI\AssignRoom\AssignDormArea.aspx" />
     <Content Include="UI\AssignRoom\IdrOcx.cab" />
     <Content Include="UI\Common\ExcelDownHandler.aspx" />
+    <Content Include="UI\Common\OpenImage.aspx" />
     <Content Include="UI\DormManage\Bed\BedDefine.aspx" />
     <Content Include="UI\DormManage\Bed\NewBed.aspx" />
     <Content Include="UI\DormManage\Building\AjaxHander.aspx" />
@@ -843,6 +844,13 @@
     </Compile>
     <Compile Include="UI\Common\ExcelDownHandler.aspx.designer.cs">
       <DependentUpon>ExcelDownHandler.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Common\OpenImage.aspx.cs">
+      <DependentUpon>OpenImage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Common\OpenImage.aspx.designer.cs">
+      <DependentUpon>OpenImage.aspx</DependentUpon>
     </Compile>
     <Compile Include="UI\DormPersonManage\CheckOutImport_form.aspx.cs">
       <DependentUpon>CheckOutImport_form.aspx</DependentUpon>
