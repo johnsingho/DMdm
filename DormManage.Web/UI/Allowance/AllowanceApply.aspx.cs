@@ -13,6 +13,7 @@ using DormManage.BLL.DormManage;
 using DormManage.Model;
 using DormManage.BLL.DormPersonManage;
 using System.IO;
+using DormManage.Common;
 
 namespace DormManage.Web.UI.Allowance
 {
@@ -119,29 +120,32 @@ namespace DormManage.Web.UI.Allowance
             this.txtWorkDayNo.Focus();
             this.txtScanCardNO.Text = "";
         }
+        public static bool CanApplay(string sEmplType)
+        {
+            return "合同工".Equals(sEmplType)
+                   || "派遣工".Equals(sEmplType);
+        }
+
         protected void btnAssign_Click(object sender, EventArgs e)
         {
             try
             {
-                var sidcard = this.txtScanCardNO.Text.Trim();
+                var sInputID = this.txtScanCardNO.Text.Trim();
                 var sWorkDayNO = this.txtWorkDayNo.Text.Trim();
                 string sIdCard = string.Empty;
-                if (!GetIdCardNumber(sidcard, sWorkDayNO, out sIdCard))
-                {
-                    ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('招聘系统找不到此用户！')", true);
-                    return;
-                }
+                GetIdCardNumber(sInputID, sWorkDayNO, out sIdCard);
 
                 TB_AllowanceApplyBLL bll = new TB_AllowanceApplyBLL();
                 //查询人员信息
                 DataTable dtEmployeeInfo = new StaffingBLL().GetTableWithIDL(sWorkDayNO, sIdCard);
 
-                if (null != dtEmployeeInfo && dtEmployeeInfo.Rows.Count > 0)
+                if (!DataTableHelper.IsEmptyDataTable(dtEmployeeInfo))
                 {
                     //检查用工类型
-                    if(dtEmployeeInfo.Rows[0]["EmployeeTypeName"].ToString()!="普工")
+                    var sEmpType = dtEmployeeInfo.Rows[0]["EmployeeTypeName"].ToString();
+                    if ( !CanApplay(sEmpType))
                     {
-                        ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('此用户用工类型为："+ dtEmployeeInfo.Rows[0]["EmployeeTypeName"].ToString() + "，不能申请住房津贴')", true);
+                        ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('此用户用工类型为："+ sEmpType + "，不能申请住房津贴')", true);
                         return;
                     }
 
@@ -191,9 +195,7 @@ namespace DormManage.Web.UI.Allowance
                         tB_AllowanceApply.SiteID= (base.UserInfo == null ? base.SystemAdminInfo.SiteID : base.UserInfo.SiteID);
                         tB_AllowanceApply.Hire_Date= Convert.ToDateTime(dtEmployeeInfo.Rows[0]["Hire_Date"]);
                         tB_AllowanceApply.Effective_Date = DateTime.Now.AddDays(1 - DateTime.Now.Day).AddMonths(1).AddHours(-DateTime.Now.Hour + 1).AddMinutes(-DateTime.Now.Minute).AddSeconds(-DateTime.Now.Second);
-                        bll.ADDAllowanceApply(tB_AllowanceApply);
-
-                       
+                        bll.ADDAllowanceApply(tB_AllowanceApply);                                              
 
                         ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('申请成功！')", true);
                         this.Bind(1);
@@ -329,16 +331,15 @@ namespace DormManage.Web.UI.Allowance
                 }
                 else
                 {
-
                     //string strFileName = Path.Combine(Server.MapPath("..\\..\\"), "report", DateTime.Now.ToString("yyMMddHHmmssms_") + "导入失败记录.xls");
                     //new ExcelHelper().RenderToExcel(dtError, strFileName);
                     //this.DownLoadFile(this.Request, this.Response, "导入失败记录.xls", File.ReadAllBytes(strFileName), 10240000);
                     //File.Delete(strFileName);
-                    Cache mCache = new Cache(this.UserInfo == null ? this.SystemAdminInfo.Account : this.UserInfo.ADAccount, (this.UserInfo == null ? this.SystemAdminInfo.SiteID : this.UserInfo.SiteID) + "dtError");
-                    mCache.SetCache(dtError);
-                    ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "Success", "alert('部分导入成功,导入失败记录见文件')", true);
+                    //Cache mCache = new Cache(this.UserInfo == null ? this.SystemAdminInfo.Account : this.UserInfo.ADAccount, (this.UserInfo == null ? this.SystemAdminInfo.SiteID : this.UserInfo.SiteID) + "dtError");
+                    //mCache.SetCache(dtError);
+                    SessionHelper.Set(HttpContext.Current, TypeManager.SESSIONKEY_ImpErrAllowanceApply, dtError);
                     ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "myScript", "importComplete();", true);
-
+                    ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "Success", "alert('部分导入成功,导入失败记录见文件')", true);
                 }
             }
             catch (Exception ex)

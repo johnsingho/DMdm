@@ -11,6 +11,7 @@ using Microsoft.Practices.EnterpriseLibrary.Data;
 using DormManage.Common;
 using DormManage.Model;
 using System.IO;
+using System.Web;
 
 namespace DormManage.BLL.DormManage
 {
@@ -108,13 +109,13 @@ namespace DormManage.BLL.DormManage
             dt.Columns.Add("BZ");
             DataTable dtBU = new DataTable();
             //SiteID
-            int intSiteID = System.Web.HttpContext.Current.Session[TypeManager.User] != null ?
-                ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).SiteID :
-                ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).SiteID;
+            int intSiteID = SessionHelper.Get(HttpContext.Current, TypeManager.User) != null ?
+                ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).SiteID :
+                ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).SiteID;
             //操作用户账号
-            string currentUser = System.Web.HttpContext.Current.Session[TypeManager.User] != null ?
-                ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ADAccount :
-                ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).Account;
+            string currentUser = SessionHelper.Get(HttpContext.Current, TypeManager.User) != null ?
+                ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ADAccount :
+                ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).Account;
           
             //获取到整个site的所有入住人员信息
             DataTable dtEmployeeCheckIn = new TB_EmployeeCheckInDAL().GetTableBySiteID(intSiteID);
@@ -131,8 +132,7 @@ namespace DormManage.BLL.DormManage
                     if (drEmployeeCheckInArr.Length > 0)
                     {
                         dr["BZ"] = "已有入住记录";
-                        dtError.ImportRow(dr);
-                   
+                        dtError.ImportRow(dr);                   
                     }
                     else
                     {
@@ -143,7 +143,9 @@ namespace DormManage.BLL.DormManage
                         tB_AllowanceApply.Sex = dr["性别"].ToString();
                         tB_AllowanceApply.Company = dr["公司"].ToString(); 
                         tB_AllowanceApply.BU = dr["事业部"].ToString();
-                        tB_AllowanceApply.Grade = Convert.ToInt32(dr["级别"].ToString());
+                        int nGrade = 0;
+                        int.TryParse(dr["级别"].ToString(), out nGrade);
+                        tB_AllowanceApply.Grade = nGrade;
                         tB_AllowanceApply.CheckOutDate = dr["退宿日期"].ToString();
                         tB_AllowanceApply.EmployeeTypeName = dr["用工类型"].ToString();
                         tB_AllowanceApply.CreateUser = currentUser;
@@ -153,9 +155,9 @@ namespace DormManage.BLL.DormManage
                         ADDAllowanceApply(tB_AllowanceApply);
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
-                    dr["BZ"] = "已有申请记录";
+                    dr["BZ"] = "申请记录失败："+ex.Message;
                     dtError.ImportRow(dr);
                 }
             }

@@ -12,10 +12,14 @@
     <AssemblyName>BLL</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -72,8 +76,6 @@
     <Compile Include="DormManage\DormAreaBLL.cs" />
     <Compile Include="DormManage\BuildingBLL.cs" />
     <Compile Include="DormManage\FloorBLL.cs" />
-    <Compile Include="FlexPlus\FlexPlusBLL.cs" />
-    <Compile Include="FlexPlus\MessageBLL.cs" />
     <Compile Include="UserManage\BUBLL.cs" />
     <Compile Include="DormPersonManage\ChangeRoomRecordBLL.cs" />
     <Compile Include="DormPersonManage\ChargingBLL.cs" />

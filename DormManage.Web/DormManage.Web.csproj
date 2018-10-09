@@ -24,10 +24,14 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode>true</IISExpressUseClassicPipelineMode>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -99,8 +103,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\sdtapi.dll" />
-    <Content Include="FlexPlusIndex.aspx" />
-    <Content Include="FlexPlusStatic.html" />
     <Content Include="HomePage.aspx" />
     <Content Include="images\Flextronics_blue.png" />
     <Content Include="images\head_bg.jpg" />
@@ -698,6 +700,7 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </Content>
+    <Content Include="SrvUploadEmp.asmx" />
     <Content Include="Styles\base.css" />
     <Content Include="Styles\login.css" />
     <Content Include="Styles\main.css" />
@@ -723,6 +726,7 @@
     <Content Include="UI\AssignRoom\AssignRoom.aspx" />
     <Content Include="UI\AssignRoom\AssignDormArea.aspx" />
     <Content Include="UI\AssignRoom\IdrOcx.cab" />
+    <Content Include="UI\Common\ExcelDownHandler.aspx" />
     <Content Include="UI\DormManage\Bed\BedDefine.aspx" />
     <Content Include="UI\DormManage\Bed\NewBed.aspx" />
     <Content Include="UI\DormManage\Building\AjaxHander.aspx" />
@@ -741,7 +745,6 @@
     <Content Include="UI\DormPersonManage\ChangeRoom.aspx" />
     <Content Include="UI\DormPersonManage\ChangeRoomRecord.aspx" />
     <Content Include="UI\DormPersonManage\ChargingDefine.aspx" />
-    <Content Include="UI\DormPersonManage\CheckIn.aspx" />
     <Content Include="UI\DormPersonManage\CheckInDefine.aspx" />
     <Content Include="UI\DormPersonManage\CheckOut.aspx" />
     <Content Include="UI\DormPersonManage\CheckOutDefine.aspx" />
@@ -751,18 +754,6 @@
     <Content Include="UI\DormPersonManage\ChooseBed.aspx" />
     <Content Include="UI\DormPersonManage\EditCheckIn.aspx" />
     <Content Include="UI\DormPersonManage\NewCharging.aspx" />
-    <Content Include="UI\FlexPlus\ApplyDormList.aspx" />
-    <Content Include="UI\FlexPlus\ApplyDormHandle.aspx" />
-    <Content Include="UI\FlexPlus\ApplyDormView.aspx" />
-    <Content Include="UI\FlexPlus\DormNoticeAdd.aspx" />
-    <Content Include="UI\FlexPlus\DormNoticeList.aspx" />
-    <Content Include="UI\FlexPlus\DormSuggestList.aspx" />
-    <Content Include="UI\FlexPlus\DormSuggestHandle.aspx" />
-    <Content Include="UI\FlexPlus\ReissueKeyList.aspx" />
-    <Content Include="UI\FlexPlus\ReissueKeyView.aspx" />
-    <Content Include="UI\FlexPlus\RepairDormList.aspx" />
-    <Content Include="UI\FlexPlus\RepairDormView.aspx" />
-    <Content Include="UI\FlexPlus\RequiredHandle.aspx" />
     <Content Include="UI\Report\MonthDormInfo.aspx" />
     <Content Include="UI\Report\DayDormInfo.aspx" />
     <Content Include="UI\Report\DormInfo.aspx" />
@@ -806,14 +797,9 @@
     </Compile>
     <Compile Include="App_Code\Cache.cs" />
     <Compile Include="App_Code\DormPersonManageAjaxServices.cs" />
-    <Compile Include="App_Code\SessionHelper.cs" />
     <Compile Include="App_Code\UserAjaxServices.cs" />
-    <Compile Include="FlexPlusIndex.aspx.cs">
-      <DependentUpon>FlexPlusIndex.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="FlexPlusIndex.aspx.designer.cs">
-      <DependentUpon>FlexPlusIndex.aspx</DependentUpon>
+    <Compile Include="SrvUploadEmp.asmx.cs">
+      <DependentUpon>SrvUploadEmp.asmx</DependentUpon>
     </Compile>
     <Compile Include="UI\Allowance\AllowanceApplyCancel.aspx.cs">
       <DependentUpon>AllowanceApplyCancel.aspx</DependentUpon>
@@ -843,12 +829,12 @@
     <Compile Include="UI\AssignRoom\AssignDormArea.aspx.designer.cs">
       <DependentUpon>AssignDormArea.aspx</DependentUpon>
     </Compile>
-    <Compile Include="UI\DormPersonManage\CheckIn.aspx.cs">
-      <DependentUpon>CheckIn.aspx</DependentUpon>
+    <Compile Include="UI\Common\ExcelDownHandler.aspx.cs">
+      <DependentUpon>ExcelDownHandler.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="UI\DormPersonManage\CheckIn.aspx.designer.cs">
-      <DependentUpon>CheckIn.aspx</DependentUpon>
+    <Compile Include="UI\Common\ExcelDownHandler.aspx.designer.cs">
+      <DependentUpon>ExcelDownHandler.aspx</DependentUpon>
     </Compile>
     <Compile Include="UI\DormPersonManage\CheckOutImport_form.aspx.cs">
       <DependentUpon>CheckOutImport_form.aspx</DependentUpon>
@@ -877,90 +863,6 @@
     </Compile>
     <Compile Include="UI\DormPersonManage\EditCheckIn.aspx.designer.cs">
       <DependentUpon>EditCheckIn.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FlexPlus\ApplyDormList.aspx.cs">
-      <DependentUpon>ApplyDormList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\FlexPlus\ApplyDormList.aspx.designer.cs">
-      <DependentUpon>ApplyDormList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FlexPlus\ApplyDormHandle.aspx.cs">
-      <DependentUpon>ApplyDormHandle.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\FlexPlus\ApplyDormHandle.aspx.designer.cs">
-      <DependentUpon>ApplyDormHandle.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FlexPlus\ApplyDormView.aspx.cs">
-      <DependentUpon>ApplyDormView.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\FlexPlus\ApplyDormView.aspx.designer.cs">
-      <DependentUpon>ApplyDormView.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FlexPlus\DormNoticeAdd.aspx.cs">
-      <DependentUpon>DormNoticeAdd.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\FlexPlus\DormNoticeAdd.aspx.designer.cs">
-      <DependentUpon>DormNoticeAdd.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FlexPlus\DormNoticeList.aspx.cs">
-      <DependentUpon>DormNoticeList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\FlexPlus\DormNoticeList.aspx.designer.cs">
-      <DependentUpon>DormNoticeList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FlexPlus\DormSuggestList.aspx.cs">
-      <DependentUpon>DormSuggestList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\FlexPlus\DormSuggestList.aspx.designer.cs">
-      <DependentUpon>DormSuggestList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FlexPlus\DormSuggestHandle.aspx.cs">
-      <DependentUpon>DormSuggestHandle.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\FlexPlus\DormSuggestHandle.aspx.designer.cs">
-      <DependentUpon>DormSuggestHandle.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FlexPlus\ReissueKeyList.aspx.cs">
-      <DependentUpon>ReissueKeyList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\FlexPlus\ReissueKeyList.aspx.designer.cs">
-      <DependentUpon>ReissueKeyList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FlexPlus\ReissueKeyView.aspx.cs">
-      <DependentUpon>ReissueKeyView.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\FlexPlus\ReissueKeyView.aspx.designer.cs">
-      <DependentUpon>ReissueKeyView.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FlexPlus\RepairDormList.aspx.cs">
-      <DependentUpon>RepairDormList.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\FlexPlus\RepairDormList.aspx.designer.cs">
-      <DependentUpon>RepairDormList.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FlexPlus\RepairDormView.aspx.cs">
-      <DependentUpon>RepairDormView.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\FlexPlus\RepairDormView.aspx.designer.cs">
-      <DependentUpon>RepairDormView.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FlexPlus\RequiredHandle.aspx.cs">
-      <DependentUpon>RequiredHandle.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="UI\FlexPlus\RequiredHandle.aspx.designer.cs">
-      <DependentUpon>RequiredHandle.aspx</DependentUpon>
     </Compile>
     <Compile Include="UI\Report\MonthDormInfo.aspx.cs">
       <DependentUpon>MonthDormInfo.aspx</DependentUpon>

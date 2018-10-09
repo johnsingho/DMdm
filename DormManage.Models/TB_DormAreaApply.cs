@@ -17,6 +17,7 @@ namespace DormManage.Models
         public string CardNo { get; set; }
         public string MobileNo { get; set; }
         public int Grade { get; set; }
+        public int DormAreaID { get; set; }
         public string DormArea { get; set; }
         public int RequireType { get; set; }
         public string RequireReason { get; set; }

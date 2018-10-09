@@ -9,6 +9,7 @@ using DormManage.Framework;
 using DormManage.Framework.Enum;
 using DormManage.Models;
 using Microsoft.Practices.EnterpriseLibrary.Data;
+using System.Web;
 
 namespace DormManage.Data.DAL
 {
@@ -158,7 +159,7 @@ namespace DormManage.Data.DAL
       ,A.[SiteID]
 	  ,B.Name+'->'+'<span style=color:red>'+H.Name+'</span>' AS BedName 
       ,C.Name+'->'+'<span style=color:red>'+I.Name+'</span>' AS RoomName
-      ,OldRoomType.Name+'->'+'<span style=color:red>'+OldRoomType.Name+'</span>' AS RoomType
+      ,OldRoomType.Name+'->'+'<span style=color:red>'+NewRoomType.Name+'</span>' AS RoomType
 	  ,D.Name+'->'+'<span style=color:red>'+J.Name+'</span>' As FloorName
 	  ,E.Name+'->'+'<span style=color:red>'+K.Name+'</span>' As UnitName
 	  ,F.Name+'->'+'<span style=color:red>'+L.Name+'</span>' As BuildingName
@@ -198,13 +199,13 @@ ON I.RoomType=NewRoomType.ID ");
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;
                 #region 拼接条件
-                if (null != System.Web.HttpContext.Current.Session[TypeManager.User])
+                if (null != SessionHelper.Get(HttpContext.Current, TypeManager.User))
                 {
                     strBuilder.AppendLine(@" LEFT JOIN [TB_UserConnectDormArea] AS O
 on G.ID=O.[DormAreaID]
 where 1=1");
                     strBuilder.AppendLine(" AND O.[UserID] = @UserID");
-                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ID);
+                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ID);
                 }
                 else
                 {
@@ -280,7 +281,8 @@ where 1=1");
                 //由于 EHR.[Segment] 的ID 与 DormManage.[TB_BU]根本不对应
                 //因此，ON A.BUID=N.ID 是不会成立的
                 //现在事业部直接取 TB_ChangeRoomRecord.[BU]
-                StringBuilder strBuilder = new StringBuilder(@"SELECT A.[EmployeeNo] as '工号'
+                StringBuilder strBuilder = new StringBuilder(@"
+SELECT A.[EmployeeNo] as '工号'
       ,A.[Name]  as '姓名'
       ,A.[BU] AS '事业部'
       ,A.[Company] as '公司'
@@ -294,17 +296,21 @@ where 1=1");
 	  ,D.Name As '原楼层'
       ,C.Name AS '原房间号'
 	  ,B.Name AS  '原床位号'
+      ,OldRT.Name as '原房间类型'
 	  ,M.Name As '新宿舍区'
 	  ,L.Name As '新楼栋'
 	  ,K.Name As '新单元'
 	  ,J.Name As '新楼层'
       ,I.Name AS '新房间号'
 	  ,H.Name AS  '新床位号'
+      ,RT.Name as '新房间类型'
 FROM [TB_ChangeRoomRecord] AS A
 LEFT JOIN [TB_Bed] AS B
 ON A.[OldBedID]=B.ID
 LEFT JOIN [TB_Room] AS C
 ON B.[RoomID]=C.ID
+LEFT JOIN [TB_RoomType] AS OldRT
+ON C.RoomType=OldRT.ID
 LEFT JOIN [TB_Floor] AS D
 ON B.FloorID=D.ID
 LEFT JOIN [TB_Unit] AS E
@@ -317,6 +323,8 @@ LEFT JOIN [TB_Bed] AS H
 ON A.[NewBedID]=H.ID
 LEFT JOIN [TB_Room] AS I
 ON H.[RoomID]=I.ID
+LEFT JOIN [TB_RoomType] AS RT
+ON I.RoomType=RT.ID
 LEFT JOIN [TB_Floor] AS J
 ON H.FloorID=J.ID
 LEFT JOIN [TB_Unit] AS K
@@ -331,13 +339,13 @@ ON A.BUID=N.ID");
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;
                 #region 拼接条件
-                if (null != System.Web.HttpContext.Current.Session[TypeManager.User])
+                if (null != SessionHelper.Get(HttpContext.Current, TypeManager.User))
                 {
                     strBuilder.AppendLine(@" LEFT JOIN [TB_UserConnectDormArea] AS O
-on G.ID=O.[DormAreaID]
-where 1=1");
+                                            on G.ID=O.[DormAreaID]
+                                            where 1=1");
                     strBuilder.AppendLine(" AND O.[UserID] = @UserID");
-                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ID);
+                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ID);
                 }
                 else
                 {

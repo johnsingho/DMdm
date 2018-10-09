@@ -47,6 +47,11 @@ namespace DormManage.Common
             var dt = ds.Tables[0];
             return dt.Rows[0];
         }
+        public static DataRow GetDataTable_Row0(DataTable dt)
+        {
+            if (IsEmptyDataTable(dt)) { return null; }
+            return dt.Rows[0];
+        }
 
         public static string BulkToDB(string constring, DataTable dt, string tarTble)
         {

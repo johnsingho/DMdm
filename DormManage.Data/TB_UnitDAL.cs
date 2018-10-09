@@ -9,6 +9,7 @@ using DormManage.Framework;
 using DormManage.Framework.Enum;
 using DormManage.Models;
 using Microsoft.Practices.EnterpriseLibrary.Data;
+using System.Web;
 
 namespace DormManage.Data.DAL
 {
@@ -203,13 +204,13 @@ namespace DormManage.Data.DAL
                 dbCommandWrapper.CommandType = CommandType.Text;
                 #region 拼接条件
 
-                if (null != System.Web.HttpContext.Current.Session[TypeManager.User])
+                if (null != SessionHelper.Get(HttpContext.Current, TypeManager.User))
                 {
                     strBuilder.AppendLine(@"inner join [TB_UserConnectDormArea] AS D
-on C.ID=D.[DormAreaID]
-where 1=1");
+                                            on C.ID=D.[DormAreaID]
+                                            where 1=1");
                     strBuilder.AppendLine(" AND D.[UserID] = @UserID");
-                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ID);
+                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ID);
                 }
                 else
                 {

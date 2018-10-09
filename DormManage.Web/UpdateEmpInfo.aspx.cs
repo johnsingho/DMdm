@@ -83,6 +83,10 @@ namespace DormManage.Web
                 {
                     dt.Columns.Add("IDCardNumber");
                 }
+                if (null == dt.Columns["SrcImport"])
+                {
+                    dt.Columns.Add("SrcImport"); //0-GBSHR import, 1--multek import
+                }                
             }
             catch (Exception)
             {

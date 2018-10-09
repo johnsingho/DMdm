@@ -9,6 +9,7 @@ using DormManage.Framework;
 using DormManage.Framework.Enum;
 using DormManage.Models;
 using Microsoft.Practices.EnterpriseLibrary.Data;
+using System.Web;
 
 namespace DormManage.Data.DAL
 {
@@ -261,13 +262,13 @@ ON F.RoomType=GG.ID ");
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;
                 #region 拼接条件
-                if (null != System.Web.HttpContext.Current.Session[TypeManager.User])
+                if (null != SessionHelper.Get(HttpContext.Current, TypeManager.User))
                 {
                     strBuilder.AppendLine(@"inner join [TB_UserConnectDormArea] AS G
 on B.ID=G.[DormAreaID]
 where 1=1");
                     strBuilder.AppendLine(" AND G.[UserID] = @UserID");
-                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ID);
+                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ID);
                 }
                 else
                 {
@@ -369,7 +370,8 @@ where 1=1");
             DbCommand dbCommandWrapper = null;
             try
             {
-                StringBuilder strBuilder = new StringBuilder(@"select A.[ID]
+                StringBuilder strBuilder = new StringBuilder(@"
+select A.[ID]
       ,A.[RoomID]
       ,A.[Name]
       ,A.[Creator]
@@ -411,13 +413,13 @@ ON F.RoomType=GG.ID ");
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;
                 #region 拼接条件
-                if (null != System.Web.HttpContext.Current.Session[TypeManager.User])
+                if (null != SessionHelper.Get(HttpContext.Current, TypeManager.User))
                 {
                     strBuilder.AppendLine(@"inner join [TB_UserConnectDormArea] AS G
-on B.ID=G.[DormAreaID]
-where 1=1");
+                                            on B.ID=G.[DormAreaID]
+                                            where 1=1");
                     strBuilder.AppendLine(" AND G.[UserID] = @UserID");
-                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ID);
+                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ID);
                 }
                 else
                 {
@@ -686,26 +688,26 @@ where 1=1");
             try
             {
                 StringBuilder strBuilder = new StringBuilder(@"select A.[ID]
-      ,A.[Name]
-      ,A.[Creator]
-      ,A.[SiteID]
-      ,A.[DormAreaID]
-      ,A.[BuildingID]
-,A.[RoomID]
-,A.[Status]
-,A.[KeyCount]
-,A.[IsEnable]
-      ,B.Name as DormAreaName 
-      ,C.name as BuildingName
-      ,D.Name As RoomName
-from [TB_Bed] as A
-left join TB_dormarea As B
-on A.DormAreaID=B.ID
-left join TB_building as C
-on a.buildingid=c.id 
-left join TB_Room AS D
-on a.RoomID=D.ID 
-where 1=1");
+                                                              ,A.[Name]
+                                                              ,A.[Creator]
+                                                              ,A.[SiteID]
+                                                              ,A.[DormAreaID]
+                                                              ,A.[BuildingID]
+                                                              ,A.[RoomID]
+                                                              ,A.[Status]
+                                                              ,A.[KeyCount]
+                                                              ,A.[IsEnable]
+                                                              ,B.Name as DormAreaName 
+                                                              ,C.name as BuildingName
+                                                              ,D.Name As RoomName
+                                                        from [TB_Bed] as A
+                                                        left join TB_dormarea As B
+                                                        on A.DormAreaID=B.ID
+                                                        left join TB_building as C
+                                                        on a.buildingid=c.id 
+                                                        left join TB_Room AS D
+                                                        on a.RoomID=D.ID 
+                                                        where 1=1");
                 Database db = DBO.GetInstance();
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;

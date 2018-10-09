@@ -12,6 +12,7 @@ using DormManage.Models;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using DormManage.BLL.AssignRoom;
 using DormManage.Framework.LogManager;
+using System.Web;
 
 namespace DormManage.BLL.DormPersonManage
 {
@@ -118,7 +119,7 @@ namespace DormManage.BLL.DormPersonManage
                     tB_AssignDormArea.DormAreaID = Convert.ToInt32(sReason.Split('#')[1]);
                     tB_AssignDormArea.CardNo = dtCheckIn.Rows[0]["CardNo"].ToString();
                     tB_AssignDormArea.EmployeeNo = dtCheckIn.Rows[0]["EmployeeNo"].ToString();
-                    tB_AssignDormArea.CreateUser = System.Web.HttpContext.Current.Session[TypeManager.User] == null ? ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).Account : ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ADAccount;
+                    tB_AssignDormArea.CreateUser = SessionHelper.Get(HttpContext.Current, TypeManager.User) == null ? ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).Account : ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ADAccount;
                     tB_AssignDormArea.CreateDate = System.DateTime.Now;
 
                     new AssignRoomBLL().AssignArea(tB_AssignDormArea);
@@ -135,7 +136,7 @@ namespace DormManage.BLL.DormPersonManage
                 mTB_EmployeeCheckOut.CheckInDate = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_CheckInDate] is DBNull ? DateTime.Now : Convert.ToDateTime(dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_CheckInDate]);
                 mTB_EmployeeCheckOut.CheckOutDate = DateTime.Now;
                 mTB_EmployeeCheckOut.Company = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Company] is DBNull ? string.Empty : dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Company].ToString();
-                mTB_EmployeeCheckOut.Creator = System.Web.HttpContext.Current.Session[TypeManager.User] == null ? ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).Account : ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ADAccount;
+                mTB_EmployeeCheckOut.Creator = SessionHelper.Get(HttpContext.Current, TypeManager.User) == null ? ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).Account : ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ADAccount;
                 mTB_EmployeeCheckOut.EmployeeNo = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_EmployeeNo] is DBNull ? string.Empty : dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_EmployeeNo].ToString();
                 mTB_EmployeeCheckOut.IsSmoking = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_IsSmoking] is DBNull ? false : Convert.ToBoolean(dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_IsSmoking]);
                 mTB_EmployeeCheckOut.Name = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Name] is DBNull ? string.Empty : dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Name].ToString();
@@ -310,7 +311,7 @@ namespace DormManage.BLL.DormPersonManage
                     mTB_EmployeeCheckOut.CheckInDate = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_CheckInDate] is DBNull ? DateTime.Now : Convert.ToDateTime(dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_CheckInDate]);
                     mTB_EmployeeCheckOut.CheckOutDate = DateTime.Now;
                     mTB_EmployeeCheckOut.Company = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Company] is DBNull ? string.Empty : dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Company].ToString();
-                    mTB_EmployeeCheckOut.Creator = System.Web.HttpContext.Current.Session[TypeManager.User] == null ? ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).Account : ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ADAccount;
+                    mTB_EmployeeCheckOut.Creator = SessionHelper.Get(HttpContext.Current, TypeManager.User) == null ? ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).Account : ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ADAccount;
                     sWorkID = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_EmployeeNo] is DBNull ? string.Empty : dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_EmployeeNo].ToString();
                     mTB_EmployeeCheckOut.EmployeeNo = sWorkID;
                     mTB_EmployeeCheckOut.IsSmoking = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_IsSmoking] is DBNull ? false : Convert.ToBoolean(dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_IsSmoking]);
@@ -333,7 +334,7 @@ namespace DormManage.BLL.DormPersonManage
                     //    tB_AssignDormArea.DormAreaID = Convert.ToInt32(sReason.Split('#')[1]);
                     //    tB_AssignDormArea.CardNo = dtCheckIn.Rows[0]["CardNo"].ToString();
                     //    tB_AssignDormArea.EmployeeNo = dtCheckIn.Rows[0]["EmployeeNo"].ToString();
-                    //    tB_AssignDormArea.CreateUser = System.Web.HttpContext.Current.Session[TypeManager.User] == null ? ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).Account : ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ADAccount;
+                    //    tB_AssignDormArea.CreateUser = SessionHelper.Get(HttpContext.Current, TypeManager.User) == null ? ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).Account : ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ADAccount;
                     //    tB_AssignDormArea.CreateDate = System.DateTime.Now;
                     //    new AssignRoomBLL().AssignArea(tB_AssignDormArea);
                     //    sReason = sReason.Split('#')[0];
@@ -500,17 +501,17 @@ namespace DormManage.BLL.DormPersonManage
 
                 var strSQL = string.Empty;
                 int nRet = 0;
-                var sCreateUser = System.Web.HttpContext.Current.Session[TypeManager.User] == null ? ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).Account : ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ADAccount;
+                var sCreateUser = SessionHelper.Get(HttpContext.Current, TypeManager.User) == null ? ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).Account : ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ADAccount;
 
                 //create EM_Approved
-                if (null==cost || !cost.HasValue)
+                if (null!=cost && cost.HasValue)
                 {
                     strSQL = @"insert into EM_Approved([Approved_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
                                 [DeleteMark],[Remark],[CreateDate],[CreateUserId],[CreateUserName])
-                            select [Approving_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
+                            select [Approving_ID],[FormID],[ApprovalGroupID],[EmpID],@Cost,[Balance],
                                 [DeleteMark],'宿舍系统自动签退',GetDate(),NULL,@CreateUserName
                             from EM_Approving
-                            where Approving_ID=@AppGroupID
+                            where ApprovalGroupID=@AppGroupID
                             and EmpID=@EmpID
                             ";
                 }
@@ -518,21 +519,21 @@ namespace DormManage.BLL.DormPersonManage
                 {
                     strSQL = @"insert into EM_Approved([Approved_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
                                 [DeleteMark],[Remark],[CreateDate],[CreateUserId],[CreateUserName])
-                            select [Approving_ID],[FormID],[ApprovalGroupID],[EmpID],@Cost,[Balance],
+                            select [Approving_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
                                 [DeleteMark],'宿舍系统自动签退',GetDate(),NULL,@CreateUserName
                             from EM_Approving
-                            where Approving_ID=@AppGroupID
+                            where ApprovalGroupID=@AppGroupID
                             and EmpID=@EmpID
                             ";
                 }
- 
+
                 var dbCommandWrapper = dbEM.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;
                 dbCommandWrapper.CommandText = strSQL;
                 dbEM.AddInParameter(dbCommandWrapper, "@CreateUserName", DbType.String, sCreateUser);
                 dbEM.AddInParameter(dbCommandWrapper, "@AppGroupID", DbType.String, sAppGroupID);
                 dbEM.AddInParameter(dbCommandWrapper, "@EmpID", DbType.String, sWorkID);
-                if (null != cost)
+                if (null!=cost && cost.HasValue)
                 {
                     dbEM.AddInParameter(dbCommandWrapper, "@Cost", DbType.Decimal, cost.Value);
                 }
@@ -592,7 +593,7 @@ namespace DormManage.BLL.DormPersonManage
                 mTB_EmployeeCheckOut.CheckInDate = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_CheckInDate] is DBNull ? DateTime.Now : Convert.ToDateTime(dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_CheckInDate]);
                 mTB_EmployeeCheckOut.CheckOutDate = DateTime.Now;
                 mTB_EmployeeCheckOut.Company = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Company] is DBNull ? string.Empty : dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Company].ToString();
-                mTB_EmployeeCheckOut.Creator = System.Web.HttpContext.Current.Session[TypeManager.User] == null ? ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).Account : ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ADAccount;
+                mTB_EmployeeCheckOut.Creator = SessionHelper.Get(HttpContext.Current, TypeManager.User) == null ? ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).Account : ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ADAccount;
                 mTB_EmployeeCheckOut.EmployeeNo = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_EmployeeNo] is DBNull ? string.Empty : dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_EmployeeNo].ToString();
                 mTB_EmployeeCheckOut.IsSmoking = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_IsSmoking] is DBNull ? false : Convert.ToBoolean(dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_IsSmoking]);
                 mTB_EmployeeCheckOut.Name = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Name] is DBNull ? string.Empty : dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_Name].ToString();
@@ -606,10 +607,8 @@ namespace DormManage.BLL.DormPersonManage
                 mTB_EmployeeCheckOut.EmployeeTypeName = dtCheckIn.Rows[0][TB_EmployeeCheckIn.col_EmployeeTypeName].ToString();
 
                 _mTB_EmployeeCheckOutDAL.Create(mTB_EmployeeCheckOut);
-               
 
                 //提交事务
-               
             }
             catch (Exception ex)
             {
@@ -637,13 +636,13 @@ namespace DormManage.BLL.DormPersonManage
             dt.Columns.Add("BZ");
             DataTable dtBU = new DataTable();
             //SiteID
-            int intSiteID = System.Web.HttpContext.Current.Session[TypeManager.User] != null ?
-                ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).SiteID :
-                ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).SiteID;
+            int intSiteID = SessionHelper.Get(HttpContext.Current, TypeManager.User) != null ?
+                ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).SiteID :
+                ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).SiteID;
             //操作用户账号
-            string currentUser = System.Web.HttpContext.Current.Session[TypeManager.User] != null ?
-                ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ADAccount :
-                ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).Account;
+            string currentUser = SessionHelper.Get(HttpContext.Current, TypeManager.User) != null ?
+                ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ADAccount :
+                ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).Account;
             DataTable dtTB_EmployeeCheckInInsert = new DataTable();//入住人员信息
             dtTB_EmployeeCheckInInsert.Columns.Add("RoomID");
             dtTB_EmployeeCheckInInsert.Columns.Add("BedID");
@@ -767,9 +766,9 @@ namespace DormManage.BLL.DormPersonManage
         {
             TB_EmployeeCheckIn mTB_EmployeeCheckIn = null;
             TB_ChangeRoomRecord mTB_ChangeRoomRecord = null;
-            string operatorUser = System.Web.HttpContext.Current.Session[TypeManager.User] != null ?
-                ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ADAccount :
-                ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).Account;
+            string operatorUser = SessionHelper.Get(HttpContext.Current, TypeManager.User) != null 
+                                    ? ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ADAccount 
+                                    : ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).Account;
             int intOldBedID = 0;
             TB_Bed mTB_Bed = null;
             //启用事务

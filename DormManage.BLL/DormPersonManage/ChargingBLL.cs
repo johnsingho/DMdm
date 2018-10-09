@@ -9,6 +9,7 @@ using DormManage.Data.DAL;
 using DormManage.Framework;
 using DormManage.Models;
 using System.Data.Common;
+using System.Web;
 
 namespace DormManage.BLL.DormPersonManage
 {
@@ -88,19 +89,20 @@ namespace DormManage.BLL.DormPersonManage
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns>导入失败记录</returns>
-        public DataTable Import(string filePath)
+        public DataTable Import(string filePath, out string sErr)
         {
+            sErr = string.Empty;
             //读取Excel内容
             DataTable dt = _mExcelHelper.GetDataFromExcel(filePath);
             DataTable dtBU = new DataTable();
             //SiteID
-            int intSiteID = System.Web.HttpContext.Current.Session[TypeManager.User] != null ?
-                ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).SiteID :
-                ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).SiteID;
+            int intSiteID = SessionHelper.Get(HttpContext.Current, TypeManager.User) != null ?
+                ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).SiteID :
+                ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).SiteID;
             //操作用户账号
-            string currentUser = System.Web.HttpContext.Current.Session[TypeManager.User] != null ?
-                ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ADAccount :
-                ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).Account;
+            string currentUser = SessionHelper.Get(HttpContext.Current, TypeManager.User) != null ?
+                ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ADAccount :
+                ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).Account;
             DataTable dtTB_ChargingInsert = new DataTable();//费用信息
             dtTB_ChargingInsert.Columns.Add("EmployeeNo");
             dtTB_ChargingInsert.Columns.Add("Name");
@@ -179,8 +181,9 @@ namespace DormManage.BLL.DormPersonManage
                         dtTB_ChargingInsert.Rows.Clear();
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
+                    sErr = ex.Message;
                     dtError.ImportRow(dr);
                 }
             }

@@ -7,10 +7,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DormManage.Web.UI.DormPersonManage {
+namespace DormManage.Web.UI.Common {
     
     
-    public partial class CheckIn {
+    public partial class OpenImage {
         
         /// <summary>
         /// form1 control.
@@ -20,5 +20,14 @@ namespace DormManage.Web.UI.DormPersonManage {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        
+        /// <summary>
+        /// rp_Item control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rp_Item;
     }
 }

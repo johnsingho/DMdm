@@ -12,10 +12,14 @@
     <AssemblyName>DAL</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,7 +65,6 @@
   <ItemGroup>
     <Compile Include="CommonDAL.cs" />
     <Compile Include="DBO.cs" />
-    <Compile Include="FlexPlusBAL.cs" />
     <Compile Include="TB_AllowanceApplyCancelDAL.cs" />
     <Compile Include="TB_AllowanceApplyDAL.cs" />
     <Compile Include="TB_AssignRoomDAL.cs" />

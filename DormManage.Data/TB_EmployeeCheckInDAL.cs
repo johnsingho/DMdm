@@ -9,6 +9,7 @@ using DormManage.Framework;
 using DormManage.Framework.Enum;
 using DormManage.Models;
 using Microsoft.Practices.EnterpriseLibrary.Data;
+using System.Web;
 
 namespace DormManage.Data.DAL
 {
@@ -308,13 +309,13 @@ ON C.RoomType=I.ID ");
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;
                 dbCommandWrapper.CommandTimeout = 800;
-                if (null != System.Web.HttpContext.Current.Session[TypeManager.User])
+                if (null != SessionHelper.Get(HttpContext.Current, TypeManager.User))
                 {
                     strBuilder.AppendLine(@" inner join [TB_UserConnectDormArea] AS H
 on G.ID=H.[DormAreaID]
 where 1=1");
                     strBuilder.AppendLine(" AND H.[UserID] = @UserID");
-                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ID);
+                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ID);
                 }
                 else
                 {
@@ -441,13 +442,13 @@ ON C.RoomType=I.ID ");
                 Database db = DBO.GetInstance();
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;
-                if (null != System.Web.HttpContext.Current.Session[TypeManager.User])
+                if (null != SessionHelper.Get(HttpContext.Current, TypeManager.User))
                 {
                     strBuilder.AppendLine(@" inner join [TB_UserConnectDormArea] AS H
 on G.ID=H.[DormAreaID]
 where 1=1");
                     strBuilder.AppendLine(" AND H.[UserID] = @UserID");
-                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ID);
+                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ID);
                 }
                 else
                 {
@@ -558,7 +559,8 @@ where 1=1");
             DbCommand dbCommandWrapper = null;
             try
             {
-                StringBuilder strBuilder = new StringBuilder(@"SELECT A.[EmployeeNo] '工号'
+                StringBuilder strBuilder = new StringBuilder(@"
+SELECT A.[EmployeeNo] '工号'
 	  ,A.[Name] '姓名'
       ,A.BU  '事业部'
       ,A.EmployeeTypeName '用工类型'
@@ -596,13 +598,13 @@ Left join TB_RoomType as JJ on JJ.ID=C.RoomType");
                 dbCommandWrapper.CommandType = CommandType.Text;
                 #region 拼接条件
 
-                if (null != System.Web.HttpContext.Current.Session[TypeManager.User])
+                if (null != SessionHelper.Get(HttpContext.Current, TypeManager.User))
                 {
                     strBuilder.AppendLine(@" inner join [TB_UserConnectDormArea] AS H
-on G.ID=H.[DormAreaID]
-where 1=1");
+                                            on G.ID=H.[DormAreaID]
+                                            where 1=1");
                     strBuilder.AppendLine(" AND H.[UserID] = @UserID");
-                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ID);
+                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ID);
                 }
                 else
                 {

@@ -10,6 +10,7 @@ using DormManage.Framework;
 using DormManage.Models;
 using DormManage.BLL.AssignRoom;
 using DormManage.BLL.DormManage;
+using DormManage.Common;
 
 namespace DormManage.Web.UI.AssignRoom
 {
@@ -50,14 +51,10 @@ namespace DormManage.Web.UI.AssignRoom
         {
             try
             {
-                var sidcard = this.txtScanCardNO.Text.Trim();
+                var sInputID = this.txtScanCardNO.Text.Trim();
                 var sWorkDayNO = this.txtWorkDayNo.Text.Trim();
                 string sIdCard = string.Empty;
-                if (!GetIdCardNumber(sidcard, sWorkDayNO, out sIdCard))
-                {
-                    ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('招聘系统找不到此用户！')", true);
-                    return;
-                }
+                GetIdCardNumber(sInputID, sWorkDayNO, out sIdCard);
 
                 //获取选中的ID
                 string areaID = selAreaID.Value;
@@ -68,7 +65,7 @@ namespace DormManage.Web.UI.AssignRoom
                 //查询人员信息
                 DataTable dtEmployeeInfo = new StaffingBLL().GetTableWithIDL(sWorkDayNO, sIdCard);
 
-                if (null != dtEmployeeInfo && dtEmployeeInfo.Rows.Count > 0)
+                if (!DataTableHelper.IsEmptyDataTable(dtEmployeeInfo))
                 {
                     //检查是否有分配记录
                     DataTable  dtAssignArea = new AssignRoomBLL().GetAssignDormArea(dtEmployeeInfo.Rows[0]["IDCardNumber"].ToString());
@@ -86,10 +83,11 @@ namespace DormManage.Web.UI.AssignRoom
                     }
                     else
                     {
+                        var dr = dtEmployeeInfo.Rows[0];
                         TB_AssignDormArea tB_AssignDormArea = new TB_AssignDormArea();
                         tB_AssignDormArea.DormAreaID = Convert.ToInt32(areaID);
-                        tB_AssignDormArea.CardNo = sIdCard;
-                        tB_AssignDormArea.EmployeeNo = dtEmployeeInfo.Rows[0]["EmployeeID"].ToString();
+                        tB_AssignDormArea.CardNo = string.IsNullOrEmpty(sIdCard) ? dr["IDCardNumber"].ToString() : sIdCard;
+                        tB_AssignDormArea.EmployeeNo = dr["EmployeeID"].ToString();
                         tB_AssignDormArea.CreateUser = (base.UserInfo == null ? base.SystemAdminInfo.Account : base.UserInfo.ADAccount);
                         tB_AssignDormArea.CreateDate = System.DateTime.Now;
 
@@ -165,21 +163,18 @@ namespace DormManage.Web.UI.AssignRoom
         {
             try
             {
-                var sidcard = this.txtScanCardNO.Text.Trim();
+                var sInputID = this.txtScanCardNO.Text.Trim();
                 var sWorkDayNO = this.txtWorkDayNo.Text.Trim();
                 string sIdCard = string.Empty;
-                if (!GetIdCardNumber(sidcard, sWorkDayNO, out sIdCard))
-                {
-                    ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('招聘系统找不到此用户！')", true);
-                    return;
-                }
+                GetIdCardNumber(sInputID, sWorkDayNO, out sIdCard);
 
                 //查询人员信息
-                DataTable dtEmployeeInfo = new StaffingBLL().GetData(sIdCard);
-                if (null != dtEmployeeInfo && dtEmployeeInfo.Rows.Count > 0)
+                DataTable dtEmployeeInfo = new StaffingBLL().GetTableWithIDL(sWorkDayNO, sIdCard);
+                if (!DataTableHelper.IsEmptyDataTable(dtEmployeeInfo))
                 {
                     //检查是否有分配记录
-                    DataTable dtAssignArea = new AssignRoomBLL().GetAssignDormArea(dtEmployeeInfo.Rows[0]["IDCardNumber"].ToString());
+                    var dr = dtEmployeeInfo.Rows[0];
+                    DataTable dtAssignArea = new AssignRoomBLL().GetAssignDormArea(dr["IDCardNumber"].ToString());
                     if (dtAssignArea.Rows.Count == 0)
                     {
                         ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('此用户没有分配记录！')", true);
@@ -187,7 +182,7 @@ namespace DormManage.Web.UI.AssignRoom
                     }
                     else
                     {
-                        bool isDel = new AssignRoomBLL().DelAssignDormArea(dtEmployeeInfo.Rows[0]["IDCardNumber"].ToString());
+                        bool isDel = new AssignRoomBLL().DelAssignDormArea(dr["IDCardNumber"].ToString());
 
                         if(isDel)
                         {

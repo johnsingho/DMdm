@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using DormManage.Common;
 using DormManage.Data.DAL;
 using DormManage.Models;
+using System.Web;
 
 namespace DormManage.BLL.UserManage
 {
@@ -28,11 +29,6 @@ namespace DormManage.BLL.UserManage
             return _mTB_ModuleDAL.GetUserModule(intUserID);
         }
 
-        public DataTable GetUserModule_FlexPlus(int intUserID)
-        {
-            return _mTB_ModuleDAL.GetUserModule_FlexPlus(intUserID);
-        }
-
         /// <summary>
         /// 获取到所有模块
         /// </summary>
@@ -43,11 +39,6 @@ namespace DormManage.BLL.UserManage
             return _mTB_ModuleDAL.GetTable(tb_Module).Tables[0];
         }
 
-        public DataTable GetAllModule_FlexPlus(TB_Module tb_Module)
-        {
-            return _mTB_ModuleDAL.GetTable_FlexPlus(tb_Module).Tables[0];
-        }
-
         public void LoadTreeModule(TreeView tree, int intRoleID)
         {
             ExtendOpeTree mExtendOpeTree = new ExtendOpeTree(tree);
@@ -55,8 +46,9 @@ namespace DormManage.BLL.UserManage
             TB_Module tb_Module = new TB_Module()
             {
                 IsActive=1,
-                SiteID=System.Web.HttpContext.Current.Session[TypeManager.User]==null?((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).SiteID:
-                ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).SiteID,
+                SiteID=SessionHelper.Get(HttpContext.Current, TypeManager.User) == null
+                        ? ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).SiteID
+                        : ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).SiteID,
             };
             ds = _mTB_ModuleDAL.GetTable(tb_Module);
             //设定关键字段值

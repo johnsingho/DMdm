@@ -161,34 +161,6 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 9
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = DormManage.BLL\\DormManage.BLL.csproj
-		SccLocalPath1 = .
-		SccProjectFilePathRelativizedFromConnection1 = DormManage.BLL\\
-		SccProjectUniqueName2 = DormManage.Common\\DormManage.Common.csproj
-		SccLocalPath2 = .
-		SccProjectFilePathRelativizedFromConnection2 = DormManage.Common\\
-		SccProjectUniqueName3 = DormManage.CTL\\DormManage.CTL.csproj
-		SccLocalPath3 = .
-		SccProjectFilePathRelativizedFromConnection3 = DormManage.CTL\\
-		SccProjectUniqueName4 = DormManage.Data\\DormManage.Data.csproj
-		SccLocalPath4 = .
-		SccProjectFilePathRelativizedFromConnection4 = DormManage.Data\\
-		SccProjectUniqueName5 = DormManage.Framework\\DormManage.Framework.csproj
-		SccLocalPath5 = .
-		SccProjectFilePathRelativizedFromConnection5 = DormManage.Framework\\
-		SccProjectUniqueName6 = DormManage.Models\\DormManage.Models.csproj
-		SccLocalPath6 = .
-		SccProjectFilePathRelativizedFromConnection6 = DormManage.Models\\
-		SccProjectUniqueName7 = DormManage.Web\\DormManage.Web.csproj
-		SccLocalPath7 = .
-		SccProjectFilePathRelativizedFromConnection7 = DormManage.Web\\
-		SccProjectUniqueName8 = DromManage.Job\\DromManage.Job.csproj
-		SccLocalPath8 = .
-		SccProjectFilePathRelativizedFromConnection8 = DromManage.Job\\
-	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
 		Manager = AnkhSVN - Subversion Support for Visual Studio

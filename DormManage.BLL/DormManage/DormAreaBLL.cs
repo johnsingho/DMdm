@@ -9,6 +9,7 @@ using DormManage.Framework;
 using System.Data.Common;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using DormManage.Common;
+using System.Web;
 
 namespace DormManage.BLL.DormManage
 {
@@ -86,9 +87,9 @@ namespace DormManage.BLL.DormManage
         /// <param name="strID"></param>
         public void Remove(string strID)
         {
-            int intSiteID = System.Web.HttpContext.Current.Session[TypeManager.User] != null ?
-                ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).SiteID :
-                ((TB_SystemAdmin)System.Web.HttpContext.Current.Session[TypeManager.Admin]).SiteID;
+            int intSiteID = SessionHelper.Get(HttpContext.Current, TypeManager.User) != null ?
+                ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).SiteID :
+                ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).SiteID;
 
             TB_BuildingDAL mTB_BuildingDAL = new TB_BuildingDAL();
             TB_UserConnectDormAreaDAL mTB_UserConnectDormArea = new TB_UserConnectDormAreaDAL();

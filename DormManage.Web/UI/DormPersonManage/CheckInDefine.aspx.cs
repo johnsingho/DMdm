@@ -215,21 +215,19 @@ namespace DormManage.Web.UI.DormPersonManage
                     ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "Success", "alert('导入成功！')", true);
                 }
                 else
-                {                    
-                    //string strFileName = Path.Combine(Server.MapPath("..\\..\\"), "report", DateTime.Now.ToString("yyMMddHHmmssms_") + "导入失败记录.xls");
-                    //new ExcelHelper().RenderToExcel(dtError, strFileName);
-                    //this.DownLoadFile(this.Request, this.Response, "导入失败记录.xls", File.ReadAllBytes(strFileName), 10240000);
-                    //File.Delete(strFileName);
-                    Cache mCache = new Cache(this.UserInfo == null ? this.SystemAdminInfo.Account : this.UserInfo.ADAccount, (this.UserInfo == null ? this.SystemAdminInfo.SiteID : this.UserInfo.SiteID) + "dtError");
-                    mCache.SetCache(dtError);
-                    ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "Success", "alert('部分导入成功,导入失败记录见文件')", true);
+                {
+                    //Cache mCache = new Cache(this.UserInfo == null ? this.SystemAdminInfo.Account : this.UserInfo.ADAccount, (this.UserInfo == null ? this.SystemAdminInfo.SiteID : this.UserInfo.SiteID) + "dtError");
+                    //mCache.SetCache(dtError);
+                    SessionHelper.Set(HttpContext.Current, TypeManager.SESSIONKEY_ImpErrCheckIn, dtError);
                     ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "myScript", "importComplete();", true);
-                    
+                    ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "Success", "alert('部分导入成功,导入失败记录见文件')", true);
                 }
             }
             catch(Exception ex)
             {
-                ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "Error", "alert('导入失败！"+ex.Message+"')", true);
+                var sErr = string.Format("alert(\"导入失败！{0}\")", ex.Message);
+                sErr = sErr.Replace("\r\n", "");
+                ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "Error", sErr, true);
             }
             finally
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using System.Web;
 using System.Text;
 using DormManage.Common;
 using DormManage.Framework;
@@ -198,13 +199,13 @@ namespace DormManage.Data.DAL
                 dbCommandWrapper.CommandType = CommandType.Text;
                 #region 拼接条件
 
-                if (null != System.Web.HttpContext.Current.Session[TypeManager.User])
+                if (null != SessionHelper.Get(HttpContext.Current, TypeManager.User))
                 {
                     strBuilder.AppendLine(@"inner join [TB_UserConnectDormArea] AS B
-on A.ID=B.[DormAreaID]
-where 1=1");
+                                            on A.ID=B.[DormAreaID]
+                                            where 1=1");
                     strBuilder.AppendLine(" AND B.[UserID] = @UserID");
-                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)System.Web.HttpContext.Current.Session[TypeManager.User]).ID);
+                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ID);
                 }
                 else
                 {
@@ -262,10 +263,10 @@ where 1=1");
             {
                 //2018-03-14 注意：这里要与 DormAreaBLL.GetTable 的列对应
                 string strSQL = @"SELECT A.*,0 Count, '已启用' as IsEnable1
-FROM tb_DormArea AS A
-INNER JOIN [TB_UserConnectDormArea] AS B
-ON A.ID=B.[DormAreaID]
-                                        WHERE B.[UserID]=@UserID";
+                                    FROM tb_DormArea AS A
+                                    INNER JOIN [TB_UserConnectDormArea] AS B
+                                    ON A.ID=B.[DormAreaID]
+                                    WHERE B.[UserID]=@UserID";
                 StringBuilder strBuilder = new StringBuilder(strSQL);
                 Database db = DBO.GetInstance();
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
@@ -342,9 +343,9 @@ ON A.ID=B.[DormAreaID]
             try
             {
                 string strSQL = @"select ID
-,[SiteID]
-      ,[Name]
-      ,[Creator] from tb_DormArea where 1=1";
+                                ,[SiteID]
+                                ,[Name]
+                                ,[Creator] from tb_DormArea where 1=1";
                 StringBuilder strBuilder = new StringBuilder(strSQL);
                 Database db = DBO.GetInstance();
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();

@@ -21,7 +21,7 @@
             else {
                 $("#frm").width($(window).width() - 9);
             }
-            $("#frm").height($(window).height() - 20);
+            $("#frm").height($(window).height() + 115);
         }
 
         window.setInterval("initIframe()", 200)
@@ -53,7 +53,7 @@
         .headerTitle {
             color: #d2deec;
             font-size: 24px;
-            font-family: '微软雅黑','Segoe UI', Tahoma, sans-serif;
+            font-family: 'Microsoft YaHei','Segoe UI', Tahoma, sans-serif;
             margin-left: 18px;
             padding-top: 5px;
         }
@@ -114,16 +114,16 @@
                         <asp:Button ID="btnModifyInfo" runat="server" CssClass="Modify"
                             Text="" OnClientClick="return modifyPassword()" />
                     </td>
-          <%--          <td>
-                        <span class="line"></span>
-                    </td>
-                    <td style="width:100px;text-align:center">
-                        <a class="textSty" href="/FlexPlusIndex.aspx">Flex+ 后台
-                        </a>
-                    </td>--%>
                     <td>
                         <span class="line"></span>
                     </td>
+<%--                    <td style="width:100px;text-align:center">
+                        <a class="textSty" href="/FlexPlusIndex.aspx">Flex+ 后台
+                        </a>
+                    </td>
+                    <td>
+                        <span class="line"></span>
+                    </td>--%>
                     <td>
                         <asp:LinkButton ID="lnkExit" CssClass="exit" runat="server" OnClick="lnkExit_Click">
                             <asp:Label ID="lblExit" runat="server" Text="退出"></asp:Label>

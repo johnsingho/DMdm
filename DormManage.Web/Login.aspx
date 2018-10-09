@@ -80,6 +80,7 @@
                     <span id="about" runat="server">About</span>&nbsp;|
                     <asp:Label ID="lblCompany" runat="server"
                         Text="GBS-Flex Info.Tech.(SZ)Co.,Ltd"></asp:Label>
+                    &nbsp;|<a href="/UpdateEmpInfo.aspx" style="color:#cccccc">upload</a>
                 </div>
             </div>
         </div>

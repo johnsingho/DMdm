@@ -12,6 +12,39 @@ namespace DormManage.Common
 {
     public class ExcelHelper
     {
+		public static byte[] BuilderExcel(DataTable table, string dateFormat = "yyyy-MM-dd HH:mm:ss")
+        {
+            IWorkbook workbook = new XSSFWorkbook(); //office2007            
+            ISheet sheet = workbook.CreateSheet("Sheet1");
+            IRow headerRow = sheet.CreateRow(0);
+
+            // handling header.
+            foreach (DataColumn column in table.Columns)
+            {
+                headerRow.CreateCell(column.Ordinal).SetCellValue(column.ColumnName);
+            }
+
+            int rowIndex = 1;
+            foreach (DataRow row in table.Rows)
+            {
+                IRow dataRow = sheet.CreateRow(rowIndex);
+                foreach (DataColumn column in table.Columns)
+                {
+                    dataRow.CreateCell(column.Ordinal).SetCellValue(row[column].ToString());
+                }
+                rowIndex++;
+            }
+
+            byte[] bys = null;
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                workbook.Write(memoryStream);
+                memoryStream.Flush();
+                bys = memoryStream.ToArray();
+            }
+            return bys;
+        }
+		
         /// <summary>
         /// 使用第三方插件NPOI读取Excel内容到DataTable,默认读取Excel文件的第一个Sheet
         /// </summary>
