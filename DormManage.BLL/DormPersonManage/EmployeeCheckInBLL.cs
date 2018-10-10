@@ -451,119 +451,121 @@ namespace DormManage.BLL.DormPersonManage
         //访问离职系统，进行签退
         private int SigningExitForEM(int id, string workID="", decimal? cost=null)
         {
-            var sWorkID = workID;
-            DbConnection dbConn = null;
-            if (string.IsNullOrEmpty(sWorkID))
-            {
-                try
-                {// get checkout Employee No
-                    var dbDorm = DBO.CreateDatabase();
-                    dbConn = dbDorm.CreateConnection();
-                    dbConn.Open();
+            //johnsing 2018-10-10 长沙版不启用此功能
+            return -1;
+            //var sWorkID = workID;
+            //DbConnection dbConn = null;
+            //if (string.IsNullOrEmpty(sWorkID))
+            //{
+            //    try
+            //    {// get checkout Employee No
+            //        var dbDorm = DBO.CreateDatabase();
+            //        dbConn = dbDorm.CreateConnection();
+            //        dbConn.Open();
 
-                    string strSQL = @"select RoomID,BedID,EmployeeNo,Name,CardNo from TB_EmployeeCheckOut
-                                      where id=@ID";
-                    var dbCommandWrapper = dbDorm.DbProviderFactory.CreateCommand();
-                    dbCommandWrapper.CommandType = CommandType.Text;
-                    dbCommandWrapper.CommandText = strSQL;
-                    dbDorm.AddInParameter(dbCommandWrapper, "@ID", DbType.Int32, id);
-                    var ds = dbDorm.ExecuteDataSet(dbCommandWrapper);
-                    if (DataTableHelper.IsEmptyDataSet(ds))
-                    {
-                        return -1;
-                    }
-                    var dr = DataTableHelper.GetDataSet_Row0(ds);
-                    sWorkID = dr["EmployeeNo"] as string;
-                }
-                catch (Exception ex)
-                {
-                }
-                finally
-                {
-                    dbConn.Close();
-                }
-            }
+            //        string strSQL = @"select RoomID,BedID,EmployeeNo,Name,CardNo from TB_EmployeeCheckOut
+            //                          where id=@ID";
+            //        var dbCommandWrapper = dbDorm.DbProviderFactory.CreateCommand();
+            //        dbCommandWrapper.CommandType = CommandType.Text;
+            //        dbCommandWrapper.CommandText = strSQL;
+            //        dbDorm.AddInParameter(dbCommandWrapper, "@ID", DbType.Int32, id);
+            //        var ds = dbDorm.ExecuteDataSet(dbCommandWrapper);
+            //        if (DataTableHelper.IsEmptyDataSet(ds))
+            //        {
+            //            return -1;
+            //        }
+            //        var dr = DataTableHelper.GetDataSet_Row0(ds);
+            //        sWorkID = dr["EmployeeNo"] as string;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //    }
+            //    finally
+            //    {
+            //        dbConn.Close();
+            //    }
+            //}
 
-            if (string.IsNullOrEmpty(sWorkID))
-            {
-                return -1;
-            }
+            //if (string.IsNullOrEmpty(sWorkID))
+            //{
+            //    return -1;
+            //}
 
-            //update
-            DbTransaction dbTran = null;
-            try
-            {
-                string sAppGroupID = "097F36B9-B8A2-478B-97DA-79E76E384571";
-                var dbEM = DBO.CreateDatabaseEM();
-                dbConn = dbEM.CreateConnection();
-                dbConn.Open();
-                dbTran = dbConn.BeginTransaction();
+            ////update
+            //DbTransaction dbTran = null;
+            //try
+            //{
+            //    string sAppGroupID = "097F36B9-B8A2-478B-97DA-79E76E384571";
+            //    var dbEM = DBO.CreateDatabaseEM();
+            //    dbConn = dbEM.CreateConnection();
+            //    dbConn.Open();
+            //    dbTran = dbConn.BeginTransaction();
 
-                var strSQL = string.Empty;
-                int nRet = 0;
-                var sCreateUser = SessionHelper.Get(HttpContext.Current, TypeManager.User) == null ? ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).Account : ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ADAccount;
+            //    var strSQL = string.Empty;
+            //    int nRet = 0;
+            //    var sCreateUser = SessionHelper.Get(HttpContext.Current, TypeManager.User) == null ? ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).Account : ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ADAccount;
 
-                //create EM_Approved
-                if (null!=cost && cost.HasValue)
-                {
-                    strSQL = @"insert into EM_Approved([Approved_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
-                                [DeleteMark],[Remark],[CreateDate],[CreateUserId],[CreateUserName])
-                            select [Approving_ID],[FormID],[ApprovalGroupID],[EmpID],@Cost,[Balance],
-                                [DeleteMark],'宿舍系统自动签退',GetDate(),NULL,@CreateUserName
-                            from EM_Approving
-                            where ApprovalGroupID=@AppGroupID
-                            and EmpID=@EmpID
-                            ";
-                }
-                else
-                {
-                    strSQL = @"insert into EM_Approved([Approved_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
-                                [DeleteMark],[Remark],[CreateDate],[CreateUserId],[CreateUserName])
-                            select [Approving_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
-                                [DeleteMark],'宿舍系统自动签退',GetDate(),NULL,@CreateUserName
-                            from EM_Approving
-                            where ApprovalGroupID=@AppGroupID
-                            and EmpID=@EmpID
-                            ";
-                }
+            //    //create EM_Approved
+            //    if (null!=cost && cost.HasValue)
+            //    {
+            //        strSQL = @"insert into EM_Approved([Approved_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
+            //                    [DeleteMark],[Remark],[CreateDate],[CreateUserId],[CreateUserName])
+            //                select [Approving_ID],[FormID],[ApprovalGroupID],[EmpID],@Cost,[Balance],
+            //                    [DeleteMark],'宿舍系统自动签退',GetDate(),NULL,@CreateUserName
+            //                from EM_Approving
+            //                where ApprovalGroupID=@AppGroupID
+            //                and EmpID=@EmpID
+            //                ";
+            //    }
+            //    else
+            //    {
+            //        strSQL = @"insert into EM_Approved([Approved_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
+            //                    [DeleteMark],[Remark],[CreateDate],[CreateUserId],[CreateUserName])
+            //                select [Approving_ID],[FormID],[ApprovalGroupID],[EmpID],[Cost],[Balance],
+            //                    [DeleteMark],'宿舍系统自动签退',GetDate(),NULL,@CreateUserName
+            //                from EM_Approving
+            //                where ApprovalGroupID=@AppGroupID
+            //                and EmpID=@EmpID
+            //                ";
+            //    }
 
-                var dbCommandWrapper = dbEM.DbProviderFactory.CreateCommand();
-                dbCommandWrapper.CommandType = CommandType.Text;
-                dbCommandWrapper.CommandText = strSQL;
-                dbEM.AddInParameter(dbCommandWrapper, "@CreateUserName", DbType.String, sCreateUser);
-                dbEM.AddInParameter(dbCommandWrapper, "@AppGroupID", DbType.String, sAppGroupID);
-                dbEM.AddInParameter(dbCommandWrapper, "@EmpID", DbType.String, sWorkID);
-                if (null!=cost && cost.HasValue)
-                {
-                    dbEM.AddInParameter(dbCommandWrapper, "@Cost", DbType.Decimal, cost.Value);
-                }
-                nRet = dbEM.ExecuteNonQuery(dbCommandWrapper, dbTran);
+            //    var dbCommandWrapper = dbEM.DbProviderFactory.CreateCommand();
+            //    dbCommandWrapper.CommandType = CommandType.Text;
+            //    dbCommandWrapper.CommandText = strSQL;
+            //    dbEM.AddInParameter(dbCommandWrapper, "@CreateUserName", DbType.String, sCreateUser);
+            //    dbEM.AddInParameter(dbCommandWrapper, "@AppGroupID", DbType.String, sAppGroupID);
+            //    dbEM.AddInParameter(dbCommandWrapper, "@EmpID", DbType.String, sWorkID);
+            //    if (null!=cost && cost.HasValue)
+            //    {
+            //        dbEM.AddInParameter(dbCommandWrapper, "@Cost", DbType.Decimal, cost.Value);
+            //    }
+            //    nRet = dbEM.ExecuteNonQuery(dbCommandWrapper, dbTran);
 
-                //delete EM_Approving
-                strSQL = @"delete from EM_Approving
-                            where 1 = 1
-                            and ApprovalGroupID = @AppGroupID
-                            and EmpID = @EmpID";
-                dbCommandWrapper = dbEM.DbProviderFactory.CreateCommand();
-                dbCommandWrapper.CommandType = CommandType.Text;
-                dbCommandWrapper.CommandText = strSQL;
-                dbEM.AddInParameter(dbCommandWrapper, "@AppGroupID", DbType.String, sAppGroupID);
-                dbEM.AddInParameter(dbCommandWrapper, "@EmpID", DbType.String, sWorkID);
-                nRet = dbEM.ExecuteNonQuery(dbCommandWrapper, dbTran);
+            //    //delete EM_Approving
+            //    strSQL = @"delete from EM_Approving
+            //                where 1 = 1
+            //                and ApprovalGroupID = @AppGroupID
+            //                and EmpID = @EmpID";
+            //    dbCommandWrapper = dbEM.DbProviderFactory.CreateCommand();
+            //    dbCommandWrapper.CommandType = CommandType.Text;
+            //    dbCommandWrapper.CommandText = strSQL;
+            //    dbEM.AddInParameter(dbCommandWrapper, "@AppGroupID", DbType.String, sAppGroupID);
+            //    dbEM.AddInParameter(dbCommandWrapper, "@EmpID", DbType.String, sWorkID);
+            //    nRet = dbEM.ExecuteNonQuery(dbCommandWrapper, dbTran);
 
-                dbTran.Commit();
-            }
-            catch(Exception ex)
-            {
-                dbTran.Rollback();
-                throw ex;
-            }
-            finally
-            {
-                dbConn.Close();
-            }
+            //    dbTran.Commit();
+            //}
+            //catch(Exception ex)
+            //{
+            //    dbTran.Rollback();
+            //    throw ex;
+            //}
+            //finally
+            //{
+            //    dbConn.Close();
+            //}
 
-            return 0;
+            //return 0;
         }
 
         /// <summary>
