@@ -71,12 +71,12 @@ namespace DormManage.Web
                 IDCardNumber = empInfo.IDCardNumber,
                 Segment = empInfo.Segment,
                 Hire_Date = empInfo.Hire_Date,
-                EmployeeTypeName = empInfo.EmployeeTypeName
+                EmployeeTypeName = empInfo.EmployeeTypeName,
+                SrcImport = 1 /*0-GBSHR import, 1--multek import, 2--ChangSha import*/
             };
 
             var sErr = string.Empty;
-            int SrcImport = 1; //0-GBSHR import, 1--multek import
-            ret.bok = mStaffingDal.UploadEmpInfo(einf, SrcImport, out sErr);
+            ret.bok = mStaffingDal.UploadEmpInfo(einf, out sErr);
             ret.msg = sErr;
             return ret;
         }

@@ -17,6 +17,7 @@ namespace DormManage.Data.DAL
         public string Segment { get; set; }
         public DateTime Hire_Date { get; set; }
         public string EmployeeTypeName { get; set; }
+        public int SrcImport { get; set; }
     }
 
     public class TB_StaffingDAL
@@ -221,7 +222,7 @@ namespace DormManage.Data.DAL
         }
 
 
-        public bool UploadEmpInfo(TEmpInfo empInfo, int SrcImport, out string sErr)
+        public bool UploadEmpInfo(TEmpInfo empInfo, out string sErr)
         {
             sErr = string.Empty;
             if (null == empInfo
@@ -250,7 +251,7 @@ namespace DormManage.Data.DAL
                 db.AddInParameter(dbCommandWrapper, "@Hire_Date", DbType.Date, empInfo.Hire_Date);
                 db.AddInParameter(dbCommandWrapper, "@EmployeeTypeName", DbType.String, empInfo.EmployeeTypeName);
                 db.AddInParameter(dbCommandWrapper, "@IDCardNumber", DbType.String, empInfo.IDCardNumber);
-                db.AddInParameter(dbCommandWrapper, "@SrcImport", DbType.Int32, SrcImport);
+                db.AddInParameter(dbCommandWrapper, "@SrcImport", DbType.Int32, empInfo.SrcImport);
                 return db.ExecuteNonQuery(dbCommandWrapper) > 0;
             }
             catch (Exception ex)
