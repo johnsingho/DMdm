@@ -90,45 +90,47 @@ namespace DormManage.Data.DAL
         //1) 尝试从EHR取人员信息，但这些信息有可能是旧的，尤其是那些多次进宫的人
         private DataTable GetEmpInfo_EHR(string sWorkdayNo, string seCardID)
         {
-            DataTable dt = null;
-            DbCommand dbCommandWrapper = null;
-            try
-            {
-                string strSQL = @"
-                                 select top 1  
-                                    EmployeeTab.IDCardNumber ,EmployeeTab.EmployeeID,EmployeeTab.Phone,SegmentTab.SegmentName+' '+Building.BuildingName SegmentName,SegmentTab.ID as SegmentID
-                                    ,A.Sex,A.ChineseName,B.EmployeeTypeName,EmployeeTab.DormAndOneCarAccessOperateDatetime Hire_Date
-                                    from Process as EmployeeTab
-                                    LEFT JOIN IDCard as A ON A.IDCardNumber=EmployeeTab.IDCardNumber
-                                    LEFT JOIN EmployeeType as B ON B.ID=EmployeeTab.EmployeeTypeID
-                                    left join [dbo].[Segment] as SegmentTab
-                                    on EmployeeTab.SegmentID = SegmentTab.ID 
-                                    left join [dbo].[Building] as Building on Building.ID=EmployeeTab.BuildingID
-                                    where EmployeeTab.processstatus>=5000 
-                                    and (EmployeeTab.IDCardNumber='{0}' or EmployeeTab.EmployeeID='{1}')
-                                    ORDER BY EmployeeTab.ID DESC ";
+            //johnsing 2018-10-10 长沙版不启用此功能
+            return null;
+            //DataTable dt = null;
+            //DbCommand dbCommandWrapper = null;
+            //try
+            //{
+            //    string strSQL = @"
+            //                     select top 1  
+            //                        EmployeeTab.IDCardNumber ,EmployeeTab.EmployeeID,EmployeeTab.Phone,SegmentTab.SegmentName+' '+Building.BuildingName SegmentName,SegmentTab.ID as SegmentID
+            //                        ,A.Sex,A.ChineseName,B.EmployeeTypeName,EmployeeTab.DormAndOneCarAccessOperateDatetime Hire_Date
+            //                        from Process as EmployeeTab
+            //                        LEFT JOIN IDCard as A ON A.IDCardNumber=EmployeeTab.IDCardNumber
+            //                        LEFT JOIN EmployeeType as B ON B.ID=EmployeeTab.EmployeeTypeID
+            //                        left join [dbo].[Segment] as SegmentTab
+            //                        on EmployeeTab.SegmentID = SegmentTab.ID 
+            //                        left join [dbo].[Building] as Building on Building.ID=EmployeeTab.BuildingID
+            //                        where EmployeeTab.processstatus>=5000 
+            //                        and (EmployeeTab.IDCardNumber='{0}' or EmployeeTab.EmployeeID='{1}')
+            //                        ORDER BY EmployeeTab.ID DESC ";
 
-                strSQL = string.Format(strSQL, seCardID, sWorkdayNo);
-                StringBuilder strBuilder = new StringBuilder(strSQL);
-                Database db = DBO.GetInstanceStaffing();
-                dbCommandWrapper = db.DbProviderFactory.CreateCommand();
-                dbCommandWrapper.CommandType = CommandType.Text;
-                dbCommandWrapper.CommandText = strBuilder.ToString();
-                dt = db.ExecuteDataSet(dbCommandWrapper).Tables[0];
+            //    strSQL = string.Format(strSQL, seCardID, sWorkdayNo);
+            //    StringBuilder strBuilder = new StringBuilder(strSQL);
+            //    Database db = DBO.GetInstanceStaffing();
+            //    dbCommandWrapper = db.DbProviderFactory.CreateCommand();
+            //    dbCommandWrapper.CommandType = CommandType.Text;
+            //    dbCommandWrapper.CommandText = strBuilder.ToString();
+            //    dt = db.ExecuteDataSet(dbCommandWrapper).Tables[0];
 
-                return dt;                
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                if (dbCommandWrapper != null)
-                {
-                    dbCommandWrapper = null;
-                }
-            }
+            //    return dt;                
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw ex;
+            //}
+            //finally
+            //{
+            //    if (dbCommandWrapper != null)
+            //    {
+            //        dbCommandWrapper = null;
+            //    }
+            //}
         }
 
         //2) 尝试取导入的人员信息

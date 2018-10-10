@@ -35,7 +35,7 @@ namespace DormManage.Web.UI.Report
             mTB_Room.UnitID = Convert.ToInt32(Request.Form[this.ddlUnit.UniqueID.ToString()]);
             mTB_Room.FloorID = Convert.ToInt32(Request.Form[this.ddlFloor.UniqueID.ToString()]);
 
-            GridView1.DataSource = mRoomBLL.GetDormInfoBySiteID(2);// GetUnLockRoom(mTB_Room, ref pager);
+            GridView1.DataSource = mRoomBLL.GetDormInfoBySiteID(4);// GetUnLockRoom(mTB_Room, ref pager);
             GridView1.DataBind();
             MergeRow(GridView1, 0, 3);
 

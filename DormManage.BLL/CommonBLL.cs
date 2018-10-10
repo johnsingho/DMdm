@@ -213,29 +213,31 @@ namespace DormManage.BLL
 
         //根据工号或员工卡内芯片号在一卡通库找用户信息
         public static TEmpInfo GetEmployeeInfo(string sICCardNo)
-        {            
-            DataTable dt = null;
-            if(sICCardNo.Length >= SNR_LIMIT)
-            {
-                // IC卡转换成工号
-                var ICCard_16Cross = ConvertICCard(sICCardNo);
-                dt = CommonDAL.GetEmployeeInfoByIcCard(ICCard_16Cross);
-            }
-            else
-            {
-                dt = CommonDAL.GetEmployeeInfoByWorkID(sICCardNo);
-            }
-            
-            if (dt!=null && dt.Rows.Count>0)
-            {
-                var r = dt.Rows[0];
-                var emp = new TEmpInfo();
-                emp.empID = r["OutID"].ToString();
-                emp.idCardNum = r["IDCardNo"].ToString();
-                emp.sname = r["Name"].ToString();
-                return emp;
-            }
+        {
+            //johnsing 2018-10-10 长沙版不启用此功能
             return null;
+            //DataTable dt = null;
+            //if(sICCardNo.Length >= SNR_LIMIT)
+            //{
+            //    // IC卡转换成工号
+            //    var ICCard_16Cross = ConvertICCard(sICCardNo);
+            //    dt = CommonDAL.GetEmployeeInfoByIcCard(ICCard_16Cross);
+            //}
+            //else
+            //{
+            //    dt = CommonDAL.GetEmployeeInfoByWorkID(sICCardNo);
+            //}
+            
+            //if (dt!=null && dt.Rows.Count>0)
+            //{
+            //    var r = dt.Rows[0];
+            //    var emp = new TEmpInfo();
+            //    emp.empID = r["OutID"].ToString();
+            //    emp.idCardNum = r["IDCardNo"].ToString();
+            //    emp.sname = r["Name"].ToString();
+            //    return emp;
+            //}
+            //return null;
         }
 
     }

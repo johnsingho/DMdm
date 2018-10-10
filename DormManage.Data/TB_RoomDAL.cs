@@ -591,7 +591,8 @@ on a.id=G.roomID and G.[Status]=1 and G.ID not in  (select BedID from [TB_Assign
             DbCommand dbCommandWrapper = null;
             try
             {
-                StringBuilder strBuilder = new StringBuilder(@"select TotalBeds.areaname ,TotalBeds.roomtypt + TotalBeds.[RoomSexType] as 'grade',isnull( TotalBeds.name,'合计') as 'DormNo'	  
+                StringBuilder strBuilder = new StringBuilder();
+                strBuilder.AppendFormat(@"select TotalBeds.areaname ,TotalBeds.roomtypt + TotalBeds.[RoomSexType] as 'grade',isnull( TotalBeds.name,'合计') as 'DormNo'	  
 	                ,sum(TotalBeds.TotalBedsQty) as 'TotalBedsQty',sum(Occupied.OccupiedQty) as 'OccupiedQty',
 	                sum(Vacant.VacantQty) as 'VacantQty',cast(case sum(TotalBeds.TotalBedsQty) when 0 then 0 else sum(Occupied.OccupiedQty)*100/sum(TotalBeds.TotalBedsQty) end   AS VARCHAR)+'%' as 'Occupancyrate'
                     from 
@@ -601,7 +602,7 @@ on a.id=G.roomID and G.[Status]=1 and G.ID not in  (select BedID from [TB_Assign
 	                    left join TB_dormarea As B on A.DormAreaID=B.ID
 	                    left join TB_building as C on a.buildingid=c.id
 	                    left join TB_RoomType AS F on a.RoomType=F.ID
-	                    left join [TB_Bed] as H	on a.id=H.roomID AND A.SiteID = 2
+	                    left join [TB_Bed] as H	on a.id=H.roomID AND A.SiteID = {0}
                         WHERE H.IsEnable<>'已禁用' OR H.IsEnable is NULL
 	                    group by B.Name,F.Name,A.[RoomSexType],C.name
                     ) TotalBeds
@@ -611,7 +612,7 @@ on a.id=G.roomID and G.[Status]=1 and G.ID not in  (select BedID from [TB_Assign
 	                    left join TB_dormarea As B on A.DormAreaID=B.ID
 	                    left join TB_building as C on a.buildingid=c.id
 	                    left join TB_RoomType AS F on a.RoomType=F.ID
-	                    left join [TB_Bed] as H	on a.id=H.roomID and H.[Status]=3 AND A.SiteID = 2
+	                    left join [TB_Bed] as H	on a.id=H.roomID and H.[Status]=3 AND A.SiteID = {0}
 	                    group by B.Name,F.Name,A.[RoomSexType],C.name
                     ) Occupied on TotalBeds.areaname=Occupied.areaname AND TotalBeds.roomtypt=Occupied.roomtypt AND TotalBeds.RoomSexType=Occupied.RoomSexType AND TotalBeds.Name=Occupied.Name
                     LEFT JOIN (
@@ -620,11 +621,13 @@ on a.id=G.roomID and G.[Status]=1 and G.ID not in  (select BedID from [TB_Assign
 	                    left join TB_dormarea As B on A.DormAreaID=B.ID
 	                    left join TB_building as C on a.buildingid=c.id
 	                    left join TB_RoomType AS F on a.RoomType=F.ID
-	                    left join [TB_Bed] as H	on a.id=H.roomID and H.[Status]<>3 AND A.SiteID = 2
+	                    left join [TB_Bed] as H	on a.id=H.roomID and H.[Status]<>3 AND A.SiteID = {0}
                         WHERE H.IsEnable<>'已禁用' OR H.IsEnable is NULL
 	                    group by B.Name,F.Name,A.[RoomSexType],C.name
                     ) Vacant ON TotalBeds.areaname=Vacant.areaname AND TotalBeds.roomtypt=Vacant.roomtypt AND TotalBeds.RoomSexType=Vacant.RoomSexType AND TotalBeds.Name=Vacant.Name
-                    group by ROLLUP  (TotalBeds.areaname ,TotalBeds.roomtypt , TotalBeds.[RoomSexType] ,TotalBeds.name) ");
+                    group by ROLLUP  (TotalBeds.areaname ,TotalBeds.roomtypt , TotalBeds.[RoomSexType] ,TotalBeds.name) ",
+                    siteID
+                );
                 Database db = DBO.GetInstance();
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;

@@ -784,7 +784,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Service References\ServiceReference1\EmployeeInfo.wsdl" />
+    <Content Include="Service References\ServiceReference1\EmployeeInfo.wsdl">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Web References\WebReferenceSMS\FlexDevCommonSMS.wsdl" />
     <None Include="Web References\WebReferenceSMS\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
