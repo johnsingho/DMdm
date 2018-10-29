@@ -10,7 +10,7 @@ namespace DromManage.Job
     {
         public static string GetAppSettings(string key)
         {
-            return "Server=DMNNT025;Database=DormManage;Uid=admin_Dorm;Pwd=dmn@DORM022";
+            return "Server=10.206.157.14;Database=OA_CSH_DormManage;Uid=OA_CSH_DormManage;Pwd=OAdor!2018mgen";
         }
 
         public static void SetValue(XmlDocument xmlDocument, string selectPath, string key, string keyValue)
