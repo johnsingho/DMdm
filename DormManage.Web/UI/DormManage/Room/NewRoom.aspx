@@ -191,6 +191,7 @@
                                 <asp:ListItem Selected="True" Value="">--请选择--</asp:ListItem>
                                 <asp:ListItem Value="男">男</asp:ListItem>
                                 <asp:ListItem Value="女">女</asp:ListItem>
+                                <asp:ListItem Value="不限">不限</asp:ListItem>
                             </asp:DropDownList>
                             <span>*</span>
                         </td>
