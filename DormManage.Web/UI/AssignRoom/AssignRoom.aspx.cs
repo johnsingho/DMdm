@@ -209,6 +209,8 @@ namespace DormManage.Web.UI.AssignRoom
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
+            lblCName.Text = string.Empty;
+            lblEmpTypeName.Text = string.Empty;
             var sInputID = this.txtScanCardNO.Text.Trim();
             var sWorkDayNO = this.txtWorkDayNo.Text.Trim();
             string sIdCard = string.Empty;
@@ -219,6 +221,8 @@ namespace DormManage.Web.UI.AssignRoom
             if (!DataTableHelper.IsEmptyDataTable(dtEmployeeInfo))
             {
                 ddlRoomSexType.SelectedValue = dtEmployeeInfo.Rows[0]["Sex"].ToString();
+                lblCName.Text = dtEmployeeInfo.Rows[0]["ChineseName"].ToString();
+                lblEmpTypeName.Text = dtEmployeeInfo.Rows[0]["EmployeeTypeName"].ToString();
 
                 //检查是否申请住房津贴
                 bool isHaveApplyAllowance = new AssignRoomBLL().CheckAllowanceApply(dtEmployeeInfo.Rows[0]["EmployeeID"].ToString());

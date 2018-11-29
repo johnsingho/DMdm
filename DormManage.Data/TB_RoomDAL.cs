@@ -193,7 +193,7 @@ namespace DormManage.Data.DAL
                         FloorID = Convert.ToInt32(dt.Rows[0][TB_Room.col_FloorID]),
                         RoomSexType = Convert.ToString(dt.Rows[0][TB_Room.col_RoomSexType]),
                         RoomType = Convert.ToInt32(dt.Rows[0][TB_Room.col_RoomType]),
-                        RoomType2 = Convert.ToInt32(dt.Rows[0][TB_Room.col_RoomType2]),
+                        RoomType2 = Convert.ToInt32(dt.Rows[0][TB_Room.col_RoomType2]), //默认值应当为0
                         Name = Convert.ToString(dt.Rows[0][TB_Room.col_Name]),
                         KeyCount = Convert.ToString(dt.Rows[0][TB_Room.col_KeyCount]),
                         
@@ -591,40 +591,7 @@ on a.id=G.roomID and G.[Status]=1 and G.ID not in  (select BedID from [TB_Assign
             DbCommand dbCommandWrapper = null;
             try
             {
-                StringBuilder strBuilder = new StringBuilder(@"select TotalBeds.areaname ,TotalBeds.roomtypt + TotalBeds.[RoomSexType] as 'grade',isnull( TotalBeds.name,'合计') as 'DormNo'	  
-	                ,sum(TotalBeds.TotalBedsQty) as 'TotalBedsQty',sum(Occupied.OccupiedQty) as 'OccupiedQty',
-	                sum(Vacant.VacantQty) as 'VacantQty',cast(case sum(TotalBeds.TotalBedsQty) when 0 then 0 else sum(Occupied.OccupiedQty)*100/sum(TotalBeds.TotalBedsQty) end   AS VARCHAR)+'%' as 'Occupancyrate'
-                    from 
-                    (
-	                    select B.Name areaname,F.Name roomtypt, A.[RoomSexType] ,C.name ,count(H.ID) AS 'TotalBedsQty'
-	                    from [TB_Room] as A	
-	                    left join TB_dormarea As B on A.DormAreaID=B.ID
-	                    left join TB_building as C on a.buildingid=c.id
-	                    left join TB_RoomType AS F on a.RoomType=F.ID
-	                    left join [TB_Bed] as H	on a.id=H.roomID AND A.SiteID = 2
-                        WHERE H.IsEnable<>'已禁用' OR H.IsEnable is NULL
-	                    group by B.Name,F.Name,A.[RoomSexType],C.name
-                    ) TotalBeds
-                    LEFT JOIN (
-	                    select B.Name areaname,F.Name roomtypt, A.[RoomSexType] ,C.name ,count(H.ID) AS 'OccupiedQty'
-	                    from [TB_Room] as A
-	                    left join TB_dormarea As B on A.DormAreaID=B.ID
-	                    left join TB_building as C on a.buildingid=c.id
-	                    left join TB_RoomType AS F on a.RoomType=F.ID
-	                    left join [TB_Bed] as H	on a.id=H.roomID and H.[Status]=3 AND A.SiteID = 2
-	                    group by B.Name,F.Name,A.[RoomSexType],C.name
-                    ) Occupied on TotalBeds.areaname=Occupied.areaname AND TotalBeds.roomtypt=Occupied.roomtypt AND TotalBeds.RoomSexType=Occupied.RoomSexType AND TotalBeds.Name=Occupied.Name
-                    LEFT JOIN (
-	                    select B.Name areaname,F.Name roomtypt, A.[RoomSexType],C.name,count(H.ID) AS 'VacantQty'
-	                    from [TB_Room] as A
-	                    left join TB_dormarea As B on A.DormAreaID=B.ID
-	                    left join TB_building as C on a.buildingid=c.id
-	                    left join TB_RoomType AS F on a.RoomType=F.ID
-	                    left join [TB_Bed] as H	on a.id=H.roomID and H.[Status]<>3 AND A.SiteID = 2
-                        WHERE H.IsEnable<>'已禁用' OR H.IsEnable is NULL
-	                    group by B.Name,F.Name,A.[RoomSexType],C.name
-                    ) Vacant ON TotalBeds.areaname=Vacant.areaname AND TotalBeds.roomtypt=Vacant.roomtypt AND TotalBeds.RoomSexType=Vacant.RoomSexType AND TotalBeds.Name=Vacant.Name
-                    group by ROLLUP  (TotalBeds.areaname ,TotalBeds.roomtypt , TotalBeds.[RoomSexType] ,TotalBeds.name) ");
+                StringBuilder strBuilder = new StringBuilder(@"select * from view_CurrentDormReport");
                 Database db = DBO.GetInstance();
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;

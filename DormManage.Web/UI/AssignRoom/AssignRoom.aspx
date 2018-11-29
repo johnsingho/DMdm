@@ -148,14 +148,21 @@
                                     </td>
                                     <td>
                                         <asp:Button ID="btnAssign" runat="server" CssClass="publicBtn" Text="分配" OnClientClick="return getRoom()" OnClick="btnAssign_Click" />
-                                    </td>
+                                    </td>                      
+                                    <%--/************************************************************************************/--%>
+                                    <th><asp:Label runat="server" Text="姓名："></asp:Label></th>
+                                    <th><asp:Label ID="lblCName" runat="server" Style="font-size:1.1em;font-weight:600;"></asp:Label></th>
+                                    <th><asp:Label runat="server" Text="用工类型："></asp:Label></th>
+                                    <th><asp:Label ID="lblEmpTypeName" runat="server" Style="font-size:1.2em;font-weight:700;color:red;"></asp:Label></th>
+                                    <%--/************************************************************************************/--%>
+                                </tr>
+                                <tr>
                                     <th>
                                         <asp:Label ID="lblBuildingName" runat="server" Text="楼栋："></asp:Label>
                                     </th>
                                     <td>
                                         <asp:DropDownList ID="ddlBuildingName" runat="server" TabIndex="2" onchange="ddlBuildingNameChange()"></asp:DropDownList>
                                     </td>
-                                    <%--/************************************************************************************/--%>
                                     <th style="display: none" id="thUnitName">
                                         <asp:Label ID="lblUnitName" runat="server" Text="单元："></asp:Label>
                                     </th>
@@ -172,8 +179,6 @@
                                         <asp:Label ID="lblRoom" runat="server" Text="房间号："></asp:Label></th>
                                     <td>
                                         <asp:DropDownList ID="ddlRoom" runat="server" onchange="ddlRoomChange()"></asp:DropDownList></td>
-
-                                    <%--/************************************************************************************/--%>
                                 </tr>
                                 <tr>
 
