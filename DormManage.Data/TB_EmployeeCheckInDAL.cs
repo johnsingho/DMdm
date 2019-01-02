@@ -270,41 +270,42 @@ namespace DormManage.Data.DAL
             DbCommand dbCommandWrapper = null;
             try
             {
-                StringBuilder strBuilder = new StringBuilder(@"SELECT A.[ID]
-      ,A.[EmployeeNo]
-      ,A.[Sex]
-      ,A.[BU]
-      ,A.EmployeeTypeName
-      ,I.[Name] as RoomType
-      ,A.[CardNo]
-      ,A.[Telephone]
-      ,A.[Province]
-      ,Convert(varchar(12),A.[CheckInDate],111) as CheckInDate
-      ,A.[Name]
-      ,A.[SiteID]
-	  ,B.Name AS BedName 
-      ,C.Name AS RoomName
-      ,C.RoomSexType
-	  ,D.Name As FloorName
-	  ,E.Name As UnitName
-	  ,F.Name As BuildingName
-	  ,G.Name As DormAreaName
-      ,B.KeyCount
-FROM  [TB_EmployeeCheckIn] AS A
-LEFT JOIN [TB_Bed] AS B
-ON A.[BedID]=B.ID
-LEFT JOIN [TB_Room] AS C
-ON B.[RoomID]=C.ID
-LEFT JOIN [TB_Floor] AS D
-ON B.FloorID=D.ID
-LEFT JOIN [TB_Unit] AS E
-ON B.UnitID=E.ID
-LEFT JOIN [TB_Building] AS F
-on B.BuildingID=F.ID
-LEFT JOIN [TB_DormArea] AS G
-ON B.DormAreaID=G.ID
-LEFT JOIN TB_RoomType AS I
-ON C.RoomType=I.ID ");
+                StringBuilder strBuilder = new StringBuilder(@"
+                    SELECT A.[ID]
+                          ,A.[EmployeeNo]
+                          ,A.[Sex]
+                          ,A.[BU]
+                          ,A.EmployeeTypeName
+                          ,I.[Name] as RoomType
+                          ,A.[CardNo]
+                          ,A.[Telephone]
+                          ,A.[Province]
+                          ,Convert(varchar(12),A.[CheckInDate],111) as CheckInDate
+                          ,A.[Name]
+                          ,A.[SiteID]
+	                      ,B.Name AS BedName 
+                          ,C.Name AS RoomName
+                          ,C.RoomSexType
+	                      ,D.Name As FloorName
+	                      ,E.Name As UnitName
+	                      ,F.Name As BuildingName
+	                      ,G.Name As DormAreaName
+                          ,B.KeyCount
+                    FROM  [TB_EmployeeCheckIn] AS A
+                    LEFT JOIN [TB_Bed] AS B
+                    ON A.[BedID]=B.ID
+                    LEFT JOIN [TB_Room] AS C
+                    ON B.[RoomID]=C.ID
+                    LEFT JOIN [TB_Floor] AS D
+                    ON B.FloorID=D.ID
+                    LEFT JOIN [TB_Unit] AS E
+                    ON B.UnitID=E.ID
+                    LEFT JOIN [TB_Building] AS F
+                    on B.BuildingID=F.ID
+                    LEFT JOIN [TB_DormArea] AS G
+                    ON B.DormAreaID=G.ID
+                    LEFT JOIN TB_RoomType AS I
+                    ON C.RoomType=I.ID ");
                 Database db = DBO.GetInstance();
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;
@@ -312,8 +313,8 @@ ON C.RoomType=I.ID ");
                 if (null != SessionHelper.Get(HttpContext.Current, TypeManager.User))
                 {
                     strBuilder.AppendLine(@" inner join [TB_UserConnectDormArea] AS H
-on G.ID=H.[DormAreaID]
-where 1=1");
+                                            on G.ID=H.[DormAreaID]
+                                            where 1=1");
                     strBuilder.AppendLine(" AND H.[UserID] = @UserID");
                     db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ID);
                 }
@@ -404,49 +405,50 @@ where 1=1");
             DbCommand dbCommandWrapper = null;
             try
             {
-                StringBuilder strBuilder = new StringBuilder(@"SELECT A.[ID]
-      ,A.[EmployeeNo]
-      ,A.[Sex]
-      ,A.[BU]
-      ,A.EmployeeTypeName
-      ,I.[Name] as RoomType
-      ,A.[CardNo]
-      ,A.[Telephone]
-      ,A.[Province]
-      ,Convert(varchar(12),A.[CheckInDate],111) as CheckInDate
-      ,A.[Name]
-      ,A.[SiteID]
-	  ,B.Name AS BedName 
-      ,C.Name AS RoomName
-      ,C.RoomSexType
-	  ,D.Name As FloorName
-	  ,E.Name As UnitName
-	  ,F.Name As BuildingName
-	  ,G.Name As DormAreaName
-      ,B.KeyCount
-FROM  [TB_EmployeeCheckIn] AS A
-LEFT JOIN [TB_Bed] AS B
-ON A.[BedID]=B.ID
-LEFT JOIN [TB_Room] AS C
-ON B.[RoomID]=C.ID
-LEFT JOIN [TB_Floor] AS D
-ON B.FloorID=D.ID
-LEFT JOIN [TB_Unit] AS E
-ON B.UnitID=E.ID
-LEFT JOIN [TB_Building] AS F
-on B.BuildingID=F.ID
-LEFT JOIN [TB_DormArea] AS G
-ON B.DormAreaID=G.ID
-LEFT JOIN TB_RoomType AS I
-ON C.RoomType=I.ID ");
+                StringBuilder strBuilder = new StringBuilder(@"
+                    SELECT A.[ID]
+                          ,A.[EmployeeNo]
+                          ,A.[Sex]
+                          ,A.[BU]
+                          ,A.EmployeeTypeName
+                          ,I.[Name] as RoomType
+                          ,A.[CardNo]
+                          ,A.[Telephone]
+                          ,A.[Province]
+                          ,Convert(varchar(12),A.[CheckInDate],111) as CheckInDate
+                          ,A.[Name]
+                          ,A.[SiteID]
+	                      ,B.Name AS BedName 
+                          ,C.Name AS RoomName
+                          ,C.RoomSexType
+	                      ,D.Name As FloorName
+	                      ,E.Name As UnitName
+	                      ,F.Name As BuildingName
+	                      ,G.Name As DormAreaName
+                          ,B.KeyCount
+                    FROM  [TB_EmployeeCheckIn] AS A
+                    LEFT JOIN [TB_Bed] AS B
+                    ON A.[BedID]=B.ID
+                    LEFT JOIN [TB_Room] AS C
+                    ON B.[RoomID]=C.ID
+                    LEFT JOIN [TB_Floor] AS D
+                    ON B.FloorID=D.ID
+                    LEFT JOIN [TB_Unit] AS E
+                    ON B.UnitID=E.ID
+                    LEFT JOIN [TB_Building] AS F
+                    on B.BuildingID=F.ID
+                    LEFT JOIN [TB_DormArea] AS G
+                    ON B.DormAreaID=G.ID
+                    LEFT JOIN TB_RoomType AS I
+                    ON C.RoomType=I.ID ");
                 Database db = DBO.GetInstance();
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;
                 if (null != SessionHelper.Get(HttpContext.Current, TypeManager.User))
                 {
                     strBuilder.AppendLine(@" inner join [TB_UserConnectDormArea] AS H
-on G.ID=H.[DormAreaID]
-where 1=1");
+                                            on G.ID=H.[DormAreaID]
+                                            where 1=1");
                     strBuilder.AppendLine(" AND H.[UserID] = @UserID");
                     db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ID);
                 }
@@ -560,39 +562,39 @@ where 1=1");
             try
             {
                 StringBuilder strBuilder = new StringBuilder(@"
-SELECT A.[EmployeeNo] '工号'
-	  ,A.[Name] '姓名'
-      ,A.BU  '事业部'
-      ,A.EmployeeTypeName '用工类型'
-      ,A.[Company] '公司'
-      ,A.[CardNo] '身份证号码'
-      ,A.[Telephone] '手机号码'
-      ,Convert(varchar(12),A.[CheckInDate],111) as '入住日期'
-	  ,G.Name As '宿舍区'
-	  ,F.Name As '楼栋'
-	  ,E.Name As '单元'
-	  ,D.Name As '楼层'
-      ,C.Name AS '房间号'
-	  ,B.Name AS '床位号'
-      ,JJ.Name 房间类型
-    ,'' AS '扣费内容'
-    ,'' AS '扣费金额'
-FROM  [TB_EmployeeCheckIn] AS A
-LEFT JOIN [TB_Bed] AS B
-ON A.[BedID]=B.ID
-LEFT JOIN [TB_Room] AS C
-ON B.[RoomID]=C.ID
-LEFT JOIN [TB_Floor] AS D
-ON B.FloorID=D.ID
-LEFT JOIN [TB_Unit] AS E
-ON B.UnitID=E.ID
-LEFT JOIN [TB_Building] AS F
-on B.BuildingID=F.ID
-LEFT JOIN [TB_DormArea] AS G
-ON B.DormAreaID=G.ID
-LEFT JOIN TB_BU AS I
-ON A.BUID=I.ID
-Left join TB_RoomType as JJ on JJ.ID=C.RoomType");
+                    SELECT A.[EmployeeNo] '工号'
+	                      ,A.[Name] '姓名'
+                          ,A.BU  '事业部'
+                          ,A.EmployeeTypeName '用工类型'
+                          ,A.[Company] '公司'
+                          ,A.[CardNo] '身份证号码'
+                          ,A.[Telephone] '手机号码'
+                          ,Convert(varchar(12),A.[CheckInDate],111) as '入住日期'
+	                      ,G.Name As '宿舍区'
+	                      ,F.Name As '楼栋'
+	                      ,E.Name As '单元'
+	                      ,D.Name As '楼层'
+                          ,C.Name AS '房间号'
+	                      ,B.Name AS '床位号'
+                          ,JJ.Name 房间类型
+                        ,'' AS '扣费内容'
+                        ,'' AS '扣费金额'
+                    FROM  [TB_EmployeeCheckIn] AS A
+                    LEFT JOIN [TB_Bed] AS B
+                    ON A.[BedID]=B.ID
+                    LEFT JOIN [TB_Room] AS C
+                    ON B.[RoomID]=C.ID
+                    LEFT JOIN [TB_Floor] AS D
+                    ON B.FloorID=D.ID
+                    LEFT JOIN [TB_Unit] AS E
+                    ON B.UnitID=E.ID
+                    LEFT JOIN [TB_Building] AS F
+                    on B.BuildingID=F.ID
+                    LEFT JOIN [TB_DormArea] AS G
+                    ON B.DormAreaID=G.ID
+                    LEFT JOIN TB_BU AS I
+                    ON A.BUID=I.ID
+                    Left join TB_RoomType as JJ on JJ.ID=C.RoomType");
                 Database db = DBO.GetInstance();
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;

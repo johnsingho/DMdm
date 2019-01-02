@@ -501,7 +501,7 @@ namespace DormManage.BLL.DormPersonManage
 
                 var strSQL = string.Empty;
                 int nRet = 0;
-                var sCreateUser = SessionHelper.Get(HttpContext.Current, TypeManager.User) == null ? ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).Account : ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ADAccount;
+                var sCreateUser = SessionHelper.Get(HttpContext.Current, TypeManager.User) == null ? ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).Account : ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).EName;
 
                 //create EM_Approved
                 if (null!=cost && cost.HasValue)
