@@ -8,6 +8,7 @@
     <link type="text/css" href="styles/base.css" rel="stylesheet" />
     <link type="text/css" href="styles/login.css" rel="stylesheet" />
     <script type="text/javascript" src="Scripts/jquery-1.8.2.min.js"></script>
+    <script src="Scripts/VisitTrack.js"></script>
     <link rel="shortcut icon" href="images/c_favicon.ico" />
     <style type="text/css">
         .header
@@ -41,6 +42,7 @@
                 alert("Sorry，密码不能为空！");
                 return false;
             }
+            VisitTrack('DormManage', '登录', $("#<%=this.txtUserName.ClientID%>").val());
             return true;
         }
 
