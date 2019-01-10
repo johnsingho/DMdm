@@ -142,13 +142,22 @@ namespace DormManage.BLL.DormManage
                         tB_AllowanceApplyCancel.CreateUser = currentUser;
                         tB_AllowanceApplyCancel.CreateDate = System.DateTime.Now;
                         tB_AllowanceApplyCancel.SiteID = intSiteID;
-                        tB_AllowanceApplyCancel.Hire_Date = Convert.ToDateTime(dr["入职日期"].ToString());
+                        var sdtHired = dr["入职日期"] as string;
+                        if(!string.IsNullOrEmpty(sdtHired))
+                        {
+                            tB_AllowanceApplyCancel.Hire_Date = Convert.ToDateTime(sdtHired);
+                        }                        
                         ADDAllowanceCancelApply(tB_AllowanceApplyCancel);
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
-                    dr["BZ"] = "已有申请记录";
+                    var smsg = ex.Message;
+                    if (smsg.IndexOf("PRIMARY KEY", StringComparison.InvariantCultureIgnoreCase) != -1)
+                    {
+                        smsg = "已经有相关记录了";
+                    }
+                    dr["BZ"] = "取消津贴失败：" + smsg;
                     dtError.ImportRow(dr);
                 }
             }

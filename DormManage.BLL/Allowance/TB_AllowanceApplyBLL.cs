@@ -128,7 +128,18 @@ namespace DormManage.BLL.DormManage
             {
                 try
                 {
-                    DataRow[] drEmployeeCheckInArr = dtEmployeeCheckIn.Select("CardNo='" + dr["身份证号码"] + "'");
+                    var sID = dr["身份证号码"] as string;
+                    var sEmployeeNo = dr["工号"] as string;
+                    var sCond = string.Empty;
+                    if (string.IsNullOrEmpty(sID))
+                    {
+                        sCond = string.Format("EmployeeNo='{0}'", sEmployeeNo==null ? string.Empty : sEmployeeNo.Trim());
+                    }
+                    else
+                    {
+                        sCond = string.Format("CardNo='{0}'", sID==null ? string.Empty : sID.Trim());
+                    }
+                    DataRow[] drEmployeeCheckInArr = dtEmployeeCheckIn.Select(sCond);
                     if (drEmployeeCheckInArr.Length > 0)
                     {
                         dr["BZ"] = "已有入住记录";
@@ -157,7 +168,12 @@ namespace DormManage.BLL.DormManage
                 }
                 catch(Exception ex)
                 {
-                    dr["BZ"] = "申请记录失败："+ex.Message;
+                    var smsg = ex.Message;
+                    if(smsg.IndexOf("PRIMARY KEY", StringComparison.InvariantCultureIgnoreCase) != -1)
+                    {
+                        smsg = "已经有相关记录了";
+                    }
+                    dr["BZ"] = "申请记录失败："+ smsg;
                     dtError.ImportRow(dr);
                 }
             }
