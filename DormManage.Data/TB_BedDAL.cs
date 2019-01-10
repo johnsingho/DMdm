@@ -371,44 +371,45 @@ where 1=1");
             try
             {
                 StringBuilder strBuilder = new StringBuilder(@"
-select A.[ID]
-      ,A.[RoomID]
-      ,A.[Name]
-      ,A.[Creator]
-      ,A.[CreateDate]
-      ,A.[UpdateBy]
-      ,A.[UpdateDate]
-      ,A.[SiteID]
-      ,A.[DormAreaID]
-      ,A.[BuildingID]
-      ,A.[UnitID]
-      ,A.[FloorID]
-      ,A.[Status]
-      ,A.[KeyCount]
-      ,case  when A.[IsEnable] is null then '已启用'
-when A.[IsEnable]='已禁用' then '已禁用'
-when A.[IsEnable]='已启用' then '已启用'
-else '已启用' end  as IsEnable
-      ,B.Name as DormAreaName 
-      ,C.name as BuildingName
-      ,D.Name As UnitName
-      ,E.Name As FloorName
-      ,F.Name As RoomName
-      ,F.RoomSexType
-      ,GG.Name AS RoomTypeName
-from [TB_Bed] as A
-left join TB_dormarea As B
-on A.DormAreaID=B.ID
-left join TB_building as C
-on a.buildingid=c.id 
-left join TB_Unit AS D
-on a.UnitID=D.ID
-left join TB_Floor as E
-on a.FloorID=E.ID
-left join TB_Room AS F
-on a.RoomID=F.ID 
-LEFT JOIN TB_RoomType AS GG
-ON F.RoomType=GG.ID ");
+                    select A.[ID]
+                          ,A.[RoomID]
+                          ,A.[Name]
+                          ,A.[Creator]
+                          ,A.[CreateDate]
+                          ,A.[UpdateBy]
+                          ,A.[UpdateDate]
+                          ,A.[SiteID]
+                          ,A.[DormAreaID]
+                          ,A.[BuildingID]
+                          ,A.[UnitID]
+                          ,A.[FloorID]
+                          ,A.[Status]
+                          ,A.[KeyCount]
+                          ,case  
+                            when A.[IsEnable] is null then '已启用'
+                            when A.[IsEnable]='已禁用' then '已禁用'
+                            when A.[IsEnable]='已启用' then '已启用'
+                            else '已启用' end  as IsEnable
+                          ,B.Name as DormAreaName 
+                          ,C.name as BuildingName
+                          ,D.Name As UnitName
+                          ,E.Name As FloorName
+                          ,F.Name As RoomName
+                          ,F.RoomSexType
+                          ,GG.Name AS RoomTypeName
+                    from [TB_Bed] as A
+                    left join TB_dormarea As B
+                    on A.DormAreaID=B.ID
+                    left join TB_building as C
+                    on a.buildingid=c.id 
+                    left join TB_Unit AS D
+                    on a.UnitID=D.ID
+                    left join TB_Floor as E
+                    on a.FloorID=E.ID
+                    left join TB_Room AS F
+                    on a.RoomID=F.ID 
+                    LEFT JOIN TB_RoomType AS GG
+                    ON F.RoomType=GG.ID ");
                 Database db = DBO.GetInstance();
                 dbCommandWrapper = db.DbProviderFactory.CreateCommand();
                 dbCommandWrapper.CommandType = CommandType.Text;
@@ -423,8 +424,12 @@ ON F.RoomType=GG.ID ");
                 }
                 else
                 {
-                    strBuilder.AppendLine(" where 1=1 And (A.IsEnable<>'已禁用' OR A.IsEnable is NULL)");
+                    strBuilder.AppendLine(" where 1=1 ");
                 }
+
+                //过滤掉禁用的房间
+                strBuilder.AppendLine(" And(A.IsEnable <> '已禁用' OR A.IsEnable is NULL)");
+
                 if (info.ID > 0)
                 {
                     strBuilder.AppendLine(" AND A.ID = @ID");

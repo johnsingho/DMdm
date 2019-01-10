@@ -193,7 +193,7 @@ namespace DormManage.Data.DAL
                         FloorID = Convert.ToInt32(dt.Rows[0][TB_Room.col_FloorID]),
                         RoomSexType = Convert.ToString(dt.Rows[0][TB_Room.col_RoomSexType]),
                         RoomType = Convert.ToInt32(dt.Rows[0][TB_Room.col_RoomType]),
-                        RoomType2 = Convert.ToInt32(dt.Rows[0][TB_Room.col_RoomType2]),
+                        RoomType2 = Convert.ToInt32(dt.Rows[0][TB_Room.col_RoomType2]), //默认值应当为0
                         Name = Convert.ToString(dt.Rows[0][TB_Room.col_Name]),
                         KeyCount = Convert.ToString(dt.Rows[0][TB_Room.col_KeyCount]),
                         
