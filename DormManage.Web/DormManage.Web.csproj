@@ -689,6 +689,7 @@
     <Content Include="Scripts\ligerUI1.1.9\skins\Silvery\images\layout\tabs-item-right-bg.gif" />
     <Content Include="Scripts\ligerUI1.1.9\skins\Silvery\images\layout\tabs-tools.gif" />
     <Content Include="Scripts\login.js" />
+    <Content Include="Scripts\VisitTrack.js" />
     <Content Include="Service References\ServiceReference1\EmployeeInfo.disco" />
     <Content Include="Service References\ServiceReference1\configuration91.svcinfo" />
     <Content Include="Service References\ServiceReference1\configuration.svcinfo" />
