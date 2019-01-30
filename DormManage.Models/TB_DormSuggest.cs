@@ -18,7 +18,9 @@ namespace DormManage.Models
         public string MobileNo { get; set; }
         public string Suggest { get; set; }
         public string Response { get; set; }
-        public DateTime CreateDate { get; set; }
+        //public DateTime CreateDate { get; set; }
+        public DateTime SubmitDayBegin { get; set; }
+        public DateTime SubmitDayEnd { get; set; }
         public int Status { get; set; }
         public string ModifyUserID { get; set; }
         public DateTime ModifyDate { get; set; }        

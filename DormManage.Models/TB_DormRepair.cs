@@ -20,7 +20,10 @@ namespace DormManage.Models
         public DateTime RepairTime { get; set; }
         public string DeviceType { get; set; }
         public string RequireDesc { get; set; }
-        public DateTime CreateDate { get; set; }
+        //public DateTime CreateDate { get; set; }
+        public DateTime SubmitDayBegin { get; set; }
+        public DateTime SubmitDayEnd { get; set; }
+
         public int Status { get; set; }
         public string ModifyUserID { get; set; }
         public DateTime ModifyDate { get; set; }

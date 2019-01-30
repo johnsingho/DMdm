@@ -4,6 +4,7 @@ using DormManage.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -43,8 +44,7 @@ namespace DormManage.Web.UI.FlexPlus
             var pager = new Pager();
             pager.CurrentPageIndex = iPage;
             pager.srcOrder = " CreateDate desc";
-            var mItem = new TB_DormSuggest();
-            mItem.Status = Convert.ToInt32(ddlStatus.SelectedValue);
+            var mItem = GetParam();
             var dt = bll.GetDormSuggestList(mItem, ref pager);
             GridView1.DataSource = dt;
             GridView1.DataBind();
@@ -53,6 +53,21 @@ namespace DormManage.Web.UI.FlexPlus
             this.Pager1.PageCount = pager.TotalPage;
             this.Pager1.CurrentIndex = pager.CurrentPageIndex;
             this.Pager1.PageSize = pager.PageSize;
+        }
+        private TB_DormSuggest GetParam()
+        {
+            var mItem = new TB_DormSuggest();
+            mItem.Status = Convert.ToInt32(ddlStatus.SelectedValue);
+            DateTime dtVal = DateTime.Now;
+            if (DateTime.TryParse(txtSubmitDayBegin.Text.Trim(), out dtVal))
+            {
+                mItem.SubmitDayBegin = dtVal;
+            }
+            if (DateTime.TryParse(txtSubmitDayEnd.Text.Trim(), out dtVal))
+            {
+                mItem.SubmitDayEnd = dtVal;
+            }
+            return mItem;
         }
 
         protected void pagerList_Command(object sender, CommandEventArgs e)
@@ -90,6 +105,16 @@ namespace DormManage.Web.UI.FlexPlus
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             this.Bind(1);
+        }
+
+        protected void btnExport_Click(object sender, EventArgs e)
+        {
+            //export to excel
+            var mItem = GetParam();
+            var bll = new FlexPlusBLL();
+            var sfn = DateTime.Now.ToString("yyMMddHHmmssms_") + "宿舍建议.xls";
+            string strFileName = bll.ExportDormSugget(mItem, sfn);
+            DownLoadFile(this.Request, this.Response, sfn, File.ReadAllBytes(strFileName), 10240000);
         }
     }
 }

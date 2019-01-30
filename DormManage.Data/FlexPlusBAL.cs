@@ -249,6 +249,11 @@ namespace DormManage.Data.DAL
             {
                 sb.AppendFormat("and Status='{0}' ", mItem.Status);
             }
+            if (mItem.SubmitDayBegin != default(DateTime))
+            {
+                sb.AppendFormat(" AND CAST(CreateDate as Date) between '{0:yyyy/MM/dd}' and '{1:yyyy/MM/dd}'", 
+                        mItem.SubmitDayBegin, mItem.SubmitDayEnd);
+            }
 
             if (pager != null && !pager.IsNull)
             {
@@ -261,6 +266,40 @@ namespace DormManage.Data.DAL
             {
                 dbCommandWrapper.CommandText = sb.ToString();
             }
+            dt = db.ExecuteDataSet(dbCommandWrapper).Tables[0];
+            return dt;
+        }
+        public DataTable GetRepairDormList(TB_DormRepair mItem)
+        {
+            var sb = new StringBuilder(@"select ID,CName,EmployeeNo,MobileNo,DormAddress,RepairTime,DeviceType,RequireDesc,CreateDate,Status,Response,ModifyUserID,ModifyDate
+                                        from TB_DormRepair ");
+            var db = DBO.GetInstance();
+            DataTable dt = null;
+            DbCommand dbCommandWrapper = null;
+            dbCommandWrapper = db.DbProviderFactory.CreateCommand();
+            dbCommandWrapper.CommandType = CommandType.Text;
+            sb.Append("where 1=1 ");
+
+            if (mItem.ID > 0)
+            {
+                sb.AppendFormat("and id={0} ", mItem.ID);
+            }
+            if (!string.IsNullOrEmpty(mItem.DeviceType))
+            {
+                sb.AppendFormat("and DeviceType='{0}' ", mItem.DeviceType);
+            }
+            if (mItem.Status > -1)
+            {
+                sb.AppendFormat("and Status='{0}' ", mItem.Status);
+            }
+            if (mItem.SubmitDayBegin != default(DateTime))
+            {
+                sb.AppendFormat(" AND CAST(CreateDate as Date) between '{0:yyyy/MM/dd}' and '{1:yyyy/MM/dd}'",
+                        mItem.SubmitDayBegin, mItem.SubmitDayEnd);
+            }
+
+            sb.Append(" order by CreateDate desc, status");
+            dbCommandWrapper.CommandText = sb.ToString();
             dt = db.ExecuteDataSet(dbCommandWrapper).Tables[0];
             return dt;
         }
@@ -405,6 +444,11 @@ namespace DormManage.Data.DAL
             {
                 sb.AppendFormat("and Status='{0}' ", mItem.Status);
             }
+            if (mItem.SubmitDayBegin != default(DateTime))
+            {
+                sb.AppendFormat(" AND CAST(CreateDate as Date) between '{0:yyyy/MM/dd}' and '{1:yyyy/MM/dd}'",
+                        mItem.SubmitDayBegin, mItem.SubmitDayEnd);
+            }
 
             if (pager != null && !pager.IsNull)
             {
@@ -420,6 +464,36 @@ namespace DormManage.Data.DAL
             dt = db.ExecuteDataSet(dbCommandWrapper).Tables[0];
             return dt;
         }
+        public DataTable GetDormSuggestList(TB_DormSuggest mItem)
+        {
+            var sb = new StringBuilder("select * from TB_DormSuggest ");
+            var db = DBO.GetInstance();
+            DataTable dt = null;
+            DbCommand dbCommandWrapper = null;
+            dbCommandWrapper = db.DbProviderFactory.CreateCommand();
+            dbCommandWrapper.CommandType = CommandType.Text;
+            sb.Append("where 1=1 ");
+
+            if (mItem.ID > 0)
+            {
+                sb.AppendFormat("and id={0} ", mItem.ID);
+            }
+            if (mItem.Status > -1)
+            {
+                sb.AppendFormat("and Status='{0}' ", mItem.Status);
+            }
+            if (mItem.SubmitDayBegin != default(DateTime))
+            {
+                sb.AppendFormat(" AND CAST(CreateDate as Date) between '{0:yyyy/MM/dd}' and '{1:yyyy/MM/dd}'",
+                        mItem.SubmitDayBegin, mItem.SubmitDayEnd);
+            }
+
+            sb.Append(" order by CreateDate desc, status");
+            dbCommandWrapper.CommandText = sb.ToString();
+            dt = db.ExecuteDataSet(dbCommandWrapper).Tables[0];
+            return dt;
+        }
+
         public DataTable GetDormSuggestByID(string key)
         {
             var db = DBO.GetInstance();

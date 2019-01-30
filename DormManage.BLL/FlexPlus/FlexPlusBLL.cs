@@ -7,6 +7,8 @@ using DormManage.Framework;
 using DormManage.Models;
 using System.Data;
 using DormManage.BLL.AssignRoom;
+using System.IO;
+using DormManage.Common;
 
 namespace DormManage.BLL.FlexPlus
 {
@@ -112,6 +114,7 @@ namespace DormManage.BLL.FlexPlus
             }
             return bRet;
         }
+
         public bool HandleSuggest(string key, string sHandlerWorkdayNo, string sMsg)
         {
             var bRet = false;
@@ -179,6 +182,33 @@ namespace DormManage.BLL.FlexPlus
         public DataTable GetDormSuggestByID(string key)
         {
             return _mDAL.GetDormSuggestByID(key);
+        }
+
+
+        public string ExportRepairDorm(TB_DormRepair mItem, string sfn)
+        {
+            DataTable dt = _mDAL.GetRepairDormList(mItem);
+            string strFilePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("..\\..\\"), "RepairDorm");
+            if (!Directory.Exists(strFilePath))
+            {
+                Directory.CreateDirectory(strFilePath);
+            }
+            string strFileName = Path.Combine(strFilePath, sfn);
+            new ExcelHelper().RenderToExcel(dt, strFileName);
+            return strFileName;
+        }
+
+        public string ExportDormSugget(TB_DormSuggest mItem, string sfn)
+        {
+            DataTable dt = _mDAL.GetDormSuggestList(mItem);
+            string strFilePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("..\\..\\"), "DormSuggest");
+            if (!Directory.Exists(strFilePath))
+            {
+                Directory.CreateDirectory(strFilePath);
+            }
+            string strFileName = Path.Combine(strFilePath, sfn);
+            new ExcelHelper().RenderToExcel(dt, strFileName);
+            return strFileName;
         }
     }
 }

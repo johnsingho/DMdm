@@ -114,12 +114,22 @@
                             <td>
                                 <asp:DropDownList ID="ddlStatus" runat="server"></asp:DropDownList>
                             </td>
+                            <th style="width:120px">提交日期开始：
+                            </th>
+                            <td>
+                                <asp:TextBox ID="txtSubmitDayBegin" runat="server" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                            </td>
+                            <th>结束：
+                            </th>
+                            <td>
+                                <asp:TextBox ID="txtSubmitDayEnd" runat="server" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"></asp:TextBox>
+                            </td>
                             <th></th>
-                            <td style="width: 400px">
+                            <td>
                                 <asp:Button ID="btnSearch" Text="查 询" runat="server" class="publicBtn leftOff" TabIndex="4" OnClick="btnSearch_Click"></asp:Button>
                                 <asp:Button ID="btnHandle" Text="审 批" runat="server" class="publicBtn leftOff" TabIndex="5" OnClientClick="return DoApply();"></asp:Button>
+                                <asp:Button ID="btnExport" Text="导 出" runat="server" class="publicBtn leftOff" TabIndex="6" OnClick="btnExport_Click" ></asp:Button>
                             </td>
-                            <td></td>
                         </tr>
                     </table>
                 </div>
