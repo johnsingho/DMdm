@@ -144,10 +144,9 @@ namespace DromManage.Job
             if (!ConfigHelper.SendEmail) { return; }
             var dtDormRepair = GetExpiredDormRepair();
             var dtDormSuggest = GetExpiredDormSuggest();
-            if(null==dtDormRepair
-                || null==dtDormSuggest
-                || 0==dtDormRepair.Rows.Count
-                || 0== dtDormSuggest.Rows.Count)
+            if((null==dtDormRepair || 0 == dtDormRepair.Rows.Count)
+                && (null==dtDormSuggest || 0== dtDormSuggest.Rows.Count)
+                )
             { return;}
             var sMailRecveiver = string.Empty;
             var sMailCC = string.Empty;
