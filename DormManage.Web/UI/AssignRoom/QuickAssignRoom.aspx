@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="QuickAssignRoom.aspx.cs" Inherits="DormManage.Web.UI.AssignRoom.QuickAssignRoom" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="QuickAssignRoom.aspx.cs" Inherits="DormManage.Web.UI.AssignRoom.QuickAssignRoom" EnableEventValidation="false" %>
 
 <!DOCTYPE html>
 <%@ Register Assembly="Ctl" Namespace="ExtendGridView" TagPrefix="cc1" %>
@@ -61,6 +61,19 @@
     </script>
 
     <script type="text/javascript">
+        $(function () {
+            $("#<%=this.ddlDormArea.ClientID%>").change(function () {
+                var html = "<option value='0' select='selected'>--请选择--</option>";
+                if ($(this).val() != "0") {
+                    var ajaxData = DormManageAjaxServices.GetBuildingByDormAreaID($(this).val());
+                    for (var i = 0; i < ajaxData.value.Rows.length; i++) {
+                        html += "<option value='" + ajaxData.value.Rows[i]["<%=DormManage.Models.TB_Building.col_ID%>"] + "'>" + ajaxData.value.Rows[i]["<%=DormManage.Models.TB_Building.col_Name%>"] + "</option>"
+                    }
+                }
+                $("#<%=this.ddlBuildingName.ClientID%>").html(html);
+            });
+        });
+
         function ddlBuildingNameChange() {
             var ddl = document.getElementById("ddlBuildingName")
             var html = "<option value='0' select='selected'>--请选择--</option>";
@@ -85,7 +98,7 @@
             $("#<%=this.ddlBeg.ClientID%>").html(html);
         }
 
-        
+
         function checkPara() {
             var sid = $.trim($("#<%=txtScanCardNO.ClientID%>").val());
             if (!CheckIdCard(sid) && !confirm('身份证不是有效的中国身份证号，要继续使用吗？')) {
@@ -106,19 +119,6 @@
             return false;
         }
 
-        $(function () {
-            $("#<%=this.ddlDormArea.ClientID%>").change(function () {
-                        var html = "<option value='0' select='selected'>--请选择--</option>";
-                        if ($(this).val() != "0") {
-                            var ajaxData = DormManageAjaxServices.GetBuildingByDormAreaID($(this).val());
-                            for (var i = 0; i < ajaxData.value.Rows.length; i++) {
-                                html += "<option value='" + ajaxData.value.Rows[i]["<%=DormManage.Models.TB_Building.col_ID%>"] + "'>" + ajaxData.value.Rows[i]["<%=DormManage.Models.TB_Building.col_Name%>"] + "</option>"
-                    }
-                }
-                $("#<%=this.ddlBuildingName.ClientID%>").html(html);
-
-            });
-        });
     </script>
 </head>
 <body>
@@ -131,90 +131,88 @@
             <h3 class="nav_left">我的位置： <span id="navigation">房间分配->待入职床位分配</span>
             </h3>
         </div>
-        <asp:ScriptManager ID="ScriptManager1" runat="server">
-        </asp:ScriptManager>
-        <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
-            <ContentTemplate>
-                <div class="wrapper">
-                    <div class="content">
-                        <div class="searchbar">
-                            <table>
-                                <tr>
-                                    <th>
-                                        <asp:Label ID="lblScanName" runat="server" Text="姓名："></asp:Label>
-                                    </th>
-                                    <td>
-                                        <asp:TextBox ID="txtScanName" runat="server" Width="100px"></asp:TextBox>
-                                    </td>
-                                    <th>
-                                        <asp:Label ID="lblIdCard" runat="server" Text="身份证："></asp:Label></th>
-                                    <td>
-                                        <asp:TextBox ID="txtScanCardNO" runat="server" Width="180px" MaxLength="18"></asp:TextBox>                                        
-                                    </td>
-                                    <td>
-                                        <input type="text" id="selbagID" style="display: none" runat="server" />
-                                        <%--<asp:Button ID="btnSearch" Text="查 询" runat="server" CssClass="findBtn" TabIndex="5"
-                                            OnClick="btnSearch_Click"></asp:Button>--%>
-                                    </td>
-                                    <td>
-                                        <asp:Button ID="btnAssign" runat="server" CssClass="publicBtn" Text="分配" OnClientClick="return checkPara()" OnClick="btnAssign_Click" />
-                                    </td>                      
-                                </tr>
-                                <tr>
-                                    <th>
-                                        <asp:Label ID="lblDormArea" runat="server" Text="宿舍区："></asp:Label>
-                                    </th>
-                                    <td>
-                                        <asp:DropDownList ID="ddlDormArea" runat="server" TabIndex="1"></asp:DropDownList>
-                                    </td>
-                                    <th>
-                                        <asp:Label ID="lblBuildingName" runat="server" Text="楼栋："></asp:Label>
-                                    </th>
-                                    <td>
-                                        <asp:DropDownList ID="ddlBuildingName" runat="server" TabIndex="2" onchange="ddlBuildingNameChange()"></asp:DropDownList>
-                                    </td>
-                                    <th style="display: none" id="thUnitName">
-                                        <asp:Label ID="lblUnitName" runat="server" Text="单元："></asp:Label>
-                                    </th>
-                                    <td style="display: none">
-                                        <asp:DropDownList ID="ddlUnit" runat="server" TabIndex="3"></asp:DropDownList>
-                                    </td>
-                                    <th style="display: none">
-                                        <asp:Label ID="lblFloor" runat="server" Text="楼层："></asp:Label>
-                                    </th>
-                                    <td style="display: none">
-                                        <asp:DropDownList ID="ddlFloor" runat="server" TabIndex="4"></asp:DropDownList>
-                                    </td>
-                                    <th>
-                                        <asp:Label ID="lblRoom" runat="server" Text="房间号："></asp:Label></th>
-                                    <td>
-                                        <asp:DropDownList ID="ddlRoom" runat="server" onchange="ddlRoomChange()"></asp:DropDownList></td>
-                                </tr>
-                                <tr>
+        <div class="wrapper">
+            <div class="content">
+                <div class="searchbar">
+                    <table>
+                        <tr>
+                            <th>
+                                <asp:Label ID="lblScanName" runat="server" Text="姓名："></asp:Label>
+                            </th>
+                            <td>
+                                <asp:TextBox ID="txtScanName" runat="server" Width="100px"></asp:TextBox>
+                            </td>
+                            <th>
+                                <asp:Label ID="lblIdCard" runat="server" Text="身份证："></asp:Label></th>
+                            <td>
+                                <asp:TextBox ID="txtScanCardNO" runat="server" Width="180px" MaxLength="18"></asp:TextBox>
+                            </td>
+                            <td>
+                                <input type="text" id="selbagID" style="display: none" runat="server" />
+                                <asp:Button ID="btnSearch" Text="查 询" runat="server" CssClass="findBtn" TabIndex="5"
+                                    OnClick="btnSearch_Click"></asp:Button>
+                            </td>
+                            <td>
+                                <asp:Button ID="btnAssign" runat="server" CssClass="publicBtn" Text="分配" OnClientClick="return checkPara()" OnClick="btnAssign_Click" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <asp:Label ID="lblDormArea" runat="server" Text="宿舍区："></asp:Label>
+                            </th>
+                            <td>
+                                <asp:DropDownList ID="ddlDormArea" runat="server" TabIndex="1"></asp:DropDownList>
+                            </td>
+                            <th>
+                                <asp:Label ID="lblBuildingName" runat="server" Text="楼栋："></asp:Label>
+                            </th>
+                            <td>
+                                <asp:DropDownList ID="ddlBuildingName" runat="server" TabIndex="2" onchange="ddlBuildingNameChange()"></asp:DropDownList>
+                            </td>
+                            <th style="display: none" id="thUnitName">
+                                <asp:Label ID="lblUnitName" runat="server" Text="单元："></asp:Label>
+                            </th>
+                            <td style="display: none">
+                                <asp:DropDownList ID="ddlUnit" runat="server" TabIndex="3"></asp:DropDownList>
+                            </td>
+                            <th style="display: none">
+                                <asp:Label ID="lblFloor" runat="server" Text="楼层："></asp:Label>
+                            </th>
+                            <td style="display: none">
+                                <asp:DropDownList ID="ddlFloor" runat="server" TabIndex="4"></asp:DropDownList>
+                            </td>
+                            <th>
+                                <asp:Label ID="lblRoom" runat="server" Text="房间号："></asp:Label></th>
+                            <td>
+                                <asp:DropDownList ID="ddlRoom" runat="server" onchange="ddlRoomChange()"></asp:DropDownList></td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <asp:Label ID="lblRoomType" runat="server" Text="房间类型："></asp:Label></th>
+                            <td>
+                                <asp:DropDownList ID="ddlRoomType" runat="server"></asp:DropDownList></td>
+                            <th>
+                                <asp:Label ID="lblBed" runat="server" Text="床位号："></asp:Label></th>
+                            <td>
+                                <asp:DropDownList ID="ddlBeg" runat="server" TabIndex="4"></asp:DropDownList>
+                            </td>
+                            <th>
+                                <asp:Label ID="lblRoomSexType" runat="server" Text="性别分类："></asp:Label></th>
+                            <td>
+                                <asp:DropDownList ID="ddlRoomSexType" runat="server">
+                                    <asp:ListItem Selected="True" Value="">--请选择--</asp:ListItem>
+                                    <asp:ListItem Value="男">男</asp:ListItem>
+                                    <asp:ListItem Value="女">女</asp:ListItem>
+                                </asp:DropDownList></td>
+                            <td>
+                        </tr>
+                    </table>
+                </div>
 
-                                    <th>
-                                        <asp:Label ID="lblRoomType" runat="server" Text="房间类型："></asp:Label></th>
-                                    <td>
-                                        <asp:DropDownList ID="ddlRoomType" runat="server"></asp:DropDownList></td>
-                                     <th>
-                                        <asp:Label ID="lblBed" runat="server" Text="床位号："></asp:Label></th>
-                                    <td>
-                                        <asp:DropDownList ID="ddlBeg" runat="server" TabIndex="4"></asp:DropDownList>
-                                        </td>
-                                    <th>
-                                        <asp:Label ID="lblRoomSexType" runat="server" Text="性别分类："></asp:Label></th>
-                                    <td>
-                                        <asp:DropDownList ID="ddlRoomSexType" runat="server">
-                                            <asp:ListItem Selected="True" Value="">--请选择--</asp:ListItem>
-                                            <asp:ListItem Value="男">男</asp:ListItem>
-                                            <asp:ListItem Value="女">女</asp:ListItem>
-                                        </asp:DropDownList></td>
-                                    <td>
-                                        <asp:Button ID="btnQuery" Text="查询床位" runat="server" CssClass="publicBtn" TabIndex="5" OnClick="btnReLoad_Click"></asp:Button>
-                                </tr>
-                            </table>
-                        </div>
-
+                <asp:ScriptManager ID="ScriptManager1" runat="server">
+                </asp:ScriptManager>
+                <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                    <ContentTemplate>
                         <div id="loadSearch" class="loading">
                             <div id="searchResult">
                                 <div class="viewlist">
@@ -250,7 +248,7 @@
                                     <table>
                                         <tr>
                                             <td class="pageleft">
-                                              <%--  <asp:Button ID="btnChangeRoom" Text="换房" runat="server" CssClass="publicBtn" TabIndex="6" OnClientClick="return changeRoom()"></asp:Button>--%>
+                                                <%--  <asp:Button ID="btnChangeRoom" Text="换房" runat="server" CssClass="publicBtn" TabIndex="6" OnClientClick="return changeRoom()"></asp:Button>--%>
                                             </td>
                                             <td class="pageright">
                                                 <cc1:Pager ID="Pager1" runat="server" OnCommand="pagerList_Command" />
@@ -260,12 +258,14 @@
                                 </div>
                             </div>
                         </div>
-            </ContentTemplate>
-            <Triggers>
-                <asp:AsyncPostBackTrigger ControlID="Pager1" />
-                <asp:AsyncPostBackTrigger ControlID="btnQuery" />
-            </Triggers>
-        </asp:UpdatePanel>
+                    </ContentTemplate>
+                    <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="Pager1" />
+                        <asp:PostBackTrigger ControlID="btnSearch" />
+                    </Triggers>
+                </asp:UpdatePanel>
+            </div>
+        </div>
     </form>
 </body>
 </html>

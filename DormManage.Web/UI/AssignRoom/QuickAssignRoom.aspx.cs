@@ -1,14 +1,10 @@
-﻿using DormManage.BLL;
-using DormManage.BLL.AssignRoom;
+﻿using DormManage.BLL.AssignRoom;
 using DormManage.BLL.DormManage;
 using DormManage.Common;
 using DormManage.Framework;
 using DormManage.Models;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -18,8 +14,8 @@ namespace DormManage.Web.UI.AssignRoom
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            //AjaxPro.Utility.RegisterTypeForAjax(typeof(DormPersonManageAjaxServices));
             AjaxPro.Utility.RegisterTypeForAjax(typeof(DormManageAjaxServices));
-            AjaxPro.Utility.RegisterTypeForAjax(typeof(DormPersonManageAjaxServices));
             if (!IsPostBack)
             {
                 this.GridView1.Columns[3].Visible = false;
@@ -161,7 +157,7 @@ namespace DormManage.Web.UI.AssignRoom
         #endregion
 
         //查询空房
-        protected void btnReLoad_Click(object sender, EventArgs e)
+        protected void btnSearch_Click(object sender, EventArgs e)
         {
             //int dormAreaID = Convert.ToInt32(ViewState["dormAreaID"]);
             int dormAreaID = Convert.ToInt32(this.ddlDormArea.SelectedValue);
@@ -253,6 +249,6 @@ namespace DormManage.Web.UI.AssignRoom
                 ScriptManager.RegisterClientScriptBlock(this.UpdatePanel1, this.GetType(), "msg", "alert('" + ex.Message + "')", true);
             }
         }
-
+        
     }
 }
