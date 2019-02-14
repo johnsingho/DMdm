@@ -723,6 +723,7 @@
     <Content Include="UI\AssignRoom\AssignRoom.aspx" />
     <Content Include="UI\AssignRoom\AssignDormArea.aspx" />
     <Content Include="UI\AssignRoom\IdrOcx.cab" />
+    <Content Include="UI\AssignRoom\QuickAssignRoom.aspx" />
     <Content Include="UI\Common\ExcelDownHandler.aspx" />
     <Content Include="UI\Common\OpenImage.aspx" />
     <Content Include="UI\DormManage\Bed\BedDefine.aspx" />
@@ -838,6 +839,13 @@
     </Compile>
     <Compile Include="UI\AssignRoom\AssignDormArea.aspx.designer.cs">
       <DependentUpon>AssignDormArea.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\AssignRoom\QuickAssignRoom.aspx.cs">
+      <DependentUpon>QuickAssignRoom.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\AssignRoom\QuickAssignRoom.aspx.designer.cs">
+      <DependentUpon>QuickAssignRoom.aspx</DependentUpon>
     </Compile>
     <Compile Include="UI\Common\ExcelDownHandler.aspx.cs">
       <DependentUpon>ExcelDownHandler.aspx</DependentUpon>

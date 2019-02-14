@@ -776,13 +776,13 @@ table.pagestyle .pageinfo{text-align:right;}
 
 .dataTitle_btn{ background:url(../images/SS_iM_siader_tb_down.png) no-repeat; border:none; cursor: pointer;height: 28px; margin-top: 11px;padding-right: 5px; width: 28px; float:right; display:inline;}
 
-.publicBtn{ background:url(../images/publicBtn01.png) no-repeat; border:none; outline:none; cursor:pointer; width:60px; height:23px; line-height:23px; float:left; color:blue }
+.publicBtn{ background:url(../images/publicBtn01.png) no-repeat; border:none; outline:none; cursor:pointer; width:60px; height:23px; line-height:23px; float:left; color:blue; margin-left:8px;}
 .publicBtn:hover{ background:url(../images/publicBtn02.png) no-repeat; border:none; outline:none; cursor:pointer; width:60px; height:23px; line-height:23px; float:left; color:blue;}
 .smallFindBtn{ background:url(../images/smallFindBtn01.png) no-repeat; border:none; outline:none; cursor:pointer; width:14px; height:14px; float:left; margin:3px 0 0 5px; }
 .smallFindBtn:hover{ background:url(../images/smallFindBtn02.png) no-repeat; border:none; outline:none; cursor:pointer; width:14px; height:14px; float:left; margin:3px 0 0 5px;}
 
-.wideBtn{ background:url(../images/publicBtn01.png) no-repeat; border:none; cursor:pointer; width:80px; background-size:80px 23px; height:23px; line-height:23px; margin-left:5px; float:left; color:blue }
-.wideBtn:hover{ background:url(../images/publicBtn02.png) no-repeat; border:none; cursor:pointer; width:80px; background-size:80px 23px; height:23px; line-height:23px; margin-left:5px; float:left; color:blue;}
+.wideBtn{ background:url(../images/publicBtn01.png) no-repeat; border:none; cursor:pointer; width:90px; background-size:90px 23px; height:23px; line-height:23px; margin-left:5px; float:left; color:blue }
+.wideBtn:hover{ background:url(../images/publicBtn02.png) no-repeat; border:none; cursor:pointer; width:90px; background-size:90px 23px; height:23px; line-height:23px; margin-left:5px; float:left; color:blue;}
 
 /* searchbar 表单文本框 */
 .sear_text{ width:130px;}

@@ -304,5 +304,14 @@ namespace DormManage.Web.UI.DormPersonManage
                 ClientScript.RegisterStartupScript(ClientScript.GetType(), "", "<script>alert('文件上传失败！')</script>");
             }
         }
+
+        //2019-02-14
+        //导出无工号人员
+        protected void btnExportNullEmpID_Click(object sender, EventArgs e)
+        {
+            var mEmployeeCheckInBLL = new EmployeeCheckInBLL();
+            string strFileName = mEmployeeCheckInBLL.ExportNullEmpID();
+            this.DownLoadFile(this.Request, this.Response, "没有工号入住记录.xls", File.ReadAllBytes(strFileName), 10240000);
+        }
     }
 }

@@ -223,7 +223,7 @@
                                     OnClick="btnSearch_Click"></asp:Button>&nbsp;
                                 <asp:Button ID="btnEdit" Text="编 辑" runat="server" class="publicBtn" TabIndex="5" OnClientClick="openEditView()"></asp:Button>
                                 <asp:Button ID="btnExport" Text="导 出" runat="server" class="exportBtn" TabIndex="6" OnClick="btnExport_Click"></asp:Button>
-
+                                <asp:Button ID="btnExportNullEmpID" Text="导出无工号人员" runat="server" class="wideBtn" TabIndex="7" OnClick="btnExportNullEmpID_Click"></asp:Button>
                             </td>
                         </tr>
                     </table>

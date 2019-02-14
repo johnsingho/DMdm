@@ -153,7 +153,8 @@ namespace DormManage.Data.DAL
             Database db = DBO.CreateDatabase();
             DbCommand dbCommandWrapper = null;
             string strUpdateSql = @"UPDATE TB_EmployeeCheckIn SET 
-       [BU]=@BU
+       [EmployeeNo]=@EmployeeNo
+      ,[BU]=@BU
       ,[Telephone]=@Telephone
       ,[CheckInDate]=@CheckInDate
       ,[UpdateBy]=@UpdateBy
@@ -166,6 +167,7 @@ namespace DormManage.Data.DAL
 
                 #region Add parameters
                 db.AddInParameter(dbCommandWrapper, "@ID", DbType.Int32, info.ID);
+                db.AddInParameter(dbCommandWrapper, "@EmployeeNo", DbType.String, info.EmployeeNo);
                 db.AddInParameter(dbCommandWrapper, "@BU", DbType.String, info.BU);
                 db.AddInParameter(dbCommandWrapper, "@CardNo", DbType.String, info.CardNo);
                 db.AddInParameter(dbCommandWrapper, "@Telephone", DbType.String, info.Telephone);
@@ -680,6 +682,97 @@ namespace DormManage.Data.DAL
                     db.AddInParameter(dbCommandWrapper, "@CheckInDateBegin", DbType.String, tb_EmployeeCheckIn.CheckInDateBegin.ToString("yyyy/MM/dd"));
                     db.AddInParameter(dbCommandWrapper, "@CheckInDateEnd", DbType.String, tb_EmployeeCheckIn.CheckInDateEnd.ToString("yyyy/MM/dd"));
                 }
+
+                #endregion
+
+                dbCommandWrapper.CommandText = strBuilder.ToString();
+                dt = db.ExecuteDataSet(dbCommandWrapper).Tables[0];
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (dbCommandWrapper != null)
+                {
+                    dbCommandWrapper.Dispose();
+                    dbCommandWrapper = null;
+                }
+            }
+        }
+
+        public DataTable GetTableNullEmpID()
+        {
+            DataTable dt = null;
+            DbCommand dbCommandWrapper = null;
+            try
+            {
+                //SiteID
+                int intSiteID = SessionHelper.Get(HttpContext.Current, TypeManager.User) != null ?
+                    ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).SiteID :
+                    ((TB_SystemAdmin)SessionHelper.Get(HttpContext.Current, TypeManager.Admin)).SiteID;
+
+                StringBuilder strBuilder = new StringBuilder(@"
+                    SELECT A.[EmployeeNo] '工号'
+	                      ,A.[Name] '姓名'
+                          ,A.BU  '事业部'
+                          ,A.EmployeeTypeName '用工类型'
+                          ,A.[Company] '公司'
+                          ,A.[CardNo] '身份证号码'
+                          ,A.[Telephone] '手机号码'
+                          ,Convert(varchar(12),A.[CheckInDate],111) as '入住日期'
+	                      ,G.Name As '宿舍区'
+	                      ,F.Name As '楼栋'
+	                      ,E.Name As '单元'
+	                      ,D.Name As '楼层'
+                          ,C.Name AS '房间号'
+	                      ,B.Name AS '床位号'
+                          ,JJ.Name 房间类型
+                        ,'' AS '扣费内容'
+                        ,'' AS '扣费金额'
+                    FROM  [TB_EmployeeCheckIn] AS A
+                    LEFT JOIN [TB_Bed] AS B
+                    ON A.[BedID]=B.ID
+                    LEFT JOIN [TB_Room] AS C
+                    ON B.[RoomID]=C.ID
+                    LEFT JOIN [TB_Floor] AS D
+                    ON B.FloorID=D.ID
+                    LEFT JOIN [TB_Unit] AS E
+                    ON B.UnitID=E.ID
+                    LEFT JOIN [TB_Building] AS F
+                    on B.BuildingID=F.ID
+                    LEFT JOIN [TB_DormArea] AS G
+                    ON B.DormAreaID=G.ID
+                    LEFT JOIN TB_BU AS I
+                    ON A.BUID=I.ID
+                    Left join TB_RoomType as JJ on JJ.ID=C.RoomType");
+                Database db = DBO.GetInstance();
+                dbCommandWrapper = db.DbProviderFactory.CreateCommand();
+                dbCommandWrapper.CommandType = CommandType.Text;
+                #region 拼接条件
+
+                if (null != SessionHelper.Get(HttpContext.Current, TypeManager.User))
+                {
+                    strBuilder.AppendLine(@" inner join [TB_UserConnectDormArea] AS H
+                                            on G.ID=H.[DormAreaID] AND H.[UserID] = @UserID
+                                            where 1=1");
+                    db.AddInParameter(dbCommandWrapper, "@UserID", DbType.Int32, ((TB_User)SessionHelper.Get(HttpContext.Current, TypeManager.User)).ID);
+                }
+                else
+                {
+                    strBuilder.AppendLine(" where 1=1");
+                }
+
+                strBuilder.AppendLine(" AND A.IsActive = @IsActive");
+                db.AddInParameter(dbCommandWrapper, "@IsActive", DbType.Int32, (int)TypeManager.IsActive.Valid);
+
+                strBuilder.AppendLine(" AND A.SiteID = @SiteID");
+                db.AddInParameter(dbCommandWrapper, "@SiteID", DbType.Int32, intSiteID);
+
+                //没有工号的记录
+                strBuilder.AppendLine(" AND A.EmployeeNo is null or A.EmployeeNo=''");
 
                 #endregion
 

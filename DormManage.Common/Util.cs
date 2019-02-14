@@ -95,6 +95,36 @@ namespace DormManage.Common
             }
             return bu;
         }
-        
+
+        //是否有效中国身份证
+        //TODO 有待完善
+        public static bool IsValidIDCard(string sIDCard)
+        {
+            if (string.IsNullOrEmpty(sIDCard) || sIDCard.Trim().Length < 18)
+            {
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sIDCard">身份证号</param>
+        /// <returns>
+        /// -1 非法身份证
+        /// 0 女
+        /// 1 男
+        /// </returns>
+        public static int IsIDCardMan(string sIDCard)
+        {
+            var sid = sIDCard.Trim();
+            if (!IsValidIDCard(sid)) { return -1; }
+            int n = 0;
+            if(!int.TryParse(sid.Substring(16,1), out n))
+            {
+                return -1;
+            }
+            return n % 2;
+        }
     }
 }

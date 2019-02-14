@@ -860,6 +860,23 @@ namespace DormManage.BLL.DormPersonManage
             return strFileName;
         }
 
+        //2019-02-14
+        //导出没有工号的入住记录，这可以被认为是分配房间但没有入职
+        public string ExportNullEmpID()
+        {
+            DataTable dt = _mTB_EmployeeCheckInDAL.GetTableNullEmpID();
+            dt.Columns.Remove("楼层");
+            dt.Columns.Remove("单元");
+            string strFilePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("..\\..\\"), "Report");
+            if (!Directory.Exists(strFilePath))
+            {
+                Directory.CreateDirectory(strFilePath);
+            }
+            string strFileName = Path.Combine(strFilePath, DateTime.Now.ToString("yyMMddHHmmssms_") + "没有工号入住记录.xls");
+            _mExcelHelper.RenderToExcel(dt, strFileName);
+            return strFileName;
+        }
+
         public string Export(DataTable dt, string name)
         {
             string strFilePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("..\\..\\"), "Report");

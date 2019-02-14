@@ -16,7 +16,8 @@ namespace DormManage.Web.UI.DormPersonManage
         private void BindBU()
         {
             txtEmployeeNo.Text= Request.QueryString["employeeNo"].ToString();
-            txtEmployeeNo.ReadOnly = true;
+            //2019-02-14 如果一开始没有的话，允许改一次
+            txtEmployeeNo.ReadOnly = !string.IsNullOrEmpty(txtEmployeeNo.Text.Trim());
             txtName.Text = Request.QueryString["name"].ToString();
             txtName.ReadOnly = true;
             txtBU.Text= Request.QueryString["BU"].ToString();
@@ -40,7 +41,8 @@ namespace DormManage.Web.UI.DormPersonManage
             {
                 TB_EmployeeCheckIn mTB_EmployeeCheckIn = new TB_EmployeeCheckIn();
                 EmployeeCheckInBLL mEmployeeCheckInBLL = new EmployeeCheckInBLL();
-                mTB_EmployeeCheckIn.ID =Convert.ToInt32(Request.QueryString["id"].ToString()); 
+                mTB_EmployeeCheckIn.ID =Convert.ToInt32(Request.QueryString["id"].ToString());
+                mTB_EmployeeCheckIn.EmployeeNo = txtEmployeeNo.Text.Trim();
                 mTB_EmployeeCheckIn.BU = txtBU.Text;
                 mTB_EmployeeCheckIn.EmployeeTypeName = txtEmployeeType.Text;
                 mTB_EmployeeCheckIn.CheckInDate =Convert.ToDateTime(txtCheckinDate.Text);
