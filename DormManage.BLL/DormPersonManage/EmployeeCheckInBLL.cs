@@ -681,19 +681,11 @@ namespace DormManage.BLL.DormPersonManage
                     DataRow[] drEmployeeCheckEmployeeNo = dtEmployeeCheckIn.Select("EmployeeNo='" + dr["工号"] + "'");
                     if (drEmployeeCheckInArr.Length > 0)
                     {
-                        dr["BZ"] = "已有入住记录";
-                        dtError.ImportRow(dr);
-                        //更新状态
-                        _mTB_EmployeeCheckInDAL.Update(Convert.ToInt32(drEmployeeCheckInArr[0][TB_EmployeeCheckIn.col_ID])
-                            , TypeManager.IsActive.Valid, null, DBO.GetInstance());
+                        UpdateExistCheckin(dtError, dr, drEmployeeCheckInArr);
                     }
                     else if (drEmployeeCheckEmployeeNo.Length > 0)
                     {
-                        dr["BZ"] = "已有入住记录";
-                        dtError.ImportRow(dr);
-                        //更新状态
-                        _mTB_EmployeeCheckInDAL.Update(Convert.ToInt32(drEmployeeCheckInArr[0][TB_EmployeeCheckIn.col_ID])
-                            , TypeManager.IsActive.Valid, null, DBO.GetInstance());
+                        UpdateExistCheckin(dtError, dr, drEmployeeCheckEmployeeNo);
                     }
                     else
                     {
@@ -755,6 +747,16 @@ namespace DormManage.BLL.DormPersonManage
 
             }
             return dtError;
+        }
+
+        //2019-02-18 导入更新已经入住的记录
+        private void UpdateExistCheckin(DataTable dtError, DataRow dr, DataRow[] drCheckin)
+        {
+            dr["BZ"] = "已有入住记录,更新";
+            dtError.ImportRow(dr);
+            //更新状态
+            _mTB_EmployeeCheckInDAL.UpdateExist(Convert.ToInt32(drCheckin[0][TB_EmployeeCheckIn.col_ID]),
+                                                dr, null, DBO.GetInstance());
         }
 
         /// <summary>

@@ -948,6 +948,49 @@ namespace DormManage.Data.DAL
             }
         }
 
+        //2019-02-18 
+        public int UpdateExist(int intID, DataRow dr, DbTransaction tran, Database db)
+        {
+            DbCommand dbCommandWrapper = null;
+            string strUpdateSql = @"update TB_EmployeeCheckIn 
+                                    set IsActive=@IsActive,
+                                    EmployeeNo=@EmployeeNo,
+                                    BU=@BU,
+                                    Company=@Company,
+                                    Telephone=(IIF(LEN(@Telephone)>1, @Telephone, Telephone)),
+                                    EmployeeTypeName=@EmployeeTypeName
+                                    WHERE ID=@ID
+                                    ";
+            StringBuilder strBuilder = new StringBuilder(strUpdateSql);
+            try
+            {
+                dbCommandWrapper = db.GetSqlStringCommand(strUpdateSql);
+                db.AddInParameter(dbCommandWrapper, "@IsActive", DbType.Int32, (int)TypeManager.IsActive.Valid);
+                db.AddInParameter(dbCommandWrapper, "@EmployeeNo", DbType.String, dr["工号"]);
+                db.AddInParameter(dbCommandWrapper, "@BU", DbType.String, dr["事业部"]);
+                db.AddInParameter(dbCommandWrapper, "@Company", DbType.String, dr["公司"]);
+                db.AddInParameter(dbCommandWrapper, "@Telephone", DbType.String, dr["手机号码"]);
+                db.AddInParameter(dbCommandWrapper, "@EmployeeTypeName", DbType.String, dr["用工类型"]);
+                db.AddInParameter(dbCommandWrapper, "@ID", DbType.Int32, intID);
+                if (tran == null)
+                    return db.ExecuteNonQuery(dbCommandWrapper);
+                else
+                    return db.ExecuteNonQuery(dbCommandWrapper, tran);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                if (dbCommandWrapper != null)
+                {
+                    dbCommandWrapper.Dispose();
+                    dbCommandWrapper = null;
+                }
+            }
+        }
+
         /// <summary>
         /// 获取到一个site的所有入住人员信息
         /// </summary>
